@@ -42,7 +42,7 @@ function App() {
   return (
     <>
       <Productfeedback.Provider value={{
-        data,
+        Data,
         setData
       }} >
           <RouterProvider router={router} />
