@@ -2,7 +2,9 @@ import React from 'react'
 
 function FeedbackDetails() {
   return (
-    <div>FeedbackDetails</div>
+    <>
+        <div>FeedbackDetails</div>
+    </>
   )
 }
 

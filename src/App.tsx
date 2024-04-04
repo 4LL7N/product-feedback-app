@@ -5,6 +5,8 @@ import NewFeedback from "./page/NewFeedback";
 import EditFeedback from "./page/EditFeedback";
 import RoadMap from "./page/RoadMap";
 import { Productfeedback } from "./page/Context";
+import { useEffect, useState } from "react";
+import data from "../data.json"
 
 const router = createBrowserRouter([
     {
@@ -12,7 +14,7 @@ const router = createBrowserRouter([
       element:<Suggestion/>
     },
     {
-      path:"/feedbackdetails",
+      path:"/:feedbackdetails",
       element:<FeedbackDetails/>
     },
     {
@@ -31,11 +33,18 @@ const router = createBrowserRouter([
 
 function App() {
  
-  
+  const [Data ,setData] = useState<any>()
+  console.log(data)
+  useEffect(() => {
+    setData(data)
+  },[])
 
   return (
     <>
-      <Productfeedback.Provider value={{}} >
+      <Productfeedback.Provider value={{
+        Data,
+        setData
+      }} >
           <RouterProvider router={router} />
       </Productfeedback.Provider>
     </>
