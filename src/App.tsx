@@ -12,7 +12,7 @@ const router = createBrowserRouter([
       element:<Suggestion/>
     },
     {
-      path:"/feedbackdetails",
+      path:"/:feedbackdetails",
       element:<FeedbackDetails/>
     },
     {

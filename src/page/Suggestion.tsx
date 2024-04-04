@@ -1,8 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Suggestion() {
+  const route = useNavigate()
   return (
-    <div>Suggestion</div>
+    <div onClick={() => route("/feedbackdetails") } >Suggestion</div>
   )
 }
 
