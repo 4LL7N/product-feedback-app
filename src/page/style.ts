@@ -1,4 +1,3 @@
-
 // interface User {
 //     image: string;
 //     name: string;
@@ -27,32 +26,40 @@
 // }
 
 interface User {
-    image: string;
-    name: string;
-    username: string;
-  }
-  
-  interface Comment {
-    id: number;
-    content: string;
-    user: User;
-  }
-  
-  interface ProductRequest {
-    id: number;
-    title: string;
-    category: string;
-    upvotes: number;
-    status: string;
-    description: string;
-    comments: Comment[];
-  }
-  
- export interface AppState {
-    currentUser: User;
-    productRequests: ProductRequest[];
-  }
+  image: string;
+  name: string;
+  username: string;
+}
+
+interface replies{
+  content:string,
+  replyingTo:string,
+  user:User
+}
+
+interface Comment {
+  id: number;
+  content: string;
+  user: User;
+  replies?:replies[]
+}
+
+interface ProductRequest {
+  id: number;
+  title: string;
+  category: string;
+  upvotes: number;
+  status: string;
+  description: string;
+  comments?: Comment[];
+}
+
+export interface dataStyle {
+  currentUser: User;
+  productRequests: ProductRequest[];
+}
 
 export interface MyContextProps {
-
+Data:dataStyle|undefined,
+setData:(Data:dataStyle) => void
 }
