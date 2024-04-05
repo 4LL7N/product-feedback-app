@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { CommnetReplyStyle, replies} from "../page/style";
 import Replies from "./Replies";
 
-function CommnetReply({item,index,feedback}:CommnetReplyStyle) {
+function Commentreply({item,index,feedback}:CommnetReplyStyle) {
+
+    const [commnetReply,setCommnetReply] = useState<boolean>(false)
+
   return (
     <>
       <div
@@ -27,7 +31,7 @@ function CommnetReply({item,index,feedback}:CommnetReplyStyle) {
               </p>
             </div>
           </div>
-          <p className="text-[#4661e6] text-[13px] font-semibold ">Reply</p>
+          <p className="text-[#4661e6] text-[13px] font-semibold " onClick={() => setCommnetReply(!commnetReply)} >Reply</p>
         </div>
         <div className="mt-[16px]">
           <p className="text-[13px] text-[#647196] ">{item.content}</p>
@@ -50,9 +54,19 @@ function CommnetReply({item,index,feedback}:CommnetReplyStyle) {
             })}
           </div>
         </div>
+        <div className={commnetReply ? "flex mt-[24px] justify-start gap-[16px] " : "hidden"}>
+        <textarea
+          placeholder="Type your comment here "
+          maxLength={250}
+          className="bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] w-[100%] rounded-[5px] max-h-[80px] resize-none "
+        ></textarea>
+        <button className="px-[16px] py-[10.5px] bg-[#ad1fea] rounded-[10px] h-fit ">
+          <p className="text-[#f2f4fe] text-[13px] font-bold ">Reply</p>
+        </button>
+      </div>
       </div>
     </>
   );
 }
 
-export default CommnetReply;
+export default Commentreply;

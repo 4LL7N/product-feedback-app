@@ -33,7 +33,7 @@ function Replies({items}:any) {
       <div className="mt-[16px]">
         <p className="text-[13px] text-[#647196] ">
           <a className="text-[13px] text-[#ad1fea] font-bold ">
-            @{items.user.username}{" "}
+            @{items.replyingTo}{" "}
           </a>
           {items.content}
         </p>

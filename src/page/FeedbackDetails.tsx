@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Comment, ProductRequest, dataStyle } from "./style";
-import CommnetReply from "../Components/CommnetReply";
+import Commentreply from "../Components/Commentreply";
 
 function FeedbackDetails() {
   const params = useParams<{ feedbackdetails: string }>();
@@ -110,7 +110,7 @@ function FeedbackDetails() {
             {feedback?.comments?.map((item: Comment, index: number) => {
               return (
                 <>
-                  <CommnetReply item={item} index={index} feedback={feedback} />
+                  <Commentreply item={item} index={index} feedback={feedback} />
                 </>
               );
             })}
