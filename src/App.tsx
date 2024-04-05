@@ -33,8 +33,14 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  // const [Data, setData] = useState<dataStyle>(data);
+  // console.log(data);
+  // useEffect(() => {
+  //   setData(data);
+  // }, []);
   const [close, setClose] = useState<boolean>(false);
   const [dataInfo, setDataInfo] = useState<dataStyle>(data);
+  const [filterCategory, setFilterCategory] = useState<string>("");
   useEffect(() => {
     setDataInfo(data);
   }, []);
@@ -46,6 +52,8 @@ function App() {
           setClose,
           dataInfo,
           setDataInfo,
+          filterCategory,
+          setFilterCategory,
         }}
       >
         <RouterProvider router={router} />

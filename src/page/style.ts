@@ -63,4 +63,6 @@ export interface MyContextProps {
   setClose: (value: boolean) => void;
   dataInfo: any;
   setDataInfo: (value: any) => void;
+  filterCategory: string;
+  setFilterCategory: (value: string) => void;
 }

@@ -1,8 +1,18 @@
+import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import Header from "./Header";
 
 function Suggestion() {
   const context = Context();
+  const [filterInfo, setFilterInfo] = useState<string>();
+
+  useEffect(() => {
+    const filteredData = context.dataInfo.productRequests.filter((item: any) =>
+      item.category.includes(context.filterCategory.toLowerCase())
+    );
+    setFilterInfo(filteredData);
+    console.log(filteredData);
+  }, [context.filterCategory, context.dataInfo.productRequests]);
 
   return (
     <article>
@@ -26,9 +36,9 @@ function Suggestion() {
                 {item.title}
               </p>
               <p className=" text-[#647196] text-[13px] ">{item.description}</p>
-              <p className="px-4 py-[5px] bg-[#f2f4ff] rounded-[10px] text-[13px] font-semibold text-[#4661e6] ">
+              <button className="px-4 py-[5px] bg-[#f2f4ff] rounded-[10px] text-[13px] font-semibold text-[#4661e6] ">
                 {item.category}
-              </p>
+              </button>
             </div>
             <div className="flex flex-row items-center justify-between  w-full">
               <div className="flex flex-row items-center  gap-2.5 py-1.5 pl-4 pr-[13px] bg-[#f2f4fe] rounded-[10px]">
@@ -40,7 +50,7 @@ function Suggestion() {
               </div>
               <div className="flex flex-row items-center justify-between gap-1">
                 <img src="./assets/shared/icon-comments.svg" alt="" />
-                <p className="text-[#3a4374] text-[13px] font-bold tracking-[0.18px] font-bold">
+                <p className="text-[#3a4374] text-[13px] tracking-[0.18px] font-bold">
                   {Array.isArray(item.comments) ? item.comments.length : 0}
                 </p>
               </div>
