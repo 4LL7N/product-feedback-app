@@ -37,7 +37,8 @@ export interface CommnetReplyStyle{
   index:number,
   feedback:ProductRequest,
   setFeedback:(feedback:ProductRequest)=>void
-  user:User|undefined
+  user:User|undefined,
+  productRequests:ProductRequest[]|null
 }
 
 export interface MyContextProps {

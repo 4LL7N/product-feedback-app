@@ -10,6 +10,9 @@ function FeedbackDetails() {
   const [upVote, setUpVote] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
   const NewComment = useRef<HTMLTextAreaElement>(null);
+  const [productRequests, setProductRequests] = useState<
+    ProductRequest[] | null
+  >(null);
 
   const post = () => {
     let Comments = feedback?.comments;
@@ -19,8 +22,6 @@ function FeedbackDetails() {
       while (!rightnum) {
         id = Math.floor(Math.random() * 10) + 1;
         for (let i = 0; i < Comments?.length; i++) {
-          console.log(id, Comments[i].id, i);
-
           if (id == Comments[i].id) {
             break;
           }
@@ -30,7 +31,7 @@ function FeedbackDetails() {
         }
       }
     }
-    Comments ? console.log(Comments[0]) : null;
+
     let Com = {
       content: NewComment.current?.value,
       id: id,
@@ -40,7 +41,7 @@ function FeedbackDetails() {
         username: user?.username,
       },
     };
-    Comments?.push(Com);console.log(feedback);
+    Comments?.push(Com);
 
     let newfeedback: ProductRequest | undefined;
 
@@ -57,7 +58,30 @@ function FeedbackDetails() {
     }
 
     setFeedback(newfeedback);
+    if (productRequests) {
+      for (let i = 0; i < productRequests?.length; i++) {
+        if(productRequests[i].id === Number(params.feedbackdetails)){
+          let posts = productRequests
+             newfeedback? posts[i] = newfeedback:null
+            let newdata = {
+              currentUser:user,
+              productRequests:posts
+            }
+            localStorage.setItem("data",JSON.stringify(newdata))
+        }
+      }
+    }
+    
+    
+    
+    console.log("set");
   };
+
+  let store: any;
+  localStorage && localStorage.getItem("data")
+    ? (store = localStorage.getItem("data"))
+    : null;
+  console.log(JSON.parse(store));
 
   useEffect(() => {
     let votes = feedback?.upvotes;
@@ -83,18 +107,24 @@ function FeedbackDetails() {
     let datastr = localStorage.getItem("data");
     let data: dataStyle = datastr ? JSON.parse(datastr) : null;
     setUser(data.currentUser);
-    const post = data?.productRequests.find((item) => {
-      return item.id === Number(params.feedbackdetails);
-    });
+    setProductRequests(data.productRequests);
+    // console.log(data.productRequests);
+    
+    let Post;
+    for (let i = 0; i < data?.productRequests?.length; i++) {
+      if(data?.productRequests[i].id === Number(params.feedbackdetails)){
+        Post = data?.productRequests[i]
+      }
+    }
+    setFeedback(Post)
 
-    setFeedback(post);
-  }, []);
+  },[]);
 
   return (
     <>
       <main className="bg-[#f7f8fd] w-[100vw] min-h-[100vh] p-[24px] ">
         <header className="flex items-center justify-between">
-          <div className="flex items-center gap-[16px]">
+          <div className="flex items-center gap-[16px]" onClick={() => window.history.back()} >
             <img
               className="h-[10px]"
               src="/assets/shared/icon-arrow-left.svg"
@@ -166,6 +196,7 @@ function FeedbackDetails() {
                     index={index}
                     feedback={feedback}
                     setFeedback={setFeedback}
+                    productRequests={productRequests}
                   />
                 </>
               );

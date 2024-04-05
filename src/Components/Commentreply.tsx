@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Comment, CommnetReplyStyle, replies } from "../page/style";
+import { useParams } from "react-router-dom";
 
 function Commentreply({
   item,
@@ -7,12 +8,17 @@ function Commentreply({
   feedback,
   setFeedback,
   user,
+  productRequests
 }: CommnetReplyStyle) {
   const [commnetReply, setCommnetReply] = useState<boolean>(false);
   const [replyTo, setReplyTo] = useState<string>();
   const replyText = useRef<HTMLTextAreaElement>(null);
   const [comId, setComId] = useState<number>(0);
+  const params = useParams<{ feedbackdetails: string }>();
+  
+  
   const reply = () => {
+
     let newComments: Comment[] | undefined = [...(feedback.comments ?? [])];
 
     let Com: Comment | undefined = feedback?.comments?.find((item) => {
@@ -50,6 +56,20 @@ function Commentreply({
     };
 
     setFeedback(newFeedback);
+    if (productRequests) {
+      for (let i = 0; i < productRequests?.length; i++) {
+        if(productRequests[i].id === Number(params.feedbackdetails)){
+          let posts = productRequests
+             newFeedback? posts[i] = newFeedback:null
+            let newdata = {
+              currentUser:user,
+              productRequests:posts
+            }
+            localStorage.setItem("data",JSON.stringify(newdata))
+        }
+      }
+    }
+  
   };
 
   return (
