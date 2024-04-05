@@ -8,6 +8,7 @@ import { Productfeedback } from "./page/Context";
 import { useEffect, useState } from "react";
 import data from "../data.json"
 
+
 const router = createBrowserRouter([
     {
       path:"/",
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
 function App() {
  
   const [Data ,setData] = useState<any>()
-  console.log(data)
+  
   useEffect(() => {
     setData(data)
   },[])
@@ -52,3 +53,4 @@ function App() {
 }
 
 export default App
+
