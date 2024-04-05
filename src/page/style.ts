@@ -59,6 +59,12 @@ export interface dataStyle {
   productRequests: ProductRequest[];
 }
 
+export interface CommnetReplyStyle{
+  item:Comment,
+  index:number,
+  feedback:ProductRequest
+}
+
 export interface MyContextProps {
 Data:dataStyle|undefined,
 setData:(Data:dataStyle) => void
