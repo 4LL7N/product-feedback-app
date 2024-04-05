@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
 // import { Productfeedback } from "./Context";
 import { useEffect, useState } from "react";
-import { Comment, ProductRequest, dataStyle } from "./style";
+import { Comment, ProductRequest, dataStyle, replies } from "./style";
+import Replies from "../Components/Replies";
+import React from "react";
 
 function FeedbackDetails() {
   // const data =localStorage.getItem("data")
@@ -146,46 +148,46 @@ function FeedbackDetails() {
                         {item.content}
                       </p>
                     </div>
-                    <div className={`${item.replies?"flex":""} `}>
-                      <div className={item.replies?` bg-[#8c92b338] w-[1px] h-[216px] mt-[24px]`:"hidden"} />
-                      <div  className="ml-[23px] "> 
-                      {item.replies?.map((items, index) => {
-                        return (
-                          <>
-                            <div className="flex items-center justify-between w-[100%]  mt-[24px]">
-                              <div className="flex gap-[16px] ">
-                                <img
-                                  className="w-[40px] h-[40px] rounded-[50%] "
-                                  src={items.user.image}
-                                  alt=""
-                                />
-                                <div>
-                                  <h3 className="text-[#3a4374] text-[13px] font-bold ">
-                                    {items.user.name}
-                                  </h3>
-                                  <p className="text-[#647196] text-[13px] ">
-                                    @{items.user.username}
-                                  </p>
-                                </div>
-                              </div>
-                              <p className="text-[#4661e6] text-[13px] font-semibold ">
-                                Reply
-                              </p>
-                            </div>
-                            <div className="mt-[16px]">
-                              <p className="text-[13px] text-[#647196] ">
-                              <a className="text-[13px] text-[#ad1fea] font-bold " >@{items.user.username} </a>{item.content}
-                              </p>
-                            </div>
-                          </>
-                        );
-                      })}
+                    <div className={`${item.replies ? "flex" : ""} `}>
+                      <div
+                        className={
+                          item.replies
+                            ? ` bg-[#8c92b338] w-[1px] h-[216px] mt-[24px]`
+                            : "hidden"
+                        }
+                      />
+                      <div className="ml-[23px] ">
+                        {item.replies?.map((items: replies) => {
+                          return (
+                            <>
+                              <Replies items={items} />
+                            </>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
                 </>
               );
             })}
+          </div>
+          <div className="bg-[#ffffff] p-[24px] mt-[24px]">
+            <h2 className="text-[#3a4374] text-[18px] font-bold ">
+              Add Comment
+            </h2>
+            <textarea
+              placeholder="Type your comment here"
+              maxLength={250}
+              className="bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] mt-[24px] w-[100%] rounded-[5px] "
+            ></textarea>
+            <div className="flex items-center justify-between mt-[16px] ">
+              <p className="text-[#647196] text-[13px] ">250 Characters left</p>
+              <button className="px-[16px] py-[10.5px] bg-[#ad1fea] rounded-[10px] ">
+                <p className="text-[#f2f4fe] text-[13px] font-bold ">
+                  Post Comment
+                </p>
+              </button>
+            </div>
           </div>
         </section>
       </main>

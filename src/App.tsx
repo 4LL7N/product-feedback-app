@@ -38,6 +38,7 @@ function App() {
   const [Data ,setData] = useState<dataStyle|undefined>()
   
   useEffect(() => {
+    setData(data)
     localStorage.setItem("data",JSON.stringify(data))
   },[])
 
