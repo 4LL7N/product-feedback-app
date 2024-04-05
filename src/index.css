@@ -1,9 +1,8 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -12,4 +11,5 @@
 :root {
   overflow-x: hidden;
   min-height: 100vh;
+  background-color: #f7f8fd;
 }
