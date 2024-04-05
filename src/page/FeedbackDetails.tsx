@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 // import { Productfeedback } from "./Context";
 import { useEffect, useState } from "react";
-import { ProductRequest, dataStyle } from "./style";
+import { Comment, ProductRequest, dataStyle } from "./style";
 
 function FeedbackDetails() {
   // const data =localStorage.getItem("data")
@@ -102,11 +102,27 @@ function FeedbackDetails() {
               </div>
             </div>
           </div>
-          <div className="rounded-[10px] p-[24px] bg-[#ffffff] " >
-            {feedback?.comments?.map(() => {
-
+          <div className="rounded-[10px] p-[24px] bg-[#ffffff] mt-[24px] " >
+            <h2 className="text-[#3a4374] text-[18px] font-bold " >{feedback?.comments?.length} {feedback?.comments?.length && feedback?.comments?.length > 1? "Comments":"Comment"} </h2>
+            {feedback?.comments?.map((item:Comment,index:number) => {
+                
               return(
                 <>
+                  <div className=" mt-[24px] pb-[24px] border-b border-b-solid border-b-[#8c92b39d] " >
+                    <div className="flex items-center justify-between w-[100%] " >
+                      <div className="flex gap-[16px] " >
+                      <img className="w-[40px] h-[40px] rounded-[50%] " src={item.user.image} alt="" />
+                      <div>
+                        <h3 className="text-[#3a4374] text-[13px] font-bold " >{item.user.name}</h3>
+                        <p className="text-[#647196] text-[13px] " >@{item.user.username}</p>
+                      </div>
+                      </div>
+                      <p className="text-[#4661e6] text-[13px] font-semibold " >Reply</p>
+                    </div>
+                    <div className="mt-[16px]" >
+                      <p className="text-[13px] text-[#647196] " >{item.content}</p>
+                    </div>
+                  </div>
                 </>
               )
             })}

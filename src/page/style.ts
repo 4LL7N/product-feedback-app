@@ -31,13 +31,13 @@ interface User {
   username: string;
 }
 
-interface replies{
+export interface replies{
   content:string,
   replyingTo:string,
   user:User
 }
 
-interface Comment {
+export interface Comment {
   id: number;
   content: string;
   user: User;
