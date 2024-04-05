@@ -4,7 +4,7 @@ import Header from "./Header";
 
 function Suggestion() {
   const context = Context();
-  const [filterInfo, setFilterInfo] = useState<string>();
+  const [filterInfo, setFilterInfo] = useState<any>();
 
   useEffect(() => {
     const filteredData = context.dataInfo.productRequests.filter((item: any) =>
@@ -26,7 +26,7 @@ function Suggestion() {
         </button>
       </section>
       <section className="flex flex-col items-center justify-between gap-4   p-6">
-        {context.dataInfo.productRequests.map((item: any) => (
+        {filterInfo?.map((item: any) => (
           <div
             className="w-[327px] p-6 flex flex-col items-start justify-between gap-4 rounded-[10px] bg-white"
             key={item.id}
