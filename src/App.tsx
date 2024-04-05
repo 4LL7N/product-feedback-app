@@ -6,49 +6,52 @@ import EditFeedback from "./page/EditFeedback";
 import RoadMap from "./page/RoadMap";
 import { Productfeedback } from "./page/Context";
 import { useEffect, useState } from "react";
-import data from "../data.json"
+import data from "../data.json";
+import { dataStyle } from "./page/style";
 
 const router = createBrowserRouter([
-    {
-      path:"/",
-      element:<Suggestion/>
-    },
-    {
-      path:"/:feedbackdetails",
-      element:<FeedbackDetails/>
-    },
-    {
-      path:"/newfeedback",
-      element:<NewFeedback/>
-    },
-    {
-      path:"/editfeedback",
-      element:<EditFeedback/>
-    },
-    {
-      path:"/roadmap",
-      element:<RoadMap/>
-    }
-  ]);
+  {
+    path: "/",
+    element: <Suggestion />,
+  },
+  {
+    path: "/:feedbackdetails",
+    element: <FeedbackDetails />,
+  },
+  {
+    path: "/newfeedback",
+    element: <NewFeedback />,
+  },
+  {
+    path: "/editfeedback",
+    element: <EditFeedback />,
+  },
+  {
+    path: "/roadmap",
+    element: <RoadMap />,
+  },
+]);
 
 function App() {
- 
-  const [Data ,setData] = useState<any>()
-  console.log(data)
+  const [close, setClose] = useState<boolean>(false);
+  const [dataInfo, setDataInfo] = useState<dataStyle>(data);
   useEffect(() => {
-    setData(data)
-  },[])
-
+    setDataInfo(data);
+  }, []);
   return (
     <>
-      <Productfeedback.Provider value={{
-        Data,
-        setData
-      }} >
-          <RouterProvider router={router} />
+      <Productfeedback.Provider
+        value={{
+          close,
+          setClose,
+          dataInfo,
+          setDataInfo,
+        }}
+      >
+        <RouterProvider router={router} />
       </Productfeedback.Provider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
