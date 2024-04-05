@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Comment, ProductRequest, dataStyle } from "./style";
+import { Comment, ProductRequest, User, dataStyle } from "./style";
 import Commentreply from "../Components/Commentreply";
 
 function FeedbackDetails() {
@@ -8,11 +8,43 @@ function FeedbackDetails() {
 
   const [feedback, setFeedback] = useState<ProductRequest>();
   const [upVote, setUpVote] = useState<boolean>(false);
-
+  const [user,setUser] = useState<User>()
   useEffect(() => {
-    let votes = feedback?.upvotes;
 
-    console.log(votes);
+    // let id = 0;
+    // let rightnum = false
+    // if (newComments) {
+      
+    //   while (!rightnum) {
+
+    //     id = Math.floor(Math.random() * 5) + 1
+
+    //     for (let i = 0; i < newComments?.length; i++) {         
+
+    //       if(id == newComments[i].id){            
+
+    //         break
+
+    //       }
+    //       if(i ==  newComments?.length - 1){        
+
+    //         rightnum = true
+
+    //       }
+    //     }
+    //   }
+    // }
+
+
+    // useEffect(() => {
+    //   console.log(feedback);
+      
+    // },[feedback])
+
+
+
+    let votes = feedback?.upvotes;
+    
     if (upVote && votes) {
       votes += 1;
     } else if (votes) {
@@ -33,7 +65,7 @@ function FeedbackDetails() {
   useEffect(() => {
     let datastr = localStorage.getItem("data");
     let data: dataStyle = datastr ? JSON.parse(datastr) : null;
-
+    setUser(data.currentUser)
     const post = data?.productRequests.find((item) => {
       return item.id === Number(params.feedbackdetails);
     });
@@ -110,7 +142,7 @@ function FeedbackDetails() {
             {feedback?.comments?.map((item: Comment, index: number) => {
               return (
                 <>
-                  <Commentreply item={item} index={index} feedback={feedback} />
+                  <Commentreply key={index} user={user} item={item} index={index} feedback={feedback} setFeedback={setFeedback} />
                 </>
               );
             })}

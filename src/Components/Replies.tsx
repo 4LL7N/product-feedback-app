@@ -3,7 +3,8 @@ import { useState } from "react";
 function Replies({items}:any) {
 
     const [reply, setReply] = useState<boolean>(false)
-    console.log(items);
+    
+    
     
   return (
     <>
