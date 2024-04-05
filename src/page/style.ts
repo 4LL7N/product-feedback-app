@@ -44,7 +44,7 @@ interface Comment {
   replies?:replies[]
 }
 
-interface ProductRequest {
+export interface ProductRequest {
   id: number;
   title: string;
   category: string;

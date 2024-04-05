@@ -7,7 +7,7 @@ import RoadMap from "./page/RoadMap";
 import { Productfeedback } from "./page/Context";
 import { useEffect, useState } from "react";
 import data from "../data.json"
-import { MyContextProps, dataStyle } from "./page/style";
+import { dataStyle } from "./page/style";
 
 
 const router = createBrowserRouter([
@@ -38,8 +38,9 @@ function App() {
   const [Data ,setData] = useState<dataStyle|undefined>()
   
   useEffect(() => {
-    setData(data)
+    localStorage.setItem("data",JSON.stringify(data))
   },[])
+
 
   return (
     <>
