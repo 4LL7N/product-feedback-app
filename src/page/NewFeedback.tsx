@@ -1,8 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { Form } from "react-router-dom";
+import { useSubmit } from "react-router-dom";
 
 const NewFeedback: React.FC = () => {
+  const { value, handleSubmit } = useSubmit("initial Value");
+
+  const handleClick = () => {
+    handleSubmit("New Value");
+  };
+
   return (
     <InputField className="border-2">
       <img
@@ -40,6 +47,7 @@ const NewFeedback: React.FC = () => {
           </p>
           <input type="text" name="detail" />
         </form>
+        <button onClick={handleClick}> Add Feedback</button>
       </div>
     </InputField>
   );
