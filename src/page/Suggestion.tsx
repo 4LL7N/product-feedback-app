@@ -1,8 +1,5 @@
-
 function Suggestion() {
-  return (
-    <div>Suggestion</div>
-  )
+  return <div>Suggestion</div>;
 }
 
-export default Suggestion
+export default Suggestion;
