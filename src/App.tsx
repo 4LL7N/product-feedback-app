@@ -18,16 +18,14 @@ const router = createBrowserRouter([
     {
       path:"/:feedbackdetails",
       element:<FeedbackDetails/>,
-      children:[
-        {
-          path:"/:editfeedback",
-      element:<EditFeedback/>
-        }
-      ]
     },
     {
       path:"/newfeedback",
       element:<NewFeedback/>
+    },
+    {
+      path:"/:feedbackdetails/:editfeedback",
+      element:<EditFeedback/>
     },
     {
       path:"/roadmap",

@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { Comment, ProductRequest, User, dataStyle } from "./style";
 import Commentreply from "../Components/Commentreply";
 
 function FeedbackDetails() {
   const params = useParams<{ feedbackdetails: string }>();
-
+  const navigate = useNavigate()
   const [feedback, setFeedback] = useState<ProductRequest>();
   const [upVote, setUpVote] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
@@ -132,7 +132,7 @@ function FeedbackDetails() {
             />
             <p className="text-[16px] text-[#647196] font-bold  ">Go Back</p>
           </div>
-          <button className="px-[16px] py-[10.5px] bg-[#4661e6] rounded-[10px] ">
+          <button className="px-[16px] py-[10.5px] bg-[#4661e6] rounded-[10px] " onClick={() => navigate(`${params.feedbackdetails}`)} >
             <p className="text-[13px] text-[#f2f4fe] font-bold ">
               Edit Feedback
             </p>
