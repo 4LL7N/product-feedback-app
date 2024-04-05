@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Comment, ProductRequest, User, dataStyle } from "./style";
 import Commentreply from "../Components/Commentreply";
 
@@ -8,43 +8,60 @@ function FeedbackDetails() {
 
   const [feedback, setFeedback] = useState<ProductRequest>();
   const [upVote, setUpVote] = useState<boolean>(false);
-  const [user,setUser] = useState<User>()
+  const [user, setUser] = useState<User>();
+  const NewComment = useRef<HTMLTextAreaElement>(null);
+
+  const post = () => {
+    let Comments = feedback?.comments;
+    let id = 0;
+    let rightnum = false;
+    if (Comments) {
+      while (!rightnum) {
+        id = Math.floor(Math.random() * 10) + 1;
+        for (let i = 0; i < Comments?.length; i++) {
+          console.log(id, Comments[i].id, i);
+
+          if (id == Comments[i].id) {
+            break;
+          }
+          if (i == Comments?.length - 1) {
+            rightnum = true;
+          }
+        }
+      }
+    }
+    Comments ? console.log(Comments[0]) : null;
+    let Com = {
+      content: NewComment.current?.value,
+      id: id,
+      user: {
+        image: user?.image,
+        name: user?.name,
+        username: user?.username,
+      },
+    };
+    Comments?.push(Com);console.log(feedback);
+
+    let newfeedback: ProductRequest | undefined;
+
+    if (feedback) {
+      newfeedback = {
+        id: feedback?.id,
+        title: feedback?.title,
+        category: feedback?.category,
+        upvotes: feedback?.upvotes,
+        status: feedback?.status,
+        description: feedback?.description,
+        comments: [...(Comments ?? [])],
+      };
+    }
+
+    setFeedback(newfeedback);
+  };
+
   useEffect(() => {
-
-    // let id = 0;
-    // let rightnum = false
-    // if (newComments) {
-      
-    //   while (!rightnum) {
-
-    //     id = Math.floor(Math.random() * 5) + 1
-
-    //     for (let i = 0; i < newComments?.length; i++) {         
-
-    //       if(id == newComments[i].id){            
-
-    //         break
-
-    //       }
-    //       if(i ==  newComments?.length - 1){        
-
-    //         rightnum = true
-
-    //       }
-    //     }
-    //   }
-    // }
-
-
-    // useEffect(() => {
-    //   console.log(feedback);
-      
-    // },[feedback])
-
-
-
     let votes = feedback?.upvotes;
-    
+
     if (upVote && votes) {
       votes += 1;
     } else if (votes) {
@@ -65,7 +82,7 @@ function FeedbackDetails() {
   useEffect(() => {
     let datastr = localStorage.getItem("data");
     let data: dataStyle = datastr ? JSON.parse(datastr) : null;
-    setUser(data.currentUser)
+    setUser(data.currentUser);
     const post = data?.productRequests.find((item) => {
       return item.id === Number(params.feedbackdetails);
     });
@@ -142,7 +159,14 @@ function FeedbackDetails() {
             {feedback?.comments?.map((item: Comment, index: number) => {
               return (
                 <>
-                  <Commentreply key={index} user={user} item={item} index={index} feedback={feedback} setFeedback={setFeedback} />
+                  <Commentreply
+                    key={index}
+                    user={user}
+                    item={item}
+                    index={index}
+                    feedback={feedback}
+                    setFeedback={setFeedback}
+                  />
                 </>
               );
             })}
@@ -152,13 +176,17 @@ function FeedbackDetails() {
               Add Comment
             </h2>
             <textarea
+              ref={NewComment}
               placeholder="Type your comment here"
               maxLength={250}
               className="bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] mt-[24px] w-[100%] rounded-[5px] "
             ></textarea>
             <div className="flex items-center justify-between mt-[16px] ">
               <p className="text-[#647196] text-[13px] ">250 Characters left</p>
-              <button className="px-[16px] py-[10.5px] bg-[#ad1fea] rounded-[10px] ">
+              <button
+                className="px-[16px] py-[10.5px] bg-[#ad1fea] rounded-[10px] "
+                onClick={post}
+              >
                 <p className="text-[#f2f4fe] text-[13px] font-bold ">
                   Post Comment
                 </p>
