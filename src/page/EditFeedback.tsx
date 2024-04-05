@@ -11,7 +11,7 @@ const EditFeedback: React.FC = () => {
   };
 
   return (
-    <InputField className="w-96 sm:w-450 md:w-550 h-screen mx-auto items-center p-10">
+    <InputField className="w-96 sm:w-450 md:w-550 h-full mx-auto items-center p-10">
       <div className="flex flex-row gap-4 ">
         <img
           src="/assets/shared/icon-arrow-left.svg"
