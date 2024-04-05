@@ -76,7 +76,9 @@ function FeedbackDetails() {
             </div>
             <div className=" flex items-center justify-between mt-[14px] ">
               <button
-                className={`flex items-center gap-[10px] ${upVote?"bg-[#cfd7ff]":"bg-[#f2f4fe]"} rounded-[10px] pl-[16px] pr-[13px] py-[7px] `}
+                className={`flex items-center gap-[10px] ${
+                  upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe]"
+                } rounded-[10px] pl-[16px] pr-[13px] py-[7px] `}
                 onClick={() => setUpVote(!upVote)}
               >
                 <img
@@ -88,11 +90,27 @@ function FeedbackDetails() {
                   {feedback?.upvotes}
                 </p>
               </button>
-              <div className="flex items-center gap-[7px]" >
-                <img className="w-[18px] h-[16px] mb-[-3px] " src="/assets/shared/icon-comments.svg" alt="" />
-                <p className="text-[13px] text-[#3a4374] font-bold " >{feedback?.comments?.length}</p>
+              <div className="flex items-center gap-[7px]">
+                <img
+                  className="w-[18px] h-[16px] mb-[-3px] "
+                  src="/assets/shared/icon-comments.svg"
+                  alt=""
+                />
+                <p className="text-[13px] text-[#3a4374] font-bold ">
+                  {feedback?.comments?.length}
+                </p>
               </div>
             </div>
+          </div>
+          <div className="rounded-[10px] p-[24px] bg-[#ffffff] " >
+            {feedback?.comments?.map(() => {
+
+              return(
+                <>
+                </>
+              )
+            })}
+
           </div>
         </section>
       </main>
