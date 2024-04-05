@@ -40,7 +40,7 @@ function Replies({items}:any) {
       </div>
       <div className={reply ? "flex mt-[24px] justify-start gap-[16px] " : "hidden"}>
         <textarea
-          placeholder="Type your comment here"
+          placeholder="Type your comment here "
           maxLength={250}
           className="bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] w-[100%] rounded-[5px] max-h-[80px] resize-none "
         ></textarea>
