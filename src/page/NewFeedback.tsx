@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import type {
+  NestedValue,
+  SubmitHandler,
+  DefaultValues,
+} from "react-hook-form";
+import Select from "@material-ui/core/Select";
+import ReactSelect from "react-select";
 import { ProductRequest, dataStyle, Inputs } from "./style"; // import data types/styles
 
 const NewFeedback: React.FC = () => {
@@ -8,6 +15,7 @@ const NewFeedback: React.FC = () => {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
@@ -51,13 +59,23 @@ const NewFeedback: React.FC = () => {
           <div className="">
             <label htmlFor=""> Category</label>
             <p>Choose a category for your feedback</p>
-            <select name="sort" id="" className="text-xs text-indigo-900">
-              <option value="">Feature</option>
-              <option value="">UI</option>
-              <option value="">UX</option>
-              <option value="">Enhancement</option>
-              <option value="">Bug</option>
-            </select>
+            <Controller
+              render={({ field }) => (
+                <ReactSelect
+                  {...field}
+                  options={[
+                    { value: "Feature", label: "Feature" },
+                    { value: "UI", label: "UI" },
+                    { value: "UX", label: "UX" },
+                    { value: "Enhancement", label: "Enhancement" },
+                    { value: "Bug", label: "Bug" },
+                  ]}
+                  isClearable
+                />
+              )}
+              name="ReactSelect"
+              control={control}
+            />
           </div>
 
           <div className="">
