@@ -1,14 +1,18 @@
-import React from "react";
 import styled from "styled-components";
-import { Form } from "react-router-dom";
-import { useSubmit } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { ProductRequest, dataStyle, Inputs } from "./style"; // import data types/styles
 
 const NewFeedback: React.FC = () => {
-  // const { value, handleSubmit } = useSubmit("initial Value");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
-  const handleClick = () => {
-    // handleSubmit("New Value");
-  };
+  console.log(watch("example")); // watch input value by passing the name of it
 
   return (
     <InputField className="w-96 sm:w-450 md:w-550 h-full mx-auto items-center p-10">
@@ -29,39 +33,59 @@ const NewFeedback: React.FC = () => {
         />
         <h1 className="">Create New Feedback</h1>
 
-        <div className="">
-          <form method="post" action="/events">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="">
+            {/* <form method="post" action="/events"> */}
             <label htmlFor=""> Feedback Title</label>
             <p>Add a short, descriptive headline</p>
-            <input type="text" name="title" />
-          </form>
-        </div>
+            {/* register your input into the hook by invoking the "register" function */}
+            <input
+              defaultValue=""
+              {...(register("example"), { required: true, minLength: 4 })}
+              placeholder="input title of feedback"
+            />
+          </div>
 
-        <div className="">
-          <label htmlFor=""> Category</label>
-          <p>Choose a category for your feedback</p>
-          <select name="sort" id="" className="text-xs text-indigo-900">
-            <option value="">Feature</option>
-            <option value="">UI</option>
-            <option value="">UX</option>
-            <option value="">Enhancement</option>
-            <option value="">Bug</option>
-          </select>
-        </div>
+          <div className="">
+            <label htmlFor=""> Category</label>
+            <p>Choose a category for your feedback</p>
+            <select name="sort" id="" className="text-xs text-indigo-900">
+              <option value="">Feature</option>
+              <option value="">UI</option>
+              <option value="">UX</option>
+              <option value="">Enhancement</option>
+              <option value="">Bug</option>
+            </select>
+          </div>
 
-        <div className="">
-          <form method="post" action="/events">
+          <div className="">
+            {/* <form method="post" action="/events"> */}
             <label htmlFor=""> Feedback Detail</label>
             <p>
               Include any specific comments on what should be improved, added,
               etc.
             </p>
-            <input type="text" name="detail" className="last-child" />
-          </form>
-        </div>
+            {/* include validation with required or other standard HTML validation rules */}
+            <input
+              type="text"
+              className="last-child"
+              placeholder="describe feedback"
+              {...register("exampleRequired", {
+                required: true,
+                maxLength: 150,
+                minLength: {
+                  value: 4,
+                  message: "Min length is 4",
+                },
+              })}
+            />
+            {/* errors will return when field validation fails  */}
+            {errors.exampleRequired && <span>This field is required</span>}
+          </div>
 
-        <button onClick={handleClick}> Add Feedback</button>
-        <button>Cancel</button>
+          <button type="submit"> Add Feedback</button>
+          <button>Cancel</button>
+        </form>
       </WhiteContainer>
     </InputField>
   );
