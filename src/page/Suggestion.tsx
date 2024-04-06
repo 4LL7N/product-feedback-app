@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import Header from "./Header";
+import Select from "react-select";
 
 function Suggestion() {
   const context = Context();
@@ -12,13 +13,55 @@ function Suggestion() {
     setFilterInfo(filteredData);
   }, [context.filterCategory, context.dataInfo.productRequests]);
 
+  const options = [
+    { value: "Most Upvotes", label: "Most Upvotes" },
+    { value: "Least Upvotes", label: "Least Upvotes" },
+    { value: "Most Comments", label: "Most Comments" },
+    { value: "Least Comments", label: "Least Comments" },
+  ];
+
+  const [selectedOption, setSelectedOption] = useState<string>("Most Upvotes");
+  useEffect(() => {
+    let filteredData = [...context.dataInfo.productRequests];
+
+    switch (selectedOption) {
+      case "Most Upvotes":
+        filteredData = filteredData.sort((a, b) => b.upvotes - a.upvotes);
+        break;
+      case "Least Upvotes":
+        filteredData = filteredData.sort((a, b) => a.upvotes - b.upvotes);
+        break;
+      case "Most Comments":
+        filteredData = filteredData.sort(
+          (a, b) => (b.comments?.length || 0) - (a.comments?.length || 0)
+        );
+        break;
+      case "Least Comments":
+        filteredData = filteredData.sort(
+          (a, b) => (a.comments?.length || 0) - (b.comments?.length || 0)
+        );
+        break;
+      default:
+        break;
+    }
+
+    setFilterInfo(filteredData);
+  }, [selectedOption, context.dataInfo.productRequests]);
+  const handleSelectChange = (selectedOption: any) => {
+    setSelectedOption(selectedOption.value);
+  };
+
   return (
     <article>
       <Header />
       <section className="bg-[#373f68] px-6 py-2 flex flex-row items-center justify-between w-full">
-        <p className=" text-[13px] font-light text-[#f2f4fe]">
-          Sort by : <strong>Most Upvotes</strong>
-        </p>
+        <p className=" text-[13px] font-light text-[#f2f4fe]">Sort by : </p>
+        <Select
+          onChange={handleSelectChange}
+          defaultValue={{ value: "Most Upvotes", label: "Most Upvotes" }}
+          className="text-[13px] w-[130px] "
+          options={options}
+        />
         <button className="text-[13px] font-bold text-[#f2f4fe] px-4 py-[10.5px] bg-[#ad1fea;] rounded-[10px]">
           + Add Feedback
         </button>
