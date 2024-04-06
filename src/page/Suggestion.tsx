@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import Header from "./Header";
-import Select from "react-select";
+import Select, { components } from "react-select";
 
 function Suggestion() {
   const context = Context();
   const [filterInfo, setFilterInfo] = useState<any>();
+  const [selectedOption, setSelectedOption] = useState<string>("Most Upvotes");
   useEffect(() => {
     const filteredData = context.dataInfo.productRequests.filter((item: any) =>
       item.category.includes(context.filterCategory.toLowerCase())
@@ -13,14 +14,83 @@ function Suggestion() {
     setFilterInfo(filteredData);
   }, [context.filterCategory, context.dataInfo.productRequests]);
 
-  const options = [
-    { value: "Most Upvotes", label: "Most Upvotes" },
-    { value: "Least Upvotes", label: "Least Upvotes" },
-    { value: "Most Comments", label: "Most Comments" },
-    { value: "Least Comments", label: "Least Comments" },
+  const options: any[] = [
+    {
+      value: "Most Upvotes",
+      label: "Most Upvotes",
+      image: "./assets/shared/icon-check.svg",
+    },
+    {
+      value: "Least Upvotes",
+      label: "Least Upvotes",
+      image: "./assets/shared/icon-check.svg",
+    },
+    {
+      value: "Most Comments",
+      label: "Most Comments",
+      image: "./assets/shared/icon-check.svg",
+    },
+    {
+      value: "Least Comments",
+      label: "Least Comments",
+      image: "./assets/shared/icon-check.svg",
+    },
   ];
+  const CustomOption = (props: any) => {
+    return (
+      <components.Option {...props}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ marginRight: "60px" }}>{props.data.label}</div>
+          {props.isSelected && (
+            <img src={props.data.image} alt={props.data.label} />
+          )}
+        </div>
+      </components.Option>
+    );
+  };
 
-  const [selectedOption, setSelectedOption] = useState<string>("Most Upvotes");
+  const handleSelectChange = (selectedOption: any) => {
+    setSelectedOption(selectedOption.value);
+  };
+
+  const getOptionLabel = (option: any) => option.label;
+  const customStyles = {
+    option: (provided: any) => ({
+      //list
+      ...provided,
+      backgroundColor: "none",
+
+      color: "none",
+      "&:hover": {
+        color: "#ad1fea",
+        border: "none",
+      },
+    }),
+    singleValue: (provided: any) => ({
+      //main text color
+      ...provided,
+      color: "#f2f4fe",
+    }),
+    control: (provided: any, state: { isFocused: any }) => ({
+      //main
+      ...provided,
+      backgroundColor: "#373f68",
+      border: "none",
+      outline: state.isFocused ? "none" : "none",
+      "&:hover": {
+        color: "#ad1fea",
+        border: "none",
+      },
+    }),
+    menu: (provided: any) => ({
+      // Adjust the width of the dropdown list
+      ...provided,
+      width: "200px",
+      // "@media (min-width: 768px)": {
+      //   width: "255px", // Tablet version width
+      // },
+    }),
+  };
   useEffect(() => {
     let filteredData = [...context.dataInfo.productRequests];
 
@@ -47,21 +117,23 @@ function Suggestion() {
 
     setFilterInfo(filteredData);
   }, [selectedOption, context.dataInfo.productRequests]);
-  const handleSelectChange = (selectedOption: any) => {
-    setSelectedOption(selectedOption.value);
-  };
 
   return (
     <article>
       <Header />
       <section className="bg-[#373f68] px-6 py-2 flex flex-row items-center justify-between w-full">
-        <p className=" text-[13px] font-light text-[#f2f4fe]">Sort by : </p>
-        <Select
-          onChange={handleSelectChange}
-          defaultValue={{ value: "Most Upvotes", label: "Most Upvotes" }}
-          className="text-[13px] w-[130px] "
-          options={options}
-        />
+        <div className="flex flex-row items-center justify-between">
+          <p className=" text-[13px] font-light text-[#f2f4fe]">Sort by : </p>
+          <Select
+            onChange={handleSelectChange}
+            components={{ Option: CustomOption }}
+            defaultValue={{ value: "Most Upvotes", label: "Most Upvotes" }}
+            options={options}
+            getOptionLabel={getOptionLabel}
+            styles={customStyles}
+            className="text-[13px] w-[130px] m-0 p-0"
+          />
+        </div>
         <button className="text-[13px] font-bold text-[#f2f4fe] px-4 py-[10.5px] bg-[#ad1fea;] rounded-[10px]">
           + Add Feedback
         </button>

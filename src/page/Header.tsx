@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Context } from "./Context";
 
 function Header() {
@@ -24,13 +24,21 @@ function Header() {
     },
     { planned: 0, inProgress: 0, live: 0 }
   );
+  useEffect(() => {
+    if (context.close) {
+      document.documentElement.classList.add("no-scroll");
+    } else {
+      document.documentElement.classList.remove("no-scroll");
+    }
+  }, [context.close]);
 
   return (
     <div
-      className=" relative w-[375px]  h-full
+      className=" relative 
     "
     >
-      <img src="./assets/suggestions/mobile/background-header.png" alt="" />
+      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  w-full h-[72px]"></div>
+
       <div className=" absolute top-7 right-8 ">
         {context.close ? (
           <img
@@ -50,14 +58,14 @@ function Header() {
           />
         )}
       </div>
-      <div className=" absolute top-5 left-8  text-white">
+      <div className=" absolute top-5 left-6  text-white">
         <p className="text-[16px] font-bold">Frontend Mentor</p>
         <p className=" text-[12px] font-normal">Feedback Board</p>
       </div>
 
       {context.close && (
-        <article className=" flex flex-col items-center justify-between  gap-6  w-[271px] absolute right-0 bg-[#f7f8fd] p-6 z-10 ">
-          <section className=" bg-white rounded-2xl flex flex-row flex-wrap gap-3.5 text-[13px] px-5 pt-6 pb-9 text-blue-600 font-bold ">
+        <article className=" flex flex-col items-center  gap-6  w-[271px] absolute right-0 bg-[#f7f8fd] p-6 z-20  min-h-screen  ">
+          <section className=" bg-white rounded-2xl flex flex-row flex-wrap gap-3.5 text-[13px] px-5 pt-6 pb-9 text-blue-600 font-bold  ">
             {findCategory.map((item: string) => {
               return (
                 <button
@@ -119,8 +127,13 @@ function Header() {
         </article>
       )}
       {context.close && (
-        <div className="absolute left-0 w-[104px] opacity-75 bg-transparent h-full z-10">
-          <div className="bg-black "></div>
+        <div className="absolute left-0 w-full opacity-75 bg-transparent h-full z-10">
+          <div
+            onClick={() => {
+              context.setClose(false);
+            }}
+            className="bg-black min-h-screen "
+          ></div>
         </div>
       )}
     </div>
