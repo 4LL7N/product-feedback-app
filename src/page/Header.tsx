@@ -40,7 +40,7 @@ function Header() {
       className=" relative   md:flex md:flex-row md:justify-center md:items-center
     "
     >
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  w-full h-[72px] md:w-[233px] md:h-[178px] md:rounded-[10px] md:mt-14 md:mb-10 md:ml-10  md:mr-2.5">
+      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  w-full h-[72px] md:w-[233px] md:h-[178px] md:rounded-[10px] md:mt-14 md:mb-10  md:mr-2.5">
         <div className="  pl-6 pt-4  text-white md:pt-[103px]">
           <p className="text-[16px] font-bold md:text-[20px]">
             Frontend Mentor

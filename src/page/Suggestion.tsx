@@ -40,7 +40,7 @@ function Suggestion() {
     return (
       <components.Option {...props}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ marginRight: "6px" }}>{props.data.label}</div>
+          <div style={{ marginRight: "16px" }}>{props.data.label}</div>
           {props.isSelected && (
             <img src={props.data.image} alt={props.data.label} />
           )}
@@ -119,10 +119,16 @@ function Suggestion() {
   }, [selectedOption, context.dataInfo.productRequests]);
 
   return (
-    <article>
+    <article className=" md:flex md:flex-col md:justify-center md:items-center  ">
       <Header />
-      <section className="bg-[#373f68] px-6 py-2 flex flex-row items-center justify-between w-full">
+      <section className="bg-[#373f68] px-6 py-2 flex flex-row items-center justify-between w-full md:w-[700px] md:rounded-[10px]">
         <div className="flex flex-row items-center justify-between">
+          <div className="hidden md:flex flex-row items-center justify-between gap-4 mr-8">
+            <img src="./assets/suggestions/icon-suggestions.svg" alt="" />
+            <div className=" flex flex-row items-center justify-between gap-1 text-[18px] font-normal tracking-[-0.25px] text-white">
+              <p>{filterInfo?.length}</p> <p>Suggestions</p>
+            </div>
+          </div>
           <p className=" text-[13px] font-light text-[#f2f4fe]">Sort by : </p>
           <Select
             onChange={handleSelectChange}
@@ -131,7 +137,7 @@ function Suggestion() {
             options={options}
             getOptionLabel={getOptionLabel}
             styles={customStyles}
-            className="text-[13px] w-[130px] m-0 p-0"
+            className="text-[13px] w-[130px] m-0 p-0 md:w-[160px]"
           />
         </div>
         <button className="text-[13px] font-bold text-[#f2f4fe] px-4 py-[10.5px] bg-[#ad1fea;] rounded-[10px]">
@@ -139,27 +145,34 @@ function Suggestion() {
         </button>
       </section>
       {(filterInfo ?? []).length > 0 ? (
-        <section className="flex flex-col items-center justify-between gap-4   p-6">
+        <section className="flex flex-col items-center justify-between gap-4  p-6 md:w-[700px] md:px-0  ">
           {filterInfo?.map((item: any) => (
             <div
-              className="w-[327px] p-6 flex flex-col items-start justify-between gap-4 rounded-[10px] bg-white"
+              className="w-[327px] p-6 flex flex-col items-start justify-between gap-4 rounded-[10px] bg-white md:w-full md:flex-row md:items-center md:justify-between "
               key={item.id}
             >
               <>
-                <div className="flex flex-col items-start gap-2">
-                  <p className=" font-bold  tracking-[-0.18px] text-[#3a4374] text-[13px]">
-                    {item.title}
-                  </p>
-                  <p className=" text-[#647196] text-[13px] ">
-                    {item.description}
-                  </p>
-                  <button className="px-4 py-[5px] bg-[#f2f4ff] rounded-[10px] text-[13px] font-semibold text-[#4661e6] ">
-                    {item.category}
-                  </button>
+                <div className="flex flex-row items-center justify-between gap-10">
+                  <div className="hidden md:flex flex-col items-center  gap-2.5 py-1.5 pl-4 pr-[13px] bg-[#f2f4fe] rounded-[10px]">
+                    <img src="./assets/shared/icon-arrow-up.svg" alt="" />
+                    <p className="text-[13px] tracking-[-0.18px] font-bold ">
+                      {item.upvotes}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-start gap-2">
+                    <p className=" font-bold  tracking-[-0.18px] text-[#3a4374] text-[13px] md:text-[18px] ">
+                      {item.title}
+                    </p>
+                    <p className=" text-[#647196] text-[13px] md:text-[16px] ">
+                      {item.description}
+                    </p>
+                    <button className="px-4 py-[5px] bg-[#f2f4ff] rounded-[10px] text-[13px] font-semibold text-[#4661e6] ">
+                      {item.category}
+                    </button>
+                  </div>
                 </div>
-                <div className="flex flex-row items-center justify-between  w-full">
-                  <div className="flex flex-row items-center  gap-2.5 py-1.5 pl-4 pr-[13px] bg-[#f2f4fe] rounded-[10px]">
-                    {" "}
+                <div className="flex flex-row items-center justify-between  w-full md:w-8">
+                  <div className="flex flex-row items-center  gap-2.5 py-1.5 pl-4 pr-[13px] bg-[#f2f4fe] rounded-[10px] md:hidden">
                     <img src="./assets/shared/icon-arrow-up.svg" alt="" />
                     <p className="text-[13px] tracking-[-0.18px] font-bold ">
                       {item.upvotes}
