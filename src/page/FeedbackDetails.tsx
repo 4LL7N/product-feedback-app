@@ -13,66 +13,69 @@ function FeedbackDetails() {
   const [productRequests, setProductRequests] = useState<
     ProductRequest[] | null
   >(null);
+  const [comErr, setComErr] = useState<boolean>(false);
 
   const post = () => {
-    let Comments = feedback?.comments;
-    let id = 0;
-    let rightnum = false;
-    if (Comments) {
-      while (!rightnum) {
-        id = Math.floor(Math.random() * 10) + 1;
-        for (let i = 0; i < Comments?.length; i++) {
-          if (id == Comments[i].id) {
-            break;
-          }
-          if (i == Comments?.length - 1) {
-            rightnum = true;
+    if (NewComment.current?.value == "") {
+      setComErr(true);
+    } else {
+      let Comments = feedback?.comments;
+      let id = 0;
+      let rightnum = false;
+      if (Comments) {
+        while (!rightnum) {
+          id = Math.floor(Math.random() * 10) + 1;
+          for (let i = 0; i < Comments?.length; i++) {
+            if (id == Comments[i].id) {
+              break;
+            }
+            if (i == Comments?.length - 1) {
+              rightnum = true;
+            }
           }
         }
       }
-    }
 
-    let Com = {
-      content: NewComment.current?.value,
-      id: id,
-      user: {
-        image: user?.image,
-        name: user?.name,
-        username: user?.username,
-      },
-    };
-    Comments?.push(Com);
-
-    let newfeedback: ProductRequest | undefined;
-
-    if (feedback) {
-      newfeedback = {
-        id: feedback?.id,
-        title: feedback?.title,
-        category: feedback?.category,
-        upvotes: feedback?.upvotes,
-        status: feedback?.status,
-        description: feedback?.description,
-        comments: [...(Comments ?? [])],
+      let Com = {
+        content: NewComment.current?.value,
+        id: id,
+        user: {
+          image: user?.image,
+          name: user?.name,
+          username: user?.username,
+        },
       };
-    }
+      Comments?.push(Com);
 
-    setFeedback(newfeedback);
-    if (productRequests) {
-      for (let i = 0; i < productRequests?.length; i++) {
-        if (productRequests[i].id === Number(params.feedbackdetails)) {
-          let posts = productRequests;
-          newfeedback ? (posts[i] = newfeedback) : null;
-          let newdata = {
-            currentUser: user,
-            productRequests: posts,
-          };
-          localStorage.setItem("data", JSON.stringify(newdata));
+      let newfeedback: ProductRequest | undefined;
+
+      if (feedback) {
+        newfeedback = {
+          id: feedback?.id,
+          title: feedback?.title,
+          category: feedback?.category,
+          upvotes: feedback?.upvotes,
+          status: feedback?.status,
+          description: feedback?.description,
+          comments: [...(Comments ?? [])],
+        };
+      }
+
+      setFeedback(newfeedback);
+      if (productRequests) {
+        for (let i = 0; i < productRequests?.length; i++) {
+          if (productRequests[i].id === Number(params.feedbackdetails)) {
+            let posts = productRequests;
+            newfeedback ? (posts[i] = newfeedback) : null;
+            let newdata = {
+              currentUser: user,
+              productRequests: posts,
+            };
+            localStorage.setItem("data", JSON.stringify(newdata));
+          }
         }
       }
     }
-
-    // console.log("set");
   };
 
   let store: any;
@@ -239,12 +242,17 @@ function FeedbackDetails() {
             <h2 className="text-[#3a4374] text-[18px] font-bold ">
               Add Comment
             </h2>
+            <div>
             <textarea
               ref={NewComment}
               placeholder="Type your comment here"
               maxLength={250}
-              className="bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] mt-[24px] w-[100%] rounded-[5px] resize-none  "
+              className={`bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] mt-[24px] w-[100%] rounded-[5px] resize-none ${
+                comErr ? "border border-solid border-[#d73737]" : ""
+              } `}
             ></textarea>
+            <p className={`text-[14px] text-[#d73737] ${comErr?"":"hidden"}`} >Can’t be empty</p>
+            </div>
             <div className="flex items-center justify-between mt-[16px] ">
               <p className="text-[#647196] text-[13px] ">250 Characters left</p>
               <button
