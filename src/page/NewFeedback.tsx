@@ -38,10 +38,12 @@ const NewFeedback: React.FC = () => {
             {/* <form method="post" action="/events"> */}
             <label htmlFor=""> Feedback Title</label>
             <p>Add a short, descriptive headline</p>
-            {/* register your input into the hook by invoking the "register" function */}
             <input
-              defaultValue=""
-              {...(register("example"), { required: true, minLength: 4 })}
+              {...register("example", {
+                required: true,
+                minLength: 4,
+                maxLength: 30,
+              })}
               placeholder="input title of feedback"
             />
           </div>
@@ -67,7 +69,6 @@ const NewFeedback: React.FC = () => {
             </p>
             {/* include validation with required or other standard HTML validation rules */}
             <input
-              type="text"
               className="last-child"
               placeholder="describe feedback"
               {...register("exampleRequired", {
