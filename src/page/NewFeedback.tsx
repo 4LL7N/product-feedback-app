@@ -33,7 +33,7 @@ const NewFeedback: React.FC = () => {
         />
         <h1 className="">Create New Feedback</h1>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="">
           <div className="">
             {/* <form method="post" action="/events"> */}
             <label htmlFor=""> Feedback Title</label>
@@ -72,7 +72,7 @@ const NewFeedback: React.FC = () => {
               placeholder="describe feedback"
               {...register("exampleRequired", {
                 required: true,
-                maxLength: 150,
+                maxLength: 200,
                 minLength: {
                   value: 4,
                   message: "Min length is 4",
@@ -83,8 +83,10 @@ const NewFeedback: React.FC = () => {
             {errors.exampleRequired && <span>This field is required</span>}
           </div>
 
-          <button type="submit"> Add Feedback</button>
-          <button>Cancel</button>
+          <div className="flex flex-col gap-2">
+            <button type="submit">Add Feedback</button>
+            <button>Cancel</button>
+          </div>
         </form>
       </WhiteContainer>
     </InputField>
