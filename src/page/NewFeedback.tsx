@@ -18,7 +18,10 @@ const NewFeedback: React.FC = () => {
     control,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+    console.log(JSON.stringify(data));
+  };
 
   console.log(watch("example")); // watch input value by passing the name of it
 
