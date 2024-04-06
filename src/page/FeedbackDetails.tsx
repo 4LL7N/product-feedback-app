@@ -5,7 +5,7 @@ import Commentreply from "../Components/Commentreply";
 
 function FeedbackDetails() {
   const params = useParams<{ feedbackdetails: string }>();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [feedback, setFeedback] = useState<ProductRequest>();
   const [upVote, setUpVote] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
@@ -60,20 +60,18 @@ function FeedbackDetails() {
     setFeedback(newfeedback);
     if (productRequests) {
       for (let i = 0; i < productRequests?.length; i++) {
-        if(productRequests[i].id === Number(params.feedbackdetails)){
-          let posts = productRequests
-             newfeedback? posts[i] = newfeedback:null
-            let newdata = {
-              currentUser:user,
-              productRequests:posts
-            }
-            localStorage.setItem("data",JSON.stringify(newdata))
+        if (productRequests[i].id === Number(params.feedbackdetails)) {
+          let posts = productRequests;
+          newfeedback ? (posts[i] = newfeedback) : null;
+          let newdata = {
+            currentUser: user,
+            productRequests: posts,
+          };
+          localStorage.setItem("data", JSON.stringify(newdata));
         }
       }
     }
-    
-    
-    
+
     // console.log("set");
   };
 
@@ -103,21 +101,18 @@ function FeedbackDetails() {
     setFeedback(newfeedback);
     if (productRequests) {
       for (let i = 0; i < productRequests?.length; i++) {
-        if(productRequests[i].id === Number(params.feedbackdetails)){
-          let posts = productRequests
-             newfeedback? posts[i] = newfeedback:null
-            let newdata = {
-              currentUser:user,
-              productRequests:posts
-            }
-            localStorage.setItem("data",JSON.stringify(newdata))
+        if (productRequests[i].id === Number(params.feedbackdetails)) {
+          let posts = productRequests;
+          newfeedback ? (posts[i] = newfeedback) : null;
+          let newdata = {
+            currentUser: user,
+            productRequests: posts,
+          };
+          localStorage.setItem("data", JSON.stringify(newdata));
         }
       }
     }
   }, [upVote]);
-
-  
-  
 
   useEffect(() => {
     let datastr = localStorage.getItem("data");
@@ -125,22 +120,24 @@ function FeedbackDetails() {
     setUser(data.currentUser);
     setProductRequests(data.productRequests);
     // console.log(data.productRequests);
-    
+
     let Post;
     for (let i = 0; i < data?.productRequests?.length; i++) {
-      if(data?.productRequests[i].id === Number(params.feedbackdetails)){
-        Post = data?.productRequests[i]
+      if (data?.productRequests[i].id === Number(params.feedbackdetails)) {
+        Post = data?.productRequests[i];
       }
     }
-    setFeedback(Post)
-
-  },[]);
+    setFeedback(Post);
+  }, []);
 
   return (
     <>
-      <main className="bg-[#f7f8fd] w-[100vw] min-h-[100vh] p-[24px] ">
-        <header className="flex items-center justify-between">
-          <div className="flex items-center gap-[16px]" onClick={() => window.history.back()} >
+      <main className="flex flex-col items-center bg-[#f7f8fd] w-[100vw] min-h-[100vh] py-[24px]  md:py-[56px] lg:py-[80px] ">
+        <header className="flex items-center justify-between w-[327px] md:w-[689px] lg:w-[730px] ">
+          <div
+            className="flex items-center gap-[16px]"
+            onClick={() => window.history.back()}
+          >
             <img
               className="h-[10px]"
               src="/assets/shared/icon-arrow-left.svg"
@@ -148,54 +145,74 @@ function FeedbackDetails() {
             />
             <p className="text-[16px] text-[#647196] font-bold  ">Go Back</p>
           </div>
-          <button className="px-[16px] py-[10.5px] bg-[#4661e6] rounded-[10px] " onClick={() => navigate(`${params.feedbackdetails}`)} >
+          <button
+            className="px-[16px] py-[10.5px] bg-[#4661e6] rounded-[10px] "
+            onClick={() => navigate(`editfeedback`)}
+          >
             <p className="text-[13px] text-[#f2f4fe] font-bold ">
               Edit Feedback
             </p>
           </button>
         </header>
-        <section className="mt-[24px]">
-          <div className="rounded-[10px] p-[24px] bg-[#ffffff] ">
-            <h1 className=" text-[13px] text-[#3a4374] font-bold ">
-              {feedback?.title}
-            </h1>
-            <p className="text-[#647196] text-[13px] mt-[9px] ">
-              {feedback?.description}
-            </p>
-            <div className=" w-min flex px-[16px] py-[6px] bg-[#f2f4ff] mt-[10px] rounded-[10px] ">
-              <p className="text-[13px] text-[#4661e6] font-semibold ">
-                {feedback?.category}
+        <section className="mt-[24px] w-[327px] md:w-[689px] lg:w-[730px] ">
+          <div className="rounded-[10px] p-[24px] bg-[#ffffff] md:flex md:gap-[40px] md:relative ">
+            <button
+              className={`hidden md:flex items-center gap-[10px] ${
+                upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe]"
+              } rounded-[10px] pl-[16px] pr-[13px] py-[7px] h-fit `}
+              onClick={() => setUpVote(!upVote)}
+            >
+              <img
+                className="w-[8px] h-[6px] "
+                src="/assets/shared/icon-arrow-up.svg"
+                alt=""
+              />
+              <p className="text-[13px] text-[#3a4374] font-bold ">
+                {feedback?.upvotes}
               </p>
-            </div>
-            <div className=" flex items-center justify-between mt-[14px] ">
-              <button
-                className={`flex items-center gap-[10px] ${
-                  upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe]"
-                } rounded-[10px] pl-[16px] pr-[13px] py-[7px] `}
-                onClick={() => setUpVote(!upVote)}
-              >
-                <img
-                  className="w-[8px] h-[6px] "
-                  src="/assets/shared/icon-arrow-up.svg"
-                  alt=""
-                />
-                <p className="text-[13px] text-[#3a4374] font-bold ">
-                  {feedback?.upvotes}
+            </button>
+            <div>
+              <h1 className=" text-[13px] text-[#3a4374] font-bold ">
+                {feedback?.title}
+              </h1>
+              <p className="text-[#647196] text-[13px] mt-[9px] ">
+                {feedback?.description}
+              </p>
+              <div className=" w-min flex px-[16px] py-[6px] bg-[#f2f4ff] mt-[10px] rounded-[10px] ">
+                <p className="text-[13px] text-[#4661e6] font-semibold ">
+                  {feedback?.category}
                 </p>
-              </button>
-              <div className="flex items-center gap-[7px]">
-                <img
-                  className="w-[18px] h-[16px] mb-[-3px] "
-                  src="/assets/shared/icon-comments.svg"
-                  alt=""
-                />
-                <p className="text-[13px] text-[#3a4374] font-bold ">
-                  {feedback?.comments?.length}
-                </p>
+              </div>
+              <div className=" flex items-center justify-between mt-[14px] ">
+                <button
+                  className={`md:hidden flex items-center gap-[10px] ${
+                    upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe]"
+                  } rounded-[10px] pl-[16px] pr-[13px] py-[7px] `}
+                  onClick={() => setUpVote(!upVote)}
+                >
+                  <img
+                    className="w-[8px] h-[6px] "
+                    src="/assets/shared/icon-arrow-up.svg"
+                    alt=""
+                  />
+                  <p className="text-[13px] text-[#3a4374] font-bold ">
+                    {feedback?.upvotes}
+                  </p>
+                </button>
+                <div className="flex items-center gap-[7px] md:absolute md:top-[64px] md:right-[32px] ">
+                  <img
+                    className="w-[18px] h-[16px] mb-[-3px] "
+                    src="/assets/shared/icon-comments.svg"
+                    alt=""
+                  />
+                  <p className="text-[13px] text-[#3a4374] font-bold ">
+                    {feedback?.comments?.length}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          <div className="rounded-[10px] p-[24px] bg-[#ffffff] mt-[24px] ">
+          <div className="rounded-[10px] p-[24px] md:p-[34px] md:pt-[34px]  bg-[#ffffff] mt-[24px] ">
             <h2 className="text-[#3a4374] text-[18px] font-bold ">
               {feedback?.comments?.length}{" "}
               {feedback?.comments?.length && feedback?.comments?.length > 1
@@ -218,7 +235,7 @@ function FeedbackDetails() {
               );
             })}
           </div>
-          <div className="bg-[#ffffff] p-[24px] mt-[24px]">
+          <div className="bg-[#ffffff] p-[24px] mt-[24px] md:p-[34px] md:pt-[24px] ">
             <h2 className="text-[#3a4374] text-[18px] font-bold ">
               Add Comment
             </h2>
@@ -226,7 +243,7 @@ function FeedbackDetails() {
               ref={NewComment}
               placeholder="Type your comment here"
               maxLength={250}
-              className="bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] mt-[24px] w-[100%] rounded-[5px] "
+              className="bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] mt-[24px] w-[100%] rounded-[5px] resize-none  "
             ></textarea>
             <div className="flex items-center justify-between mt-[16px] ">
               <p className="text-[#647196] text-[13px] ">250 Characters left</p>

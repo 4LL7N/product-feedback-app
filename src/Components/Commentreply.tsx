@@ -75,14 +75,14 @@ function Commentreply({
   return (
     <>
       <div
-        className={` mt-[24px] pb-[24px] ${
+        className={` mt-[24px] pb-[24px] md:relative overflow-hidden ${
           index + 1 === feedback?.comments?.length
             ? ""
             : "border-b border-b-solid border-b-[#8c92b338]"
         } `}
       >
         <div className="flex items-center justify-between w-[100%] ">
-          <div className="flex gap-[16px] ">
+          <div className="flex gap-[16px] md:gap-[32px] ">
             <img
               className="w-[40px] h-[40px] rounded-[50%] "
               src={item?.user?.image}
@@ -108,23 +108,23 @@ function Commentreply({
             Reply
           </p>
         </div>
-        <div className="mt-[16px]">
+        <div className="mt-[16px] md:ml-[70px] ">
           <p className="text-[13px] text-[#647196] ">{item.content}</p>
         </div>
-        <div className={`${item.replies ? "flex" : ""} `}>
+        <div className={`${item.replies ? "flex  " : ""} `}>
           <div
             className={
               item.replies
-                ? ` bg-[#8c92b338] w-[1px] h-[216px] mt-[24px]`
+                ? ` bg-[#8c92b338] w-[1px] h-[216px] mt-[24px] md:absolute md:top-[63px] md:left-[18px] md:mt-0 `
                 : "hidden"
             }
           />
-          <div className="ml-[23px] ">
+          <div className="ml-[23px] md:ml-[43px] md:mt-[8px] ">
             {item.replies?.map((items: replies) => {
               return (
                 <>
                   <div className="flex items-center justify-between w-[100%]  mt-[24px]">
-                    <div className="flex gap-[16px] ">
+                    <div className="flex gap-[16px] md:gap-[32px] ">
                       <img
                         className="w-[40px] h-[40px] rounded-[50%] "
                         src={items.user?.image}
@@ -150,7 +150,7 @@ function Commentreply({
                       Reply
                     </p>
                   </div>
-                  <div className="mt-[16px]">
+                  <div className="mt-[16px] md:ml-[72px]">
                     <p className="text-[13px] text-[#647196] ">
                       <a className="text-[13px] text-[#ad1fea] font-bold ">
                         @{items.replyingTo}{" "}
