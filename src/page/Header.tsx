@@ -37,10 +37,10 @@ function Header() {
 
   return (
     <div
-      className=" relative   md:flex md:flex-row md:justify-center md:items-center
+      className=" relative   md:flex md:flex-row md:justify-center md:items-center lg:flex-col
     "
     >
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  w-full h-[72px] md:w-[233px] md:h-[178px] md:rounded-[10px] md:mt-14 md:mb-10  md:mr-2.5">
+      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  w-full h-[72px] md:w-[233px] md:h-[178px] md:rounded-[10px] md:mt-14 md:mb-10  md:mr-2.5 lg:w-[255px] lg:mb-6 lg:mr-0 lg:mt-0">
         <div className="  pl-6 pt-4  text-white md:pt-[103px]">
           <p className="text-[16px] font-bold md:text-[20px]">
             Frontend Mentor
@@ -72,8 +72,8 @@ function Header() {
       </div>
 
       {(isMobile || context.close) && (
-        <article className=" flex flex-col items-center  gap-6  w-[271px] absolute right-0 bg-[#f7f8fd] p-6 z-20  min-h-screen  md:relative  md:flex-row md:items-center md:p-0 md:gap-2.5  md:w-[456px] md:min-h-[176px] md:mt-4">
-          <section className=" bg-white rounded-2xl flex flex-row flex-wrap gap-3.5 text-[13px] px-5 pt-6 pb-9 text-blue-600 font-bold md:w-[223px]  ">
+        <article className=" flex flex-col items-center  gap-6  w-[271px] absolute right-0 bg-[#f7f8fd] p-6 z-20  min-h-screen  md:relative  md:flex-row md:items-center md:p-0 md:gap-2.5  md:w-[456px] md:min-h-[176px] md:mt-4 lg:flex-col lg:gap-6 lg:mt-0 lg:w-full">
+          <section className=" bg-white rounded-2xl flex flex-row flex-wrap gap-3.5 text-[13px] px-5 pt-6 pb-9 text-blue-600 font-bold md:w-[223px]  lg:w-[255px] ">
             {findCategory.map((item: string) => {
               return (
                 <button
@@ -97,9 +97,9 @@ function Header() {
               );
             })}
           </section>
-          <section className=" flex flex-col items-center justify-between bg-white p-6 rounded-[10px] w-full  gap-6  md:w-[223px]">
+          <section className=" flex flex-col items-center justify-between bg-white p-6 rounded-[10px] w-full  gap-6  md:w-[223px]  lg:w-[255px]">
             <div className="flex flex-row items-center justify-between w-full">
-              <h3 className="text-[#3a4374] font-bold leading-[-0.25px]">
+              <h3 className="text-[#3a4374] font-bold leading-[-0.25px] text-[18px]">
                 Roadmap
               </h3>
               <p>View</p>
