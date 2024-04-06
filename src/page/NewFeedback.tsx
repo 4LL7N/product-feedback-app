@@ -33,7 +33,7 @@ const NewFeedback: React.FC = () => {
         />
         <h1 className="">Create New Feedback</h1>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <div className="">
             {/* <form method="post" action="/events"> */}
             <label htmlFor=""> Feedback Title</label>
