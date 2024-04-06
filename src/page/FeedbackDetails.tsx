@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Comment, ProductRequest, User, dataStyle } from "./style";
 import Commentreply from "../Components/Commentreply";
 
@@ -9,7 +9,6 @@ function FeedbackDetails() {
   const [feedback, setFeedback] = useState<ProductRequest>();
   const [upVote, setUpVote] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
-  // const NewComment = useRef<HTMLTextAreaElement>(null);
   const [productRequests, setProductRequests] = useState<
     ProductRequest[] | null
   >(null);
