@@ -15,9 +15,15 @@ function Commentreply({
   const replyText = useRef<HTMLTextAreaElement>(null);
   const [comId, setComId] = useState<number>(0);
   const params = useParams<{ feedbackdetails: string }>();
-  
+  const [comErr, setComErr] = useState<boolean>(false);
   
   const reply = () => {
+
+    if(replyText.current?.value == ""){
+
+      setComErr(true)
+
+    }else{
 
     let newComments: Comment[] | undefined = [...(feedback.comments ?? [])];
 
@@ -69,7 +75,7 @@ function Commentreply({
         }
       }
     }
-  
+    }
   };
 
   return (
@@ -101,6 +107,7 @@ function Commentreply({
             className="text-[#4661e6] text-[13px] font-semibold "
             onClick={() => {
               setCommnetReply(!commnetReply);
+              commnetReply?setComErr(false):null
               setReplyTo(item?.user?.username);
               item.id ? setComId(item?.id) : null;
             }}
@@ -143,6 +150,7 @@ function Commentreply({
                       className="text-[#4661e6] text-[13px] font-semibold "
                       onClick={() => {
                         setCommnetReply(!commnetReply);
+                        commnetReply?setComErr(false):null
                         setReplyTo(items.user?.username);
                         item.id ? setComId(item?.id) : null;
                       }}
@@ -165,15 +173,20 @@ function Commentreply({
         </div>
         <div
           className={
-            commnetReply ? "flex mt-[24px] justify-start gap-[16px] " : "hidden"
+            commnetReply ? "flex mt-[24px] justify-start gap-[16px] md:ml-[112px] " : "hidden"
           }
         >
+          <div className="w-[100%]" >
           <textarea
             ref={replyText}
             placeholder="Type your comment here "
             maxLength={250}
-            className="bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] w-[100%] rounded-[5px] max-h-[80px] resize-none "
+            className={`bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] w-[100%] rounded-[5px] max-h-[80px] resize-none ${
+              comErr ? "border border-solid border-[#d73737]" : ""
+            }  `}
           ></textarea>
+          <p className={`text-[14px] text-[#d73737] ${comErr?"":"hidden"}`} >Can’t be empty</p>
+          </div>
           <button
             className="px-[16px] py-[10.5px] bg-[#ad1fea] rounded-[10px] h-fit "
             onClick={reply}

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import { Comment, ProductRequest, User, dataStyle } from "./style";
 import Commentreply from "../Components/Commentreply";
 
@@ -9,14 +9,20 @@ function FeedbackDetails() {
   const [feedback, setFeedback] = useState<ProductRequest>();
   const [upVote, setUpVote] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
-  const NewComment = useRef<HTMLTextAreaElement>(null);
+  // const NewComment = useRef<HTMLTextAreaElement>(null);
   const [productRequests, setProductRequests] = useState<
     ProductRequest[] | null
   >(null);
   const [comErr, setComErr] = useState<boolean>(false);
 
+  const [text, setText] = useState('');
+
+  const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+    setText(event.target.value);
+  };
+
   const post = () => {
-    if (NewComment.current?.value == "") {
+    if (text == "") {
       setComErr(true);
     } else {
       let Comments = feedback?.comments;
@@ -37,7 +43,7 @@ function FeedbackDetails() {
       }
 
       let Com = {
-        content: NewComment.current?.value,
+        content: text,
         id: id,
         user: {
           image: user?.image,
@@ -75,6 +81,7 @@ function FeedbackDetails() {
           }
         }
       }
+      setText("")
     }
   };
 
@@ -244,7 +251,8 @@ function FeedbackDetails() {
             </h2>
             <div>
             <textarea
-              ref={NewComment}
+              value={text}
+              onChange={handleChange}
               placeholder="Type your comment here"
               maxLength={250}
               className={`bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] mt-[24px] w-[100%] rounded-[5px] resize-none ${
