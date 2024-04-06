@@ -1,27 +1,74 @@
-import React from "react";
 import styled from "styled-components";
-import { Form } from "react-router-dom";
-import { useSubmit } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import type {
+  NestedValue,
+  SubmitHandler,
+  DefaultValues,
+} from "react-hook-form";
+import Select from "@material-ui/core/Select";
+import ReactSelect from "react-select";
+import { ProductRequest, dataStyle, Inputs } from "./style"; // import data types/styles
 
 const NewFeedback: React.FC = () => {
-  // const { value, handleSubmit } = useSubmit("initial Value");
+  const [localStorageData, setLocalStorageData] = useState<dataStyle>();
 
-  const handleClick = () => {
-    // handleSubmit("New Value");
+  useEffect(() => {
+    let LocalStorageData: any = localStorage.getItem("data");
+    setLocalStorageData(JSON.parse(LocalStorageData));
+  }, []);
+  // console.log(localStorageData);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    // console.log(data);
+
+    let newFeedback = localStorageData?.productRequests;
+    // console.log(newFeedback);
+    let newData: any = {
+      id: newFeedback ? newFeedback?.length + 1 : null,
+      title: data.title,
+      category: data?.category?.value,
+      upvotes: 0,
+      status: "Suggestion",
+      description: data?.description,
+      comments: [],
+    };
+
+    newFeedback?.push(newData);
+    console.log(localStorageData);
+
+    const jsonData = JSON.stringify(data);
+    // console.log(JSON.stringify(data));
+
+    // localStorage.setItem("formData", jsonData);
+    // console.log(jsonData);
+
+    localStorageData
+      ? localStorage.setItem("data", JSON.stringify(localStorageData))
+      : null;
   };
 
+  console.log(watch("title")); // watch input value by passing the name of it
+
   return (
-    <InputField className="w-96 sm:w-450 md:w-550 h-full mx-auto items-center p-10">
+    <InputField className="w-96 sm:w-450 h-full mx-auto items-center p-10">
       <div className="flex flex-row gap-4 ">
         <img
           src="/assets/shared/icon-arrow-left.svg"
           alt="icon-arrow-left"
           className="my-auto"
         />{" "}
-        <span className="">Go Back</span>
+        <span className="goback">Go Back</span>
       </div>
 
-      <WhiteContainer className="relative border-spacing-2 py-10 px-5 mt-12 flex flex-col gap-5">
+      <WhiteContainer className="border-2 relative border-spacing-2 py-10 px-5 mt-12 flex flex-col gap-5">
         <img
           className="absolute top-0 left-10 -translate-x-1/2 -translate-y-1/2 w-10 "
           src="/assets/shared/icon-new-feedback.svg"
@@ -29,39 +76,74 @@ const NewFeedback: React.FC = () => {
         />
         <h1 className="">Create New Feedback</h1>
 
-        <div className="">
-          <form method="post" action="/events">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+          <div className="">
+            {/* <form method="post" action="/events"> */}
             <label htmlFor=""> Feedback Title</label>
             <p>Add a short, descriptive headline</p>
-            <input type="text" name="title" />
-          </form>
-        </div>
+            <input
+              {...register("title", {
+                required: true,
+                minLength: 4,
+                maxLength: 30,
+              })}
+              placeholder="input title of feedback"
+            />
+          </div>
 
-        <div className="">
-          <label htmlFor=""> Category</label>
-          <p>Choose a category for your feedback</p>
-          <select name="sort" id="" className="text-xs text-indigo-900">
-            <option value="">Feature</option>
-            <option value="">UI</option>
-            <option value="">UX</option>
-            <option value="">Enhancement</option>
-            <option value="">Bug</option>
-          </select>
-        </div>
+          <div className="">
+            <label htmlFor=""> Category</label>
+            <p>Choose a category for your feedback</p>
+            <Controller
+              render={({ field }) => (
+                <ReactSelect
+                  {...field}
+                  options={[
+                    { value: "Feature", label: "Feature" },
+                    { value: "UI", label: "UI" },
+                    { value: "UX", label: "UX" },
+                    { value: "Enhancement", label: "Enhancement" },
+                    { value: "Bug", label: "Bug" },
+                  ]}
+                  isClearable
+                />
+              )}
+              name="category"
+              control={control}
+            />
+          </div>
 
-        <div className="">
-          <form method="post" action="/events">
+          <div className="">
+            {/* <form method="post" action="/events"> */}
             <label htmlFor=""> Feedback Detail</label>
             <p>
               Include any specific comments on what should be improved, added,
               etc.
             </p>
-            <input type="text" name="detail" className="last-child" />
-          </form>
-        </div>
+            {/* include validation with required or other standard HTML validation rules */}
+            <input
+              className="last-child"
+              placeholder="min 4 letters"
+              {...register("description", {
+                required: true,
+                maxLength: 200,
+                minLength: {
+                  value: 4,
+                  message: "Min length is 4",
+                },
+              })}
+            />
+            {/* errors will return when field validation fails  */}
+            {errors.description && (
+              <span className="tex-red-800">Can't be empty</span>
+            )}
+          </div>
 
-        <button onClick={handleClick}> Add Feedback</button>
-        <button>Cancel</button>
+          <div className="buttons flex flex-col gap-2">
+            <button type="submit">Add Feedback</button>
+            <button>Cancel</button>
+          </div>
+        </form>
       </WhiteContainer>
     </InputField>
   );
@@ -74,11 +156,24 @@ const InputField = styled.div`
   font-family: Jost;
 
   span {
+    color: #d73737;
+  }
+  .goback {
     color: #647196;
   }
   p {
     font-size: 13px;
     color: #647196;
+  }
+
+  @media (min-width: 600px) {
+    width: 540px;
+
+    .buttons {
+      flex-direction: row-reverse;
+      align-items: end;
+      justify-content: end;
+    }
   }
 `;
 
