@@ -39,7 +39,7 @@ function App() {
   
   useEffect(() => {
     setData(data)
-    localStorage.setItem("data",JSON.stringify(data))
+    localStorage.getItem("data")?null:localStorage.setItem("data",JSON.stringify(data))
   },[])
 
 

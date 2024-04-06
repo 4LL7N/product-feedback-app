@@ -74,7 +74,7 @@ function FeedbackDetails() {
     
     
     
-    console.log("set");
+    // console.log("set");
   };
 
   let store: any;
@@ -101,7 +101,23 @@ function FeedbackDetails() {
       comments: [...(feedback?.comments ?? [])],
     };
     setFeedback(newfeedback);
+    if (productRequests) {
+      for (let i = 0; i < productRequests?.length; i++) {
+        if(productRequests[i].id === Number(params.feedbackdetails)){
+          let posts = productRequests
+             newfeedback? posts[i] = newfeedback:null
+            let newdata = {
+              currentUser:user,
+              productRequests:posts
+            }
+            localStorage.setItem("data",JSON.stringify(newdata))
+        }
+      }
+    }
   }, [upVote]);
+
+  
+  
 
   useEffect(() => {
     let datastr = localStorage.getItem("data");
