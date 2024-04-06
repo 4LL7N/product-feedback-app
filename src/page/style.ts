@@ -72,7 +72,13 @@ export interface MyContextProps {
   setData: (Data: dataStyle) => void;
 }
 
+type category = {
+  value: string;
+  label: string;
+};
+
 export type Inputs = {
   title: string;
   description: string;
+  category: category;
 };

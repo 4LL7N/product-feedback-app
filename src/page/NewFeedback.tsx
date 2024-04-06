@@ -11,6 +11,14 @@ import ReactSelect from "react-select";
 import { ProductRequest, dataStyle, Inputs } from "./style"; // import data types/styles
 
 const NewFeedback: React.FC = () => {
+  const [localStorageData, setLocalStorageData] = useState<dataStyle>();
+
+  useEffect(() => {
+    let LocalStorageData: any = localStorage.getItem("data");
+    setLocalStorageData(JSON.parse(LocalStorageData));
+  }, []);
+  // console.log(localStorageData);
+
   const {
     register,
     handleSubmit,
@@ -19,11 +27,32 @@ const NewFeedback: React.FC = () => {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    const jsonData = JSON.stringify(data);
-    console.log(JSON.stringify(data));
+    // console.log(data);
 
-    localStorage.setItem("formData", jsonData);
+    let newFeedback = localStorageData?.productRequests;
+    // console.log(newFeedback);
+    let newData: any = {
+      id: newFeedback ? newFeedback?.length + 1 : null,
+      title: data.title,
+      category: data?.category?.value,
+      upvotes: 0,
+      status: "Suggestion",
+      description: data?.description,
+      comments: [],
+    };
+
+    newFeedback?.push(newData);
+    console.log(localStorageData);
+
+    const jsonData = JSON.stringify(data);
+    // console.log(JSON.stringify(data));
+
+    // localStorage.setItem("formData", jsonData);
+    // console.log(jsonData);
+
+    localStorageData
+      ? localStorage.setItem("data", JSON.stringify(localStorageData))
+      : null;
   };
 
   console.log(watch("title")); // watch input value by passing the name of it

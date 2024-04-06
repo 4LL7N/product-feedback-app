@@ -36,7 +36,10 @@ function App() {
   console.log(data);
   useEffect(() => {
     setData(data);
-    localStorage.setItem("data", JSON.stringify(data));
+    localStorage.getItem("data")
+      ? null
+      : localStorage.setItem("data", JSON.stringify(data));
+    console.log("test-test");
   }, []);
 
   return (
