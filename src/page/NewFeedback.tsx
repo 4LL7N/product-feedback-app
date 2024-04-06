@@ -20,7 +20,10 @@ const NewFeedback: React.FC = () => {
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
+    const jsonData = JSON.stringify(data);
     console.log(JSON.stringify(data));
+
+    localStorage.setItem("formData", jsonData);
   };
 
   console.log(watch("example")); // watch input value by passing the name of it
