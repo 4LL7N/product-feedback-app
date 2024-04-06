@@ -3,7 +3,7 @@ import { Context } from "./Context";
 
 function Header() {
   const context = Context();
-  const [categorySearch, setCategorySearch] = useState<boolean>(false);
+  const [categorySearch, setCategorySearch] = useState<string>("ALL");
   const findCategory = ["ALL", "UX", "UI", "Enhancement", "Bug", "Feature"];
 
   return (
@@ -48,9 +48,10 @@ function Header() {
                       context.setFilterCategory(item);
                     }
                     // setCategorySearch(!categorySearch);
+                    setCategorySearch(item);
                   }}
                   className={` bg-slate-300  px-4 pt-[5px] pb-1.5 rounded-[10px] ${
-                    categorySearch
+                    categorySearch === item
                       ? " text-white bg-[#4661e6]"
                       : "bg-[#f2f4ff] text-[#4661e6]"
                   }`}
