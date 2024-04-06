@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Context } from "./Context";
+import { useMediaQuery } from "react-responsive";
 
 function Header() {
   const context = Context();
   const [categorySearch, setCategorySearch] = useState<string>("ALL");
   const findCategory = ["ALL", "UX", "UI", "Enhancement", "Bug", "Feature"];
+
+  const isMobile = useMediaQuery({ minWidth: 767 });
 
   const counts = context.dataInfo.productRequests.reduce(
     (
@@ -34,12 +37,21 @@ function Header() {
 
   return (
     <div
-      className=" relative 
+      className=" relative   md:flex md:flex-row md:justify-center md:items-center
     "
     >
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  w-full h-[72px]"></div>
+      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  w-full h-[72px] md:w-[233px] md:h-[178px] md:rounded-[10px] md:mt-14 md:mb-10 md:ml-10  md:mr-2.5">
+        <div className="  pl-6 pt-4  text-white md:pt-[103px]">
+          <p className="text-[16px] font-bold md:text-[20px]">
+            Frontend Mentor
+          </p>
+          <p className=" text-[12px] font-normal md:text-[15px]">
+            Feedback Board
+          </p>
+        </div>
+      </div>
 
-      <div className=" absolute top-7 right-8 ">
+      <div className=" absolute top-7 right-8 md:hidden ">
         {context.close ? (
           <img
             onClick={() => {
@@ -58,14 +70,10 @@ function Header() {
           />
         )}
       </div>
-      <div className=" absolute top-5 left-6  text-white">
-        <p className="text-[16px] font-bold">Frontend Mentor</p>
-        <p className=" text-[12px] font-normal">Feedback Board</p>
-      </div>
 
-      {context.close && (
-        <article className=" flex flex-col items-center  gap-6  w-[271px] absolute right-0 bg-[#f7f8fd] p-6 z-20  min-h-screen  ">
-          <section className=" bg-white rounded-2xl flex flex-row flex-wrap gap-3.5 text-[13px] px-5 pt-6 pb-9 text-blue-600 font-bold  ">
+      {(isMobile || context.close) && (
+        <article className=" flex flex-col items-center  gap-6  w-[271px] absolute right-0 bg-[#f7f8fd] p-6 z-20  min-h-screen  md:relative  md:flex-row md:items-center md:p-0 md:gap-2.5  md:w-[456px] md:min-h-[176px] md:mt-4">
+          <section className=" bg-white rounded-2xl flex flex-row flex-wrap gap-3.5 text-[13px] px-5 pt-6 pb-9 text-blue-600 font-bold md:w-[223px]  ">
             {findCategory.map((item: string) => {
               return (
                 <button
@@ -89,7 +97,7 @@ function Header() {
               );
             })}
           </section>
-          <section className=" flex flex-col items-center justify-between bg-white p-6 rounded-[10px] w-full  gap-6 ">
+          <section className=" flex flex-col items-center justify-between bg-white p-6 rounded-[10px] w-full  gap-6  md:w-[223px]">
             <div className="flex flex-row items-center justify-between w-full">
               <h3 className="text-[#3a4374] font-bold leading-[-0.25px]">
                 Roadmap
@@ -127,7 +135,7 @@ function Header() {
         </article>
       )}
       {context.close && (
-        <div className="absolute left-0 w-full opacity-75 bg-transparent h-full z-10">
+        <div className="absolute left-0 w-full opacity-75 bg-transparent h-full z-10 md:hidden">
           <div
             onClick={() => {
               context.setClose(false);

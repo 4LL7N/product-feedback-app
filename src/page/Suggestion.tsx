@@ -40,7 +40,7 @@ function Suggestion() {
     return (
       <components.Option {...props}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ marginRight: "60px" }}>{props.data.label}</div>
+          <div style={{ marginRight: "6px" }}>{props.data.label}</div>
           {props.isSelected && (
             <img src={props.data.image} alt={props.data.label} />
           )}
