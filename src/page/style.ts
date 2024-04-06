@@ -73,16 +73,6 @@ export interface MyContextProps {
 }
 
 export type Inputs = {
-  example: string;
-  exampleRequired: string;
-};
-
-// not know exactly defaultValues & FormValues neccessary or not
-export type FormValues = {
-  Select: number;
-  ReactSelect: NestedValue<{ value: string; label: string }>;
-};
-
-export const defaultValues: DefaultValues<FormValues> = {
-  ReactSelect: { value: "vanilla", label: "Vanilla" },
+  title: string;
+  description: string;
 };

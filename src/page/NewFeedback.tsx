@@ -26,7 +26,7 @@ const NewFeedback: React.FC = () => {
     localStorage.setItem("formData", jsonData);
   };
 
-  console.log(watch("example")); // watch input value by passing the name of it
+  console.log(watch("title")); // watch input value by passing the name of it
 
   return (
     <InputField className="w-96 sm:w-450 md:w-550 h-full mx-auto items-center p-10">
@@ -53,7 +53,7 @@ const NewFeedback: React.FC = () => {
             <label htmlFor=""> Feedback Title</label>
             <p>Add a short, descriptive headline</p>
             <input
-              {...register("example", {
+              {...register("title", {
                 required: true,
                 minLength: 4,
                 maxLength: 30,
@@ -79,7 +79,7 @@ const NewFeedback: React.FC = () => {
                   isClearable
                 />
               )}
-              name="ReactSelect"
+              name="category"
               control={control}
             />
           </div>
@@ -95,7 +95,7 @@ const NewFeedback: React.FC = () => {
             <input
               className="last-child"
               placeholder="describe feedback"
-              {...register("exampleRequired", {
+              {...register("description", {
                 required: true,
                 maxLength: 200,
                 minLength: {
@@ -105,7 +105,7 @@ const NewFeedback: React.FC = () => {
               })}
             />
             {/* errors will return when field validation fails  */}
-            {errors.exampleRequired && <span>This field is required</span>}
+            {errors.description && <span>This field is required</span>}
           </div>
 
           <div className="flex flex-col gap-2">
