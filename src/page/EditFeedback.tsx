@@ -8,13 +8,14 @@ import type {
   DefaultValues,
 } from "react-hook-form";
 import { Form, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSubmit } from "react-router-dom";
 import { ProductRequest, dataStyle, Inputs } from "./style";
 
 const EditFeedback: React.FC = () => {
   const [localStorageData, setLocalStorageData] = useState<dataStyle>();
-
   const [feedbackParams, setfeedbackParams] = useState<ProductRequest>();
+  const navigate = useNavigate();
 
   const params = useParams();
   console.log(params);
@@ -83,16 +84,39 @@ const EditFeedback: React.FC = () => {
     } else {
       console.error("Item not found in product requests array.");
     }
+    navigate("/");
   };
 
-  // Function to handle cancel action
   const handleCancel = () => {
     // Reset the form to its initial values
     reset({
-      title: "", // Set default value for title input
-      category: null, // Set default value for category input
-      description: "", // Set default value for description input
+      title: "",
+      category: null,
+      description: "",
     });
+  };
+
+  const handleDelete = () => {
+    // Implement logic to delete the current feedback
+    // For example, you can remove the feedback from localStorageData.productRequests
+
+    const updatedFeedbacks = localStorageData?.productRequests.filter(
+      (feedback) => feedback.id !== feedbackParams?.id
+    );
+
+    // Update the local storage with the updated feedbacks array
+    localStorage.setItem(
+      "data",
+      JSON.stringify({ productRequests: updatedFeedbacks })
+    );
+
+    localStorage.setItem("title", "");
+    localStorage.setItem("description", "");
+    localStorage.setItem("category", "");
+    localStorage.setItem("status", "");
+
+    // After deletion, navigate back to the suggestion page
+    // navigate("/");
   };
 
   console.log(watch("title")); // watch input value by passing the name of it
@@ -260,7 +284,10 @@ const EditFeedback: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <button className="delete bg-red-700 hover:opacity-50">
+                <button
+                  onClick={handleDelete}
+                  className="delete bg-red-700 hover:opacity-50"
+                >
                   Delete
                 </button>
               </div>
