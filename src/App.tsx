@@ -42,6 +42,18 @@ function App() {
     console.log("test-test");
   }, []);
 
+
+import { dataStyle } from "./page/style";
+
+
+
+ 
+
+  
+ 
+
+
+
   return (
     <>
       <Productfeedback.Provider
@@ -56,4 +68,7 @@ function App() {
   );
 }
 
-export default App;
+
+export default App
+
+
