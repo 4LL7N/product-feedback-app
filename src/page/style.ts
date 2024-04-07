@@ -1,8 +1,3 @@
-// interface User {
-//     image: string;
-//     name: string;
-//     username: string;
-//   }
 
 export interface User {
   image: string|undefined;
@@ -39,53 +34,11 @@ export interface dataStyle {
   productRequests: ProductRequest[];
 }
 
-// interface feedback {
-//     id: number;
-//     title: string;
-//     category: string;
-//     upvotes: number;
-//     status: string;
-//     description: string;
-//     comments: Comment[];
-// }
-
-// export interface dataStyle{
-//     currentUser:User,
-//     productRequests:feedback[]
-// }
-export interface User {
-  image: string;
-  name: string;
-  username: string;
-}
 
 export interface Reply {
   content: string;
   replyingTo?: string;
   user: User;
-}
-
-
-export interface User {
-  image: string | undefined;
-  name: string | undefined;
-  username: string | undefined;
-}
-
-export interface replies {
-  content: string | undefined;
-  replyingTo: string | undefined;
-  user: User | undefined;
-}
-
-
-export interface Comment {
-  id: number;
-  content: string;
-  user: User;
-
-  replies?: replies[];
-
 }
 
 export interface ProductRequest {
@@ -110,6 +63,7 @@ export interface CommentReplyStyle {
   feedback: ProductRequest;
   setFeedback: (feedback: ProductRequest) => void;
   user: User | undefined;
+  productRequests:ProductRequest[]|null
 }
 
 
