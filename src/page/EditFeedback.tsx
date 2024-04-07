@@ -169,6 +169,11 @@ const EditFeedback: React.FC = () => {
                 })}
                 placeholder="input title of feedback"
               />
+              {errors.title && (
+                <span className="tex-red-800">
+                  Can't be less than 4 letters & empty
+                </span>
+              )}
             </div>
 
             <div className="">
@@ -236,7 +241,9 @@ const EditFeedback: React.FC = () => {
               />
               {/* errors will return when field validation fails  */}
               {errors.description && (
-                <span className="tex-red-800">Can't be empty</span>
+                <span className="tex-red-800">
+                  Can't be less than 4 letters & empty
+                </span>
               )}
             </div>
 
