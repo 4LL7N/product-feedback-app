@@ -7,6 +7,9 @@ import RoadMap from "./page/RoadMap";
 import { Productfeedback } from "./page/Context";
 import { useEffect, useState } from "react";
 import data from "../data.json";
+import { dataStyle } from "./page/style";
+
+
 
 const router = createBrowserRouter([
   {
@@ -22,7 +25,7 @@ const router = createBrowserRouter([
     element: <NewFeedback />,
   },
   {
-    path: "/:feedbackdetails/editfeedback",
+    path: "/editfeedback",
     element: <EditFeedback />,
   },
   {
@@ -32,25 +35,22 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const [Data, setData] = useState<any>();
-  console.log(data);
+
+  // const [Data, setData] = useState<dataStyle>(data);
+  // console.log(data);
+  // useEffect(() => {
+  //   setData(data);
+  // }, []);
+  const [close, setClose] = useState<boolean>(false);
+  const [dataInfo, setDataInfo] = useState<dataStyle>(data);
+  const [filterCategory, setFilterCategory] = useState<string>("");
   useEffect(() => {
-    setData(data);
-    localStorage.getItem("data")
-      ? null
-      : localStorage.setItem("data", JSON.stringify(data));
-    console.log("test-test");
+    setDataInfo(data);
   }, []);
 
-
-import { dataStyle } from "./page/style";
-
+  const [Data, setData] = useState<any>();
 
 
- 
-
-  
- 
 
 
 
@@ -58,6 +58,12 @@ import { dataStyle } from "./page/style";
     <>
       <Productfeedback.Provider
         value={{
+          close,
+          setClose,
+          dataInfo,
+          setDataInfo,
+          filterCategory,
+          setFilterCategory,
           Data,
           setData,
         }}
@@ -68,7 +74,6 @@ import { dataStyle } from "./page/style";
   );
 }
 
-
-export default App
-
+    
+export default App;
 
