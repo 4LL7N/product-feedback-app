@@ -7,6 +7,8 @@ import RoadMap from "./page/RoadMap";
 import { Productfeedback } from "./page/Context";
 import { useEffect, useState } from "react";
 import data from "../data.json"
+import { dataStyle } from "./page/style";
+
 
 const router = createBrowserRouter([
     {
@@ -15,14 +17,14 @@ const router = createBrowserRouter([
     },
     {
       path:"/:feedbackdetails",
-      element:<FeedbackDetails/>
+      element:<FeedbackDetails/>,
     },
     {
       path:"/newfeedback",
       element:<NewFeedback/>
     },
     {
-      path:"/editfeedback",
+      path:"/:feedbackdetails/editfeedback",
       element:<EditFeedback/>
     },
     {
@@ -33,11 +35,13 @@ const router = createBrowserRouter([
 
 function App() {
  
-  const [Data ,setData] = useState<any>()
-  console.log(data)
+  const [Data ,setData] = useState<dataStyle|undefined>()
+  
   useEffect(() => {
     setData(data)
+    localStorage.getItem("data")?null:localStorage.setItem("data",JSON.stringify(data))
   },[])
+
 
   return (
     <>
@@ -52,3 +56,4 @@ function App() {
 }
 
 export default App
+
