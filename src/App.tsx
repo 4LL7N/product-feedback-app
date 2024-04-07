@@ -7,7 +7,6 @@ import RoadMap from "./page/RoadMap";
 import { Productfeedback } from "./page/Context";
 import { useEffect, useState } from "react";
 import data from "../data.json";
-
 import { dataStyle } from "./page/style";
 
 
@@ -38,14 +37,12 @@ const router = createBrowserRouter([
 
 function App() {
 
-  const [Data, setData] = useState<any>();
   console.log(data);
   useEffect(() => {
-    setData(data);
+    
     localStorage.getItem("data")
       ? null
       : localStorage.setItem("data", JSON.stringify(data));
-    console.log("test-test");
   }, []);
 
 
@@ -74,8 +71,6 @@ function App() {
           setDataInfo,
           filterCategory,
           setFilterCategory,
-          Data,
-          setData,
         }}
       >
         <RouterProvider router={router} />

@@ -1,14 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import type {
-  NestedValue,
-  SubmitHandler,
-  DefaultValues,
-} from "react-hook-form";
-import Select from "@material-ui/core/Select";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import ReactSelect from "react-select";
-import { ProductRequest, dataStyle, Inputs } from "./style"; // import data types/styles
+import { dataStyle, Inputs } from "./style"; // import data types/styles
 
 const NewFeedback: React.FC = () => {
   const [localStorageData, setLocalStorageData] = useState<dataStyle>();
@@ -32,20 +26,18 @@ const NewFeedback: React.FC = () => {
 
     let newFeedback = localStorageData?.productRequests;
     // console.log(newFeedback);
-    let newData: any = {
-      id: newFeedback ? newFeedback?.length + 1 : null,
-      title: data.title,
-      category: data?.category?.value,
-      upvotes: 0,
-      status: "Suggestion",
-      description: data?.description,
-      comments: [],
-    };
+    // let newData: any = {
+    //   id: newFeedback ? newFeedback?.length + 1 : null,
+    //   title: data.title,
+    //   category: data?.category?.value,
+    //   upvotes: 0,
+    //   status: "Suggestion",
+    //   description: data?.description,
+    //   comments: [],
+    // };
+    
 
-    newFeedback?.push(newData);
     console.log(localStorageData);
-
-    const jsonData = JSON.stringify(data);
     // console.log(JSON.stringify(data));
 
     // localStorage.setItem("formData", jsonData);
@@ -84,7 +76,7 @@ const NewFeedback: React.FC = () => {
   return (
     <InputField className=" h-screen p-10 m-0 flex flex-col items-center justify-center">
       <div className="  ">
-        <div className="flex flex-row gap-4 ">
+        <div className="flex flex-row gap-4 " onClick={() =>  window.history.back()} >
           <img
             src="/assets/shared/icon-arrow-left.svg"
             alt="icon-arrow-left"

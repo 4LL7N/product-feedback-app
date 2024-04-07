@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Comment, CommnetReplyStyle, replies } from "../page/style";
+import { Comment, CommentReplyStyle, replies } from "../page/style";
 import { useParams } from "react-router-dom";
 
 function Commentreply({
@@ -9,7 +9,7 @@ function Commentreply({
   setFeedback,
   user,
   productRequests
-}: CommnetReplyStyle) {
+}: CommentReplyStyle) {
   const [commnetReply, setCommnetReply] = useState<boolean>(false);
   const [replyTo, setReplyTo] = useState<string>();
   const replyText = useRef<HTMLTextAreaElement>(null);

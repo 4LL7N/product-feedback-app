@@ -1,15 +1,12 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { useForm, Controller, reset } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import ReactSelect from "react-select";
 import type {
-  NestedValue,
-  SubmitHandler,
-  DefaultValues,
+  SubmitHandler
 } from "react-hook-form";
-import { Form, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useSubmit } from "react-router-dom";
 import { ProductRequest, dataStyle, Inputs } from "./style";
 
 const EditFeedback: React.FC = () => {
@@ -91,7 +88,7 @@ const EditFeedback: React.FC = () => {
     // Reset the form to its initial values
     reset({
       title: "",
-      category: null,
+      category: {value:"",label:""},
       description: "",
     });
   };
