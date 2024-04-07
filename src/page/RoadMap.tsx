@@ -1,13 +1,13 @@
 import { useState } from "react";
-
+import { MdArrowBackIos } from "react-icons/md";
 function RoadMap() {
   const [selectedItem, setSelectedItem] = useState<string>("In-Progress");
   return (
     <article className="flex flex-col items-center  justify-start bg-[#f7f8fd]  min-h-screen">
       <header className="bg-[#373f68] w-full h-[100px] px-6 py-5 flex flex-row items-center justify-between">
         <div className="flex flex-col items-start justify-between  ">
-          <div className="flex flex-row items-center  justify-center gap-3">
-            <img src="./assets/shared/icon-arrow-left.svg" alt="" />
+          <div className="flex flex-row items-center  justify-center gap-2">
+            <MdArrowBackIos className=" text-white" />
             <button
               onClick={() => window.history.back()}
               className="text-[13px] text-white font-normal"
