@@ -90,21 +90,21 @@ function Commentreply({
         <div className="flex items-center justify-between w-[100%] ">
           <div className="flex gap-[16px] md:gap-[32px] ">
             <img
-              className="w-[40px] h-[40px] rounded-[50%] "
+              className="w-[40px] h-[40px] rounded-[50%] cursor-pointer "
               src={item?.user?.image}
               alt=""
             />
             <div>
-              <h3 className="text-[#3a4374] text-[13px] font-bold ">
+              <h3 className="text-[#3a4374] hover:text-[#3a437480] text-[13px] font-bold cursor-pointer ">
                 {item.user?.name}
               </h3>
-              <p className="text-[#647196] text-[13px] ">
+              <p className="text-[#647196] hover:text-[#3a437480] text-[13px] cursor-pointer ">
                 @{item.user?.username}
               </p>
             </div>
           </div>
           <p
-            className="text-[#4661e6] text-[13px] font-semibold "
+            className="text-[#4661e6] hover:text-[#4661e680] text-[13px] font-semibold cursor-pointer "
             onClick={() => {
               setCommnetReply(!commnetReply);
               commnetReply?setComErr(false):null
@@ -118,7 +118,7 @@ function Commentreply({
         <div className="mt-[16px] md:ml-[70px] ">
           <p className="text-[13px] text-[#647196] ">{item.content}</p>
         </div>
-        <div className={`${item.replies ? "flex  " : ""} `}>
+        <div className={`${item.replies ? "flex w-[100%] " : ""} `}>
           <div
             className={
               item.replies
@@ -126,28 +126,28 @@ function Commentreply({
                 : "hidden"
             }
           />
-          <div className="ml-[23px] md:ml-[43px] md:mt-[8px] ">
+          <div className="ml-[23px] md:ml-[43px] md:mt-[8px] w-[100%] ">
             {item.replies?.map((items: replies) => {
               return (
                 <>
                   <div className="flex items-center justify-between w-[100%]  mt-[24px]">
                     <div className="flex gap-[16px] md:gap-[32px] ">
                       <img
-                        className="w-[40px] h-[40px] rounded-[50%] "
+                        className="w-[40px] h-[40px] rounded-[50%] cursor-pointer "
                         src={items.user?.image}
                         alt=""
                       />
                       <div>
-                        <h3 className="text-[#3a4374] text-[13px] font-bold ">
+                        <h3 className="text-[#3a4374] hover:text-[#3a437480] text-[13px] font-bold cursor-pointer ">
                           {items.user?.name}
                         </h3>
-                        <p className="text-[#647196] text-[13px] ">
+                        <p className="text-[#647196] hover:text-[#3a437480] text-[13px] cursor-pointer ">
                           @{items.user?.username}
                         </p>
                       </div>
                     </div>
                     <p
-                      className="text-[#4661e6] text-[13px] font-semibold "
+                      className="text-[#4661e6] #4661e680 text-[13px] font-semibold cursor-pointer  "
                       onClick={() => {
                         setCommnetReply(!commnetReply);
                         commnetReply?setComErr(false):null
@@ -160,7 +160,7 @@ function Commentreply({
                   </div>
                   <div className="mt-[16px] md:ml-[72px]">
                     <p className="text-[13px] text-[#647196] ">
-                      <a className="text-[13px] text-[#ad1fea] font-bold ">
+                      <a className="text-[13px] text-[#ad1fea] hover:text-[rgba(173,31,234,0.5)] font-bold cursor-pointer ">
                         @{items.replyingTo}{" "}
                       </a>
                       {items.content}
@@ -188,7 +188,7 @@ function Commentreply({
           <p className={`text-[14px] text-[#d73737] ${comErr?"":"hidden"}`} >Can’t be empty</p>
           </div>
           <button
-            className="px-[16px] py-[10.5px] bg-[#ad1fea] rounded-[10px] h-fit "
+            className="px-[16px] py-[10.5px] bg-[#ad1fea] hover:bg-[#ad1fea80] rounded-[10px] h-fit "
             onClick={reply}
           >
             <p className="text-[#f2f4fe] text-[13px] font-bold ">Reply</p>

@@ -144,18 +144,18 @@ function FeedbackDetails() {
       <main className="flex flex-col items-center bg-[#f7f8fd] w-[100vw] min-h-[100vh] py-[24px]  md:py-[56px] lg:py-[80px] ">
         <header className="flex items-center justify-between w-[327px] md:w-[689px] lg:w-[730px] ">
           <div
-            className="flex items-center gap-[16px]"
+            className="flex items-center gap-[16px] cursor-pointer "
             onClick={() => window.history.back()}
           >
             <img
-              className="h-[10px]"
+              className="h-[10px] cursor-pointer "
               src="/assets/shared/icon-arrow-left.svg"
               alt=""
             />
-            <p className="text-[16px] text-[#647196] font-bold  ">Go Back</p>
+            <p className="text-[16px] text-[#647196] font-bold cursor-pointer ">Go Back</p>
           </div>
           <button
-            className="px-[16px] py-[10.5px] bg-[#4661e6] rounded-[10px] "
+            className="px-[16px] py-[10.5px] bg-[#4661e6] hover:bg-[#4661e680] rounded-[10px] "
             onClick={() => navigate(`editfeedback`)}
           >
             <p className="text-[13px] text-[#f2f4fe] font-bold ">
@@ -167,7 +167,7 @@ function FeedbackDetails() {
           <div className="rounded-[10px] p-[24px] bg-[#ffffff] md:flex md:gap-[40px] md:relative ">
             <button
               className={`hidden md:flex items-center gap-[10px] ${
-                upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe]"
+                upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe] hover:bg-[#f2f4fe80] "
               } rounded-[10px] pl-[16px] pr-[13px] py-[7px] h-fit `}
               onClick={() => setUpVote(!upVote)}
             >
@@ -195,7 +195,7 @@ function FeedbackDetails() {
               <div className=" flex items-center justify-between mt-[14px] ">
                 <button
                   className={`md:hidden flex items-center gap-[10px] ${
-                    upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe]"
+                    upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe] hover:bg-[#f2f4fe80]"
                   } rounded-[10px] pl-[16px] pr-[13px] py-[7px] `}
                   onClick={() => setUpVote(!upVote)}
                 >
@@ -263,7 +263,7 @@ function FeedbackDetails() {
             <div className="flex items-center justify-between mt-[16px] ">
               <p className="text-[#647196] text-[13px] ">250 Characters left</p>
               <button
-                className="px-[16px] py-[10.5px] bg-[#ad1fea] rounded-[10px] "
+                className="px-[16px] py-[10.5px] bg-[#ad1fea] hover:bg-[#ad1fea80] rounded-[10px] "
                 onClick={post}
               >
                 <p className="text-[#f2f4fe] text-[13px] font-bold ">
