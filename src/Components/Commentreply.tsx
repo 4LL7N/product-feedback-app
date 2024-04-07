@@ -90,7 +90,7 @@ function Commentreply({
         <div className="flex items-center justify-between w-[100%] ">
           <div className="flex gap-[16px] md:gap-[32px] ">
             <img
-              className="w-[40px] h-[40px] rounded-[50%] "
+              className="w-[40px] h-[40px] rounded-[50%] cursor-pointer "
               src={item?.user?.image}
               alt=""
             />
