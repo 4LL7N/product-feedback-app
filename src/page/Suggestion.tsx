@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import Header from "./Header";
@@ -124,7 +123,7 @@ function Suggestion() {
   };
 
   return (
-    <article className=" md:flex md:flex-col md:justify-center md:items-center  lg:flex-row  lg:items-start lg:mt-14 lg:gap-[30px]">
+    <article className=" md:flex md:flex-col md:justify-center md:items-center  lg:flex-row  lg:items-start lg:mt-14 lg:gap-[30px] ">
       <Header />
       <div className="flex flex-col items-center">
         <section className="bg-[#373f68] px-6 py-2 flex flex-row items-center justify-between w-full md:w-[700px] md:rounded-[10px]">
@@ -223,7 +222,6 @@ function Suggestion() {
       </div>
     </article>
   );
-
 }
 
 export default Suggestion;
