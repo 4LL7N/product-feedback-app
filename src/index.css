@@ -1,9 +1,8 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -12,4 +11,47 @@
 :root {
   overflow-x: hidden;
   min-height: 100vh;
+  background-color: #f7f8fd;
+}
+.no-scroll {
+  overflow: hidden;
+}
+.custom-button {
+  background: linear-gradient(to right, #ad1fea, #f72585, #4f46e5);
+  border: none;
+  font-size: 13px;
+  font-weight: bold;
+  color: #f2f4fe;
+  padding: 10.5px 20px;
+  border-radius: 10px;
+}
+
+.custom-button:hover {
+  background: none;
+  background: linear-gradient(to right, #4f46e5, #ad1fea, #f72585);
+  transition: background 1s ease;
+  border-color: purple;
+}
+.custom-button {
+  background: linear-gradient(to right, #ad1fea, #f72585, #4f46e5);
+  border: none;
+  font-size: 13px;
+  font-weight: bold;
+  color: #f2f4fe;
+  padding: 10.5px 20px;
+  border-radius: 10px;
+}
+
+.custom-button:hover {
+  background: none;
+  background: linear-gradient(to right, #4f46e5, #ad1fea, #f72585);
+  transition: background 1s ease;
+  border-color: purple;
+}
+
+.custom-line {
+  background: linear-gradient(to right, #ad1fea, #f72585, #4f46e5);
+  width: 100px;
+  height: 4px;
+  margin-top: 16px;
 }

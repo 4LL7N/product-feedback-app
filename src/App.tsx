@@ -8,6 +8,11 @@ import { Productfeedback } from "./page/Context";
 import { useEffect, useState } from "react";
 import data from "../data.json";
 
+import { dataStyle } from "./page/style";
+
+
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -32,6 +37,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+
   const [Data, setData] = useState<any>();
   console.log(data);
   useEffect(() => {
@@ -42,10 +48,32 @@ function App() {
     console.log("test-test");
   }, []);
 
+
+
+
+
+  const [close, setClose] = useState<boolean>(false);
+  const [dataInfo, setDataInfo] = useState<dataStyle>(data);
+  const [filterCategory, setFilterCategory] = useState<string>("");
+  
+
+
+
+
+
+
+
+
   return (
     <>
       <Productfeedback.Provider
         value={{
+          close,
+          setClose,
+          dataInfo,
+          setDataInfo,
+          filterCategory,
+          setFilterCategory,
           Data,
           setData,
         }}
@@ -56,4 +84,8 @@ function App() {
   );
 }
 
+
 export default App;
+
+    
+
