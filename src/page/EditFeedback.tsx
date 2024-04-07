@@ -313,6 +313,7 @@ const WhiteContainer = styled.div`
     margin: 16px 0 0;
     border-radius: 5px;
     background-color: #f7f8fd;
+    padding-left: 15px;
   }
   .last-child {
     height: 100px;
