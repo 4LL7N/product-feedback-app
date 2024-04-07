@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import { useMediaQuery } from "react-responsive";
+import { Link } from "react-router-dom";
 
 function Header() {
   const context = Context();
@@ -88,7 +89,7 @@ function Header() {
                   className={`  px-4 pt-[5px] pb-1.5 rounded-[10px] ${
                     categorySearch === item
                       ? " text-white bg-[#4661e6]"
-                      : "bg-[#f2f4ff] text-[#4661e6]"
+                      : "bg-[#f2f4ff] text-[#4661e6] hover:bg-[#cfd7ff]"
                   }`}
                   key={item}
                 >
@@ -102,7 +103,12 @@ function Header() {
               <h3 className="text-[#3a4374] font-bold leading-[-0.25px] text-[18px]">
                 Roadmap
               </h3>
-              <p>View</p>
+              <Link
+                className="text-[#4661e6] text-[13px] underline underline-offset-2 cursor-pointer hover:text-[#4661e67f]  "
+                to={"/roadmap"}
+              >
+                View
+              </Link>
             </div>
             <div className="flex flex-col items-center justify-between gap-2 w-full">
               <div className="flex flex-row items-center justify-between w-full">

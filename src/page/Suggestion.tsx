@@ -2,17 +2,47 @@ import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import Header from "./Header";
 import Select, { components } from "react-select";
+import { Link } from "react-router-dom";
 
 function Suggestion() {
   const context = Context();
   const [filterInfo, setFilterInfo] = useState<any>();
   const [selectedOption, setSelectedOption] = useState<string>("Most Upvotes");
+
   useEffect(() => {
     const filteredData = context.dataInfo.productRequests.filter((item: any) =>
       item.category.includes(context.filterCategory.toLowerCase())
     );
-    setFilterInfo(filteredData);
-  }, [context.filterCategory, context.dataInfo.productRequests]);
+
+    let updatedData = [...filteredData];
+
+    switch (selectedOption) {
+      case "Most Upvotes":
+        updatedData = updatedData.sort((a, b) => b.upvotes - a.upvotes);
+        break;
+      case "Least Upvotes":
+        updatedData = updatedData.sort((a, b) => a.upvotes - b.upvotes);
+        break;
+      case "Most Comments":
+        updatedData = updatedData.sort(
+          (a, b) => (b.comments?.length || 0) - (a.comments?.length || 0)
+        );
+        break;
+      case "Least Comments":
+        updatedData = updatedData.sort(
+          (a, b) => (a.comments?.length || 0) - (b.comments?.length || 0)
+        );
+        break;
+      default:
+        break;
+    }
+
+    setFilterInfo(updatedData);
+  }, [
+    selectedOption,
+    context.filterCategory,
+    context.dataInfo.productRequests,
+  ]);
 
   const options: any[] = [
     {
@@ -40,7 +70,7 @@ function Suggestion() {
     return (
       <components.Option {...props}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ marginRight: "16px" }}>{props.data.label}</div>
+          <div style={{ marginRight: "60px" }}>{props.data.label}</div>
           {props.isSelected && (
             <img src={props.data.image} alt={props.data.label} />
           )}
@@ -91,32 +121,6 @@ function Suggestion() {
       // },
     }),
   };
-  useEffect(() => {
-    let filteredData = [...context.dataInfo.productRequests];
-
-    switch (selectedOption) {
-      case "Most Upvotes":
-        filteredData = filteredData.sort((a, b) => b.upvotes - a.upvotes);
-        break;
-      case "Least Upvotes":
-        filteredData = filteredData.sort((a, b) => a.upvotes - b.upvotes);
-        break;
-      case "Most Comments":
-        filteredData = filteredData.sort(
-          (a, b) => (b.comments?.length || 0) - (a.comments?.length || 0)
-        );
-        break;
-      case "Least Comments":
-        filteredData = filteredData.sort(
-          (a, b) => (a.comments?.length || 0) - (b.comments?.length || 0)
-        );
-        break;
-      default:
-        break;
-    }
-
-    setFilterInfo(filteredData);
-  }, [selectedOption, context.dataInfo.productRequests]);
 
   return (
     <article className=" md:flex md:flex-col md:justify-center md:items-center  lg:flex-row  lg:items-start lg:mt-14 lg:gap-[30px]">
@@ -127,7 +131,7 @@ function Suggestion() {
             <div className="hidden md:flex flex-row items-center justify-between gap-4 mr-8">
               <img src="./assets/suggestions/icon-suggestions.svg" alt="" />
               <div className=" flex flex-row items-center justify-between gap-1 text-[18px] font-normal tracking-[-0.25px] text-white">
-                <p>{filterInfo?.length}</p> <p>Suggestions</p>
+                <p className="w-4">{filterInfo?.length}</p> <p>Suggestions</p>
               </div>
             </div>
             <p className=" text-[13px] font-light text-[#f2f4fe]">Sort by : </p>
@@ -141,10 +145,12 @@ function Suggestion() {
               className="text-[13px] w-[130px] m-0 p-0 md:w-[160px]"
             />
           </div>
-          <button className="text-[13px] font-bold text-[#f2f4fe] px-4 py-[10.5px] bg-[#ad1fea;] rounded-[10px]">
-            + Add Feedback
-          </button>
+
+          <Link to={"/newfeedback"}>
+            <button className="custom-button"> + Add Feedback</button>
+          </Link>
         </section>
+
         {(filterInfo ?? []).length > 0 ? (
           <section className="flex flex-col items-center justify-between gap-4  p-6 md:w-[700px] md:px-0  ">
             {filterInfo?.map((item: any) => (
@@ -161,15 +167,18 @@ function Suggestion() {
                       </p>
                     </div>
                     <div className="flex flex-col items-start gap-2">
-                      <p className=" font-bold  tracking-[-0.18px] text-[#3a4374] text-[13px] md:text-[18px] ">
+                      <Link
+                        to={`/${item.id}`}
+                        className=" font-bold  tracking-[-0.18px] text-[#3a4374] text-[13px] md:text-[18px] hover:text-[#3a437480]  "
+                      >
                         {item.title}
-                      </p>
+                      </Link>
                       <p className=" text-[#647196] text-[13px] md:text-[16px] ">
                         {item.description}
                       </p>
-                      <button className="px-4 py-[5px] bg-[#f2f4ff] rounded-[10px] text-[13px] font-semibold text-[#4661e6] ">
+                      <div className="px-4 py-[5px] bg-[#f2f4ff] rounded-[10px] text-[13px] font-semibold text-[#4661e6] ">
                         {item.category}
-                      </button>
+                      </div>
                     </div>
                   </div>
                   <div className="flex flex-row items-center justify-between  w-full md:w-8">
