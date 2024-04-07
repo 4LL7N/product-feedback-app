@@ -82,36 +82,6 @@ const EditFeedback: React.FC = () => {
     } else {
       console.error("Item not found in product requests array.");
     }
-
-    // Update localStorage with the updated array
-
-    // console.log(newFeedback);
-    // let newData: any = {
-    //   id: newFeedback ? newFeedback?.length + 1 : null,
-    //   title: data.title,
-    //   category: data?.category?.value,
-    //   upvotes: 0,
-    //   status: "Suggestion",
-    //   description: data?.description,
-    //   comments: [],
-    // };
-
-    // newFeedback?.push(newData);
-    // console.log(localStorageData);
-
-    // const jsonData = JSON.stringify(data);
-    // console.log(JSON.stringify(data));
-
-    // localStorage.setItem("formData", jsonData);
-    // console.log(jsonData);
-
-    // localStorageData
-    //   ? localStorage.setItem("data", JSON.stringify(localStorageData))
-    //   : null;
-
-    // let cvladi [] localstoragedata sheinaxe  let newFeedback = localStorageData?.productRequests
-    //  .key  cvladi[ id -1 ].key == data.key  newFeedback cvlilebebis gaketeba
-    // chavsetod local storageshi stringify it
   };
 
   console.log(watch("title")); // watch input value by passing the name of it
