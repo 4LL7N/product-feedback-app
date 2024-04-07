@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, reset } from "react-hook-form";
 import ReactSelect from "react-select";
 import type {
   NestedValue,
@@ -41,6 +41,7 @@ const EditFeedback: React.FC = () => {
     setValue,
     control,
     formState: { errors },
+    reset,
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -82,6 +83,16 @@ const EditFeedback: React.FC = () => {
     } else {
       console.error("Item not found in product requests array.");
     }
+  };
+
+  // Function to handle cancel action
+  const handleCancel = () => {
+    // Reset the form to its initial values
+    reset({
+      title: "", // Set default value for title input
+      category: null, // Set default value for category input
+      description: "", // Set default value for description input
+    });
   };
 
   console.log(watch("title")); // watch input value by passing the name of it
@@ -236,7 +247,12 @@ const EditFeedback: React.FC = () => {
                 </button>
               </div>
               <div className="flex gap-2">
-                <button className="cancel hover:opacity-50">Cancel</button>
+                <button
+                  onClick={handleCancel}
+                  className="cancel hover:opacity-50"
+                >
+                  Cancel
+                </button>
                 <button className="delete bg-red-700 hover:opacity-50">
                   Delete
                 </button>
