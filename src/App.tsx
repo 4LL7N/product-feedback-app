@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import data from "../data.json";
 import { dataStyle } from "./page/style";
 
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -33,6 +35,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+
   // const [Data, setData] = useState<dataStyle>(data);
   // console.log(data);
   // useEffect(() => {
@@ -44,6 +47,13 @@ function App() {
   useEffect(() => {
     setDataInfo(data);
   }, []);
+
+  const [Data, setData] = useState<any>();
+
+
+
+
+
   return (
     <>
       <Productfeedback.Provider
@@ -54,6 +64,8 @@ function App() {
           setDataInfo,
           filterCategory,
           setFilterCategory,
+          Data,
+          setData,
         }}
       >
         <RouterProvider router={router} />
@@ -62,4 +74,6 @@ function App() {
   );
 }
 
+    
 export default App;
+

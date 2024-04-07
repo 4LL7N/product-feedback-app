@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import Header from "./Header";
@@ -222,6 +223,7 @@ function Suggestion() {
       </div>
     </article>
   );
+
 }
 
 export default Suggestion;

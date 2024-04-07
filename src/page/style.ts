@@ -4,11 +4,40 @@
 //     username: string;
 //   }
 
-//   interface Comment {
-//     id: number;
-//     content: string;
-//     user: User;
-//   }
+export interface User {
+  image: string|undefined;
+  name: string|undefined;
+  username: string|undefined;
+}
+
+export interface replies{
+  content:string|undefined,
+  replyingTo:string|undefined,
+  user:User|undefined
+}
+
+
+export interface Comment {
+  id: number|undefined;
+  content: string|undefined;
+  user: User|undefined;
+  replies?:replies[]|undefined
+}
+
+export interface ProductRequest {
+  id: number;
+  title: string;
+  category: string;
+  upvotes: number;
+  status: string;
+  description: string;
+  comments?: Comment[];
+}
+
+export interface dataStyle {
+  currentUser: User;
+  productRequests: ProductRequest[];
+}
 
 // interface feedback {
 //     id: number;
@@ -66,3 +95,38 @@ export interface MyContextProps {
   filterCategory: string;
   setFilterCategory: (value: string) => void;
 }
+
+
+
+export interface replies {
+  content: string | undefined;
+  replyingTo: string | undefined;
+  user: User | undefined;
+}
+
+
+
+
+
+export interface CommentReplyStyle {
+  item: Comment;
+  index: number;
+  feedback: ProductRequest;
+  setFeedback: (feedback: ProductRequest) => void;
+  user: User | undefined;
+}
+
+
+
+type category = {
+  value: string;
+  label: string;
+};
+
+export type Inputs = {
+  title: string;
+  description: string;
+  category: category;
+};
+
+
