@@ -65,11 +65,27 @@ export interface Reply {
   user: User;
 }
 
+
+export interface User {
+  image: string | undefined;
+  name: string | undefined;
+  username: string | undefined;
+}
+
+export interface replies {
+  content: string | undefined;
+  replyingTo: string | undefined;
+  user: User | undefined;
+}
+
+
 export interface Comment {
   id: number;
   content: string;
   user: User;
-  replies?: Reply[];
+
+  replies?: replies[];
+
 }
 
 export interface ProductRequest {
@@ -87,6 +103,16 @@ export interface dataStyle {
   productRequests: ProductRequest[];
 }
 
+
+export interface CommentReplyStyle {
+  item: Comment;
+  index: number;
+  feedback: ProductRequest;
+  setFeedback: (feedback: ProductRequest) => void;
+  user: User | undefined;
+}
+
+
 export interface MyContextProps {
   close: boolean;
   setClose: (value: boolean) => void;
@@ -98,27 +124,12 @@ export interface MyContextProps {
 
 
 
-export interface replies {
-  content: string | undefined;
-  replyingTo: string | undefined;
-  user: User | undefined;
-}
-
-
-
-
-
-export interface CommentReplyStyle {
-  item: Comment;
-  index: number;
-  feedback: ProductRequest;
-  setFeedback: (feedback: ProductRequest) => void;
-  user: User | undefined;
-}
-
-
-
 type category = {
+  value: string;
+  label: string;
+};
+
+type status = {
   value: string;
   label: string;
 };
@@ -127,6 +138,6 @@ export type Inputs = {
   title: string;
   description: string;
   category: category;
+  status: status;
 };
-
 
