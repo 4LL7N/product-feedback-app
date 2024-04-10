@@ -152,7 +152,7 @@ const EditFeedback: React.FC = () => {
   }, [watch("status")?.value]);
 
   return (
-    <InputField className="h-screen p-10 m-0 flex flex-col items-center justify-center">
+    <InputField className="min-h-screen p-10 m-0 flex flex-col items-center justify-center">
       <div className="">
         <div
           onClick={() => window.history.back()}
@@ -216,6 +216,7 @@ const EditFeedback: React.FC = () => {
                 )}
                 name="category"
                 control={control}
+                defaultValue={{ value: feedbackParams?.category?feedbackParams?.category:"", label: feedbackParams?.category?feedbackParams?.category:"" }}
               />
             </div>
 
@@ -237,6 +238,7 @@ const EditFeedback: React.FC = () => {
                 )}
                 name="status"
                 control={control}
+                defaultValue={{value:feedbackParams?.status?feedbackParams?.status:"",label:feedbackParams?.status?feedbackParams?.status:""}}
               />
             </div>
 

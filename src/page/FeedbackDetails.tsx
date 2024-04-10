@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SetStateAction, useEffect, useState } from "react";
 import { Comment, ProductRequest, User, dataStyle } from "./style";
 import Commentreply from "../Components/Commentreply";
+import { jsxs } from "react/jsx-runtime";
 
 function FeedbackDetails() {
   const params = useParams<{ feedbackdetails: string }>();
@@ -14,9 +15,11 @@ function FeedbackDetails() {
   >(null);
   const [comErr, setComErr] = useState<boolean>(false);
 
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
 
-  const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+  const handleChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setText(event.target.value);
   };
 
@@ -80,7 +83,7 @@ function FeedbackDetails() {
           }
         }
       }
-      setText("")
+      setText("");
     }
   };
 
@@ -152,11 +155,28 @@ function FeedbackDetails() {
               src="/assets/shared/icon-arrow-left.svg"
               alt=""
             />
-            <p className="text-[16px] text-[#647196] font-bold cursor-pointer ">Go Back</p>
+            <p className="text-[16px] text-[#647196] font-bold cursor-pointer ">
+              Go Back
+            </p>
           </div>
           <button
             className="px-[16px] py-[10.5px] bg-[#4661e6] hover:bg-[#4661e680] rounded-[10px] "
-            onClick={() => navigate(`editfeedback`)}
+            onClick={() => {
+              navigate(`editfeedback`),
+                localStorage.setItem("title", JSON.stringify(feedback?.title)),
+                localStorage.setItem(
+                  "description",
+                  JSON.stringify(feedback?.description)
+                ),
+                localStorage.setItem(
+                  "category",
+                  JSON.stringify(feedback?.category)
+                ),
+                localStorage.setItem(
+                  "status",
+                  JSON.stringify(feedback?.status)
+                );
+            }}
           >
             <p className="text-[13px] text-[#f2f4fe] font-bold ">
               Edit Feedback
@@ -195,7 +215,9 @@ function FeedbackDetails() {
               <div className=" flex items-center justify-between mt-[14px] ">
                 <button
                   className={`md:hidden flex items-center gap-[10px] ${
-                    upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe] hover:bg-[#f2f4fe80]"
+                    upVote
+                      ? "bg-[#cfd7ff]"
+                      : "bg-[#f2f4fe] hover:bg-[#f2f4fe80]"
                   } rounded-[10px] pl-[16px] pr-[13px] py-[7px] `}
                   onClick={() => setUpVote(!upVote)}
                 >
@@ -249,16 +271,22 @@ function FeedbackDetails() {
               Add Comment
             </h2>
             <div>
-            <textarea
-              value={text}
-              onChange={handleChange}
-              placeholder="Type your comment here"
-              maxLength={250}
-              className={`bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] mt-[24px] w-[100%] rounded-[5px] resize-none ${
-                comErr ? "border border-solid border-[#d73737]" : ""
-              } `}
-            ></textarea>
-            <p className={`text-[14px] text-[#d73737] ${comErr?"":"hidden"}`} >Can’t be empty</p>
+              <textarea
+                value={text}
+                onChange={handleChange}
+                placeholder="Type your comment here"
+                maxLength={250}
+                className={`bg-[#f7f8fd] p-[16px] text-[#3a4374] text-[15px] focus:outline-[#4661e6] focus:border-solid focus:border-[#4661e6] mt-[24px] w-[100%] rounded-[5px] resize-none ${
+                  comErr ? "border border-solid border-[#d73737]" : ""
+                } `}
+              ></textarea>
+              <p
+                className={`text-[14px] text-[#d73737] ${
+                  comErr ? "" : "hidden"
+                }`}
+              >
+                Can’t be empty
+              </p>
             </div>
             <div className="flex items-center justify-between mt-[16px] ">
               <p className="text-[#647196] text-[13px] ">250 Characters left</p>

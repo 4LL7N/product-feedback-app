@@ -1,45 +1,23 @@
 import { useEffect, useState } from "react";
 import { MdArrowBackIos } from "react-icons/md";
 import { Context } from "./Context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { dataStyle } from "./style";
 
 function RoadMap() {
   const context = Context();
+  const navigate =  useNavigate()
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [filterInfo, setFilterInfo] = useState<any[]>([]);
-  const displayedStatuses: string[] = [];
-  const [statusCounts, setStatusCounts] = useState<{ [key: string]: number }>({
-    Planned: 0,
-    "In-Progress": 0,
-    Live: 0,
-  });
+  
+  const [dataInfo, setDataInfo] = useState<dataStyle>()
 
   useEffect(() => {
-    const filteredData = context.dataInfo.productRequests.filter((item: any) =>
-      item.status.includes(context.filterCategory.toLowerCase())
-    );
+    let LocalStorageData: any = localStorage.getItem("data");
+    setDataInfo(JSON.parse(LocalStorageData));
+  },[])
 
-    const counts: { [key: string]: number } = {
-      Planned: 0,
-      "In-Progress": 0,
-      Live: 0,
-    };
-
-    filteredData.forEach((item: any) => {
-      counts[item.status] = (counts[item.status] || 0) + 1;
-    });
-
-    setStatusCounts(counts);
-    setFilterInfo(filteredData); // Update filtered data state
-  }, [context.filterCategory, context.dataInfo.productRequests]);
-
-  const CountStatus = (status: string) => {
-    // Normalize the status value to lowercase
-    const normalizedStatus = status.toLowerCase();
-    return statusCounts[normalizedStatus] !== undefined
-      ? statusCounts[normalizedStatus]
-      : 0;
-  };
+  
 
   return (
     <article className="flex flex-col items-center justify-start bg-[#f7f8fd] min-h-screen   ">
@@ -58,7 +36,7 @@ function RoadMap() {
             Roadmap
           </p>
         </div>
-        <button className="custom-button">+ Add Feedback</button>
+        <button className="custom-button" onClick={() => navigate("/newfeedback") } >+ Add Feedback</button>
       </header>
       <section className="flex flex-col items-center justify-between w-full py-4 md:w-[768px] md:px-10 lg:w-[1110px]">
         <div className="flex flex-row items-center justify-between w-full">
@@ -68,7 +46,7 @@ function RoadMap() {
             } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
             onClick={() => setSelectedItem("Planned")}
           >
-            Planned ({CountStatus("Planned")})
+            Planned 
           </button>
           <button
             className={`${
@@ -78,7 +56,7 @@ function RoadMap() {
             } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
             onClick={() => setSelectedItem("In-Progress")}
           >
-            In-Progress ({CountStatus("In-Progress")})
+            In-Progress 
           </button>
           <button
             className={`${
@@ -86,7 +64,7 @@ function RoadMap() {
             } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
             onClick={() => setSelectedItem("Live")}
           >
-            Live ({CountStatus("Live")})
+            Live 
           </button>
         </div>
         <div className="flex flex-row items-center justify-between w-full px-6 ">
