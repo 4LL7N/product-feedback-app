@@ -37,7 +37,7 @@ const router = createBrowserRouter([
 
 function App() {
 
-  console.log(data);
+  
   useEffect(() => {
     
     localStorage.getItem("data")

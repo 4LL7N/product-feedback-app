@@ -1,17 +1,19 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import ReactSelect from "react-select";
 import { dataStyle, Inputs } from "./style"; // import data types/styles
+import { useParams } from "react-router-dom";
 
-const NewFeedback: React.FC = () => {
+function NewFeedback():any{
   const [localStorageData, setLocalStorageData] = useState<dataStyle>();
 
   useEffect(() => {
     let LocalStorageData: any = localStorage.getItem("data");
     setLocalStorageData(JSON.parse(LocalStorageData));
   }, []);
-  // console.log(localStorageData);
+ 
+  const params = useParams();
 
   const {
     register,
@@ -21,35 +23,29 @@ const NewFeedback: React.FC = () => {
     control,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // console.log(data);
 
-    let newFeedback = localStorageData?.productRequests;
-    // console.log(newFeedback);
-    // let newData: any = {
-    //   id: newFeedback ? newFeedback?.length + 1 : null,
-    //   title: data.title,
-    //   category: data?.category?.value,
-    //   upvotes: 0,
-    //   status: "Suggestion",
-    //   description: data?.description,
-    //   comments: [],
-    // };
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     
 
-    console.log(localStorageData);
-    // console.log(JSON.stringify(data));
+    let newFeedback = localStorageData?.productRequests;
 
-    // localStorage.setItem("formData", jsonData);
-    // console.log(jsonData);
+    const indexToUpdate = newFeedback?.findIndex(
+      (item) => item.id === Number(params?.feedbackdetails))
 
-    localStorageData
-      ? localStorage.setItem("data", JSON.stringify(localStorageData))
-      : null;
+      if (newFeedback && indexToUpdate) {
+        // Update the item if it exists in the array
+        newFeedback[indexToUpdate] = {
+          ...newFeedback[indexToUpdate],
+          title: data.title,
+          category: data?.category?.value,
+          description: data.description,
+          status: "suggestion",
+        };
+
+    console.log(data);
+    
   };
-
-  console.log(watch("title")); // watch input value by passing the name of it
-  // console.log(watch("category"));
+  
 
   useEffect(() => {
     let title: any = localStorage.getItem("title");
@@ -102,13 +98,17 @@ const NewFeedback: React.FC = () => {
               <label htmlFor=""> Feedback Title</label>
               <p>Add a short, descriptive headline</p>
               <input
+              className={`px-[24px] py-[13px] focus:outline-none ${errors.title ? "border border-solid border-[#d73737]":null} `}
                 {...register("title", {
                   required: true,
                   minLength: 4,
-                  maxLength: 30,
                 })}
                 placeholder="input title of feedback"
+                maxLength={30}
               />
+              {errors.title && (
+                <span className="text-[#d73737]">{errors.title.type == "required"?"Can't be empty":"minimum 4 symbols"}</span>
+              )}
             </div>
 
             <div className="">
@@ -130,6 +130,7 @@ const NewFeedback: React.FC = () => {
                 )}
                 name="category"
                 control={control}
+                defaultValue={{ value: "Feature", label: "Feature" }}
               />
             </div>
 
@@ -141,8 +142,8 @@ const NewFeedback: React.FC = () => {
                 etc.
               </p>
               {/* include validation with required or other standard HTML validation rules */}
-              <input
-                className="last-child"
+              <textarea
+                className={`md:h-[96px] h-[120px] w-[100%] px-[24px] py-[13px] bg-[#f7f8fd] focus:outline-none ${errors.description ? "border border-solid border-[#d73737]":null} rounded-[5px] mt-[16px] `}
                 placeholder="min 4 letters"
                 {...register("description", {
                   required: true,
@@ -155,7 +156,7 @@ const NewFeedback: React.FC = () => {
               />
               {/* errors will return when field validation fails  */}
               {errors.description && (
-                <span className="tex-red-800">Can't be empty</span>
+                <span className="text-[#d73737]">{errors.description.type == "required"?"Can't be empty":"minimum 4 symbols"}</span>
               )}
             </div>
 
@@ -168,7 +169,7 @@ const NewFeedback: React.FC = () => {
       </div>
     </InputField>
   );
-};
+}};
 
 export default NewFeedback;
 
@@ -212,9 +213,8 @@ const WhiteContainer = styled.div`
     border-radius: 5px;
     background-color: #f7f8fd;
   }
-  .last-child {
-    height: 100px;
-  }
+
+   
   button {
     margin-top: 25px;
     padding: 10.5px 32.8px 10.5px 37.5px;
@@ -238,4 +238,4 @@ const WhiteContainer = styled.div`
       justify-content: end;
     }
   }
-`;
+`
