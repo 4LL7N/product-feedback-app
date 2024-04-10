@@ -7,7 +7,7 @@ import RoadMap from "./page/RoadMap";
 import { Productfeedback } from "./page/Context";
 import { useEffect, useState } from "react";
 import data from "../data.json";
-import { dataStyle } from "./page/style";
+
 
 
 
@@ -50,7 +50,7 @@ function App() {
 
 
   const [close, setClose] = useState<boolean>(false);
-  const [dataInfo, setDataInfo] = useState<dataStyle>(data);
+  // const [dataInfo, setDataInfo] = useState<dataStyle>(data);
   const [filterCategory, setFilterCategory] = useState<string>("");
   
 
@@ -67,8 +67,6 @@ function App() {
         value={{
           close,
           setClose,
-          dataInfo,
-          setDataInfo,
           filterCategory,
           setFilterCategory,
         }}

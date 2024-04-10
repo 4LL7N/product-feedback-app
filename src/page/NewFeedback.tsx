@@ -3,17 +3,15 @@ import { useState, useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import ReactSelect from "react-select";
 import { dataStyle, Inputs } from "./style"; // import data types/styles
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function NewFeedback():any{
+function NewFeedback(): any {
   const [localStorageData, setLocalStorageData] = useState<dataStyle>();
-
+  const navigate = useNavigate()
   useEffect(() => {
     let LocalStorageData: any = localStorage.getItem("data");
     setLocalStorageData(JSON.parse(LocalStorageData));
   }, []);
- 
-  const params = useParams();
 
   const {
     register,
@@ -25,27 +23,42 @@ function NewFeedback():any{
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    
+    let FeedbackData = localStorageData?.productRequests;
 
-    let newFeedback = localStorageData?.productRequests;
+    let newFeedback = {
+      id:FeedbackData?.length? FeedbackData?.length + 1:0,
+      title: data.title,
+      category: data?.category?.value,
+      upvotes: 0,
+      status: "suggestion",
+      description: data.description,
+      comments: [],
+    };
 
-    const indexToUpdate = newFeedback?.findIndex(
-      (item) => item.id === Number(params?.feedbackdetails))
+    FeedbackData?.push(newFeedback);
 
-      if (newFeedback && indexToUpdate) {
-        // Update the item if it exists in the array
-        newFeedback[indexToUpdate] = {
-          ...newFeedback[indexToUpdate],
-          title: data.title,
-          category: data?.category?.value,
-          description: data.description,
-          status: "suggestion",
-        };
+    let newFeedbackdata: any = {
+      currentUser: localStorageData?.currentUser,
+      productRequests: FeedbackData,
+    };
+    if (localStorageData?.currentUser && newFeedback)
+      setLocalStorageData(newFeedbackdata);
 
-    console.log(data);
-    
+    localStorage.setItem("data", JSON.stringify(newFeedbackdata));
+
+    localStorage.setItem("title", "")
+    localStorage.setItem("description", "")
+    localStorage.setItem("category", "")
+
+    navigate("/")
   };
-  
+
+  function GoBack(){
+    localStorage.setItem("title", "")
+    localStorage.setItem("description", "")
+    localStorage.setItem("category", "")
+    window.history.back()
+  }
 
   useEffect(() => {
     let title: any = localStorage.getItem("title");
@@ -72,7 +85,10 @@ function NewFeedback():any{
   return (
     <InputField className=" h-screen p-10 m-0 flex flex-col items-center justify-center">
       <div className="  ">
-        <div className="flex flex-row gap-4 " onClick={() =>  window.history.back()} >
+        <div
+          className="flex flex-row gap-4 "
+          onClick={GoBack}
+        >
           <img
             src="/assets/shared/icon-arrow-left.svg"
             alt="icon-arrow-left"
@@ -98,7 +114,9 @@ function NewFeedback():any{
               <label htmlFor=""> Feedback Title</label>
               <p>Add a short, descriptive headline</p>
               <input
-              className={`px-[24px] py-[13px] focus:outline-none ${errors.title ? "border border-solid border-[#d73737]":null} `}
+                className={`px-[24px] py-[13px] focus:outline-none ${
+                  errors.title ? "border border-solid border-[#d73737]" : null
+                } `}
                 {...register("title", {
                   required: true,
                   minLength: 4,
@@ -107,7 +125,11 @@ function NewFeedback():any{
                 maxLength={30}
               />
               {errors.title && (
-                <span className="text-[#d73737]">{errors.title.type == "required"?"Can't be empty":"minimum 4 symbols"}</span>
+                <span className="text-[#d73737]">
+                  {errors.title.type == "required"
+                    ? "Can't be empty"
+                    : "minimum 4 symbols"}
+                </span>
               )}
             </div>
 
@@ -143,7 +165,11 @@ function NewFeedback():any{
               </p>
               {/* include validation with required or other standard HTML validation rules */}
               <textarea
-                className={`md:h-[96px] h-[120px] w-[100%] px-[24px] py-[13px] bg-[#f7f8fd] focus:outline-none ${errors.description ? "border border-solid border-[#d73737]":null} rounded-[5px] mt-[16px] `}
+                className={`md:h-[96px] h-[120px] w-[100%] px-[24px] py-[13px] bg-[#f7f8fd] focus:outline-none ${
+                  errors.description
+                    ? "border border-solid border-[#d73737]"
+                    : null
+                } rounded-[5px] mt-[16px] `}
                 placeholder="min 4 letters"
                 {...register("description", {
                   required: true,
@@ -156,20 +182,29 @@ function NewFeedback():any{
               />
               {/* errors will return when field validation fails  */}
               {errors.description && (
-                <span className="text-[#d73737]">{errors.description.type == "required"?"Can't be empty":"minimum 4 symbols"}</span>
+                <span className="text-[#d73737]">
+                  {errors.description.type == "required"
+                    ? "Can't be empty"
+                    : "minimum 4 symbols"}
+                </span>
               )}
             </div>
 
             <div className="buttons flex flex-col gap-2">
               <button type="submit">Add Feedback</button>
-              <button>Cancel</button>
+              <button onClick={() => {
+                localStorage.setItem("title", "")
+                localStorage.setItem("description", "")
+                localStorage.setItem("category", "")
+                navigate("/")
+              }} >Cancel</button>
             </div>
           </form>
         </WhiteContainer>
       </div>
     </InputField>
   );
-}};
+}
 
 export default NewFeedback;
 
@@ -214,7 +249,6 @@ const WhiteContainer = styled.div`
     background-color: #f7f8fd;
   }
 
-   
   button {
     margin-top: 25px;
     padding: 10.5px 32.8px 10.5px 37.5px;
@@ -238,4 +272,4 @@ const WhiteContainer = styled.div`
       justify-content: end;
     }
   }
-`
+`;

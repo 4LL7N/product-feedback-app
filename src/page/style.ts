@@ -70,8 +70,6 @@ export interface CommentReplyStyle {
 export interface MyContextProps {
   close: boolean;
   setClose: (value: boolean) => void;
-  dataInfo: any;
-  setDataInfo: (value: any) => void;
   filterCategory: string;
   setFilterCategory: (value: string) => void;
 }
