@@ -39,7 +39,7 @@ function Feedback({item,setFilterInfo,filterInfo,dataInfo,setDataInfo}:any) {
   return (
     <>
         <div
-                className="w-[327px] p-6 flex flex-col items-start justify-between gap-4 rounded-[10px] bg-white md:w-full md:flex-row md:items-center md:justify-between "
+                className="w-[327px] p-6 flex flex-col items-start justify-between gap-4 rounded-[10px] bg-white md:w-full md:flex-row md:items-center md:justify-between  "
                 key={item.id}
               >
                 <>

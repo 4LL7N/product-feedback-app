@@ -6,115 +6,135 @@ import { ProductRequest, dataStyle } from "./style";
 import RodaFeedback from "../Components/RodaFeedback";
 
 function RoadMap() {
-  const navigate =  useNavigate()
+  const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState<string>("Planned");
   const [filterInfo, setFilterInfo] = useState<any[]>([]);
-  
-  const [dataInfo, setDataInfo] = useState<dataStyle>()
+  const [dataInfo, setDataInfo] = useState<dataStyle>();
+
+  const [planed, setPlaned] = useState<ProductRequest[] | undefined>([]);
+  const [inProgress, setInProgress] = useState<ProductRequest[] | undefined>();
+  const [live, setLive] = useState<ProductRequest[] | undefined>();
 
   useEffect(() => {
     let LocalStorageData: any = localStorage.getItem("data");
     setDataInfo(JSON.parse(LocalStorageData));
-    LocalStorageData = JSON.parse(LocalStorageData)
+    LocalStorageData = JSON.parse(LocalStorageData);
 
-    let filterData = LocalStorageData?.productRequests?.filter((items:ProductRequest) => {
-      return items.status.toLowerCase() === selectedItem.toLowerCase()
-    })
-    setFilterInfo(filterData)
-  },[])
+    let filterData = LocalStorageData?.productRequests?.filter(
+      (items: ProductRequest) => {
+        return items.status.toLowerCase() === selectedItem.toLowerCase();
+      }
+    );
+    setFilterInfo(filterData);
 
-  useEffect(()=>{
+    let Planed = LocalStorageData?.productRequests?.filter(
+      (items: ProductRequest) => {
+        return items.status.toLowerCase() == "planned";
+      }
+    );
+    setPlaned(Planed);
+    
 
-    let filterData = dataInfo?.productRequests?.filter((items:ProductRequest) => {
-      return items.status.toLowerCase() === selectedItem.toLowerCase()
-    })
-    filterData? setFilterInfo(filterData):null
+    let in_progres = LocalStorageData?.productRequests?.filter(
+      (items: ProductRequest) => {
+        return items.status.toLowerCase() == "in-progress";
+      }
+    );
+    setInProgress(in_progres);
+    
+    let Live = LocalStorageData?.productRequests?.filter(
+      (items: ProductRequest) => {
+        return items.status.toLowerCase() == "live";
+      }
+    );
+    setLive(Live);
+    
+  }, []);
+
+  useEffect(() => {
+    let filterData = dataInfo?.productRequests?.filter(
+      (items: ProductRequest) => {
+        return items.status.toLowerCase() === selectedItem.toLowerCase();
+      }
+    );
+    filterData ? setFilterInfo(filterData) : null;
     // console.log(selectedItem);
-    
-    // console.log(filterData);
-    
 
-  },[selectedItem])
-  
+    // console.log(filterData);
+  }, [selectedItem]);
 
   return (
-    <article className="flex flex-col items-center justify-start bg-[#f7f8fd] min-h-screen mb-[98px]  ">
-      <header className="bg-[#373f68] w-full h-[100px] px-6 py-5 flex flex-row items-center justify-between md:w-[768px] md:px-10 md:rounded-[10px] lg:w-[1110px]">
+    <article className="flex flex-col items-center justify-start bg-[#f7f8fd] min-h-screen mb-[98px] md:px-[40px] md:py-[56px] lg:px-[165px] lg:py-[78px] ">
+      <header className="bg-[#373f68] w-[100%] h-[100px] px-[24px] py-[27px] flex items-center justify-between  md:px-[32px] md:rounded-[10px] ">
         <div className="flex flex-col items-start justify-between">
           <div className="flex flex-row items-center justify-center gap-2">
             <MdArrowBackIos className="text-white" />
             <button
               onClick={() => window.history.back()}
-              className="text-[13px] text-white font-normal"
+              className="text-[13px] lg:text-[14px] text-white font-normal"
             >
               Go Back
             </button>
           </div>
-          <p className="text-[18px] text-white leading-[-0.25] font-normal">
+          <p className="text-[18px] lg:text-[24px] text-white leading-[-0.25] font-normal">
             Roadmap
           </p>
         </div>
-        <button className="custom-button" onClick={() => navigate("/newfeedback") } >+ Add Feedback</button>
+        <button
+          className="custom-button"
+          onClick={() => navigate("/newfeedback")}
+        >
+          + Add Feedback
+        </button>
       </header>
-      <section className="flex flex-col items-center justify-between w-full pt-4 md:w-[768px] md:px-10  lg:w-[1110px] border-b border-b-solid border-b-[#8c92b340] ">
+      <section className="flex flex-col items-center justify-between w-full pt-4  md:px-10  lg:w-[1110px] border-b border-b-solid border-b-[#8c92b340] md:hidden  ">
         <div className="flex flex-row items-center justify-between w-full  ">
           <div>
-          <button
-            className={`${
-              selectedItem === "Planned" ? " text-[#3a4374]" : "mb-[20px] text-[#3a437480]"
-            } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px] gradient-border `}
-            onClick={() => setSelectedItem("Planned")}
-          >
-            Planned 
-          </button>
-          <div
-            className={
-              selectedItem === "Planned" 
-                ? "custom-line"
-                : ""
-            }
-          ></div>
+            <button
+              className={`${
+                selectedItem === "Planned"
+                  ? " text-[#3a4374]"
+                  : "mb-[20px] text-[#3a437480]"
+              } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px] gradient-border `}
+              onClick={() => setSelectedItem("Planned")}
+            >
+              Planned
+            </button>
+            <div
+              className={selectedItem === "Planned" ? "custom-line" : ""}
+            ></div>
           </div>
           <div>
-          <button
-            className={`${
-              selectedItem === "In-Progress"
-                ? "text-[#3a4374]"
-                : "mb-[20px]  text-[#3a437480]"
-            } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
-            onClick={() => setSelectedItem("In-Progress")}
-          >
-            In-Progress 
-          </button>
-          <div
-            className={
-              selectedItem === "In-Progress" 
-                ? "custom-line"
-                : ""
-            }
-          ></div>
+            <button
+              className={`${
+                selectedItem === "In-Progress"
+                  ? "text-[#3a4374]"
+                  : "mb-[20px]  text-[#3a437480]"
+              } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
+              onClick={() => setSelectedItem("In-Progress")}
+            >
+              In-Progress
+            </button>
+            <div
+              className={selectedItem === "In-Progress" ? "custom-line" : ""}
+            ></div>
           </div>
           <div>
-          <button
-            className={`${
-              selectedItem === "Live" ? " text-[#3a4374]" : "mb-[20px] text-[#3a437480]"
-            } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
-            onClick={() => setSelectedItem("Live")}
-          >
-            Live 
-          </button>
-          <div
-            className={
-              selectedItem === "Live" 
-                ? "custom-line"
-                : ""
-            }
-          ></div>
+            <button
+              className={`${
+                selectedItem === "Live"
+                  ? " text-[#3a4374]"
+                  : "mb-[20px] text-[#3a437480]"
+              } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
+              onClick={() => setSelectedItem("Live")}
+            >
+              Live
+            </button>
+            <div className={selectedItem === "Live" ? "custom-line" : ""}></div>
           </div>
         </div>
-        
       </section>
-      <section className="flex flex-col items-start w-full px-6 md:w-[768px] md:px-10 lg:w-[1110px] mt-[24px] ">
+      <section className="flex flex-col items-start w-full px-6 md:w-[768px] md:px-10 lg:w-[1110px] mt-[24px] md:hidden ">
         <div>
           <p className="text-[18px] font-bold tracking-[-0.25px] text-[#3a4374]">
             {selectedItem}
@@ -126,20 +146,96 @@ function RoadMap() {
         </div>
       </section>
       <section
-        className="flex flex-col items-center justify-between md:flex-row md:flex-wrap md:w-[768px] md:px-10 lg:w-[1110px] md:justify-start md:gap-10
+        className="flex flex-col items-center justify-between md:flex-row md:flex-wrap md:w-[768px] md:px-10 lg:w-[1110px] md:justify-start md:gap-10 lg:p-0
       "
       >
-        {selectedItem
-          ? filterInfo.map((item: any) => {
-                
-                return (
-                  <RodaFeedback item={item} filterInfo={filterInfo} setFilterInfo={setFilterInfo} dataInfo={dataInfo} setDataInfo={setDataInfo} />
-                );
-              
-              
-            })
-          :null} 
-          {/* filterInfo.map((item: any) => {
+        {selectedItem && window.screen.width < 768 ? (
+          filterInfo.map((item: any) => {
+            return (
+              <RodaFeedback
+                item={item}
+                filterInfo={filterInfo}
+                setFilterInfo={setFilterInfo}
+                dataInfo={dataInfo}
+                setDataInfo={setDataInfo}
+              />
+            );
+          })
+        ) : (
+          <div className="md:flex mt-[32px] lg:mt-[48px] gap-[8px] lg:gap-[30px] hidden ">
+            <div className="w-[223px] lg:w-[350px] " >
+              <h1 className="text-[14px] lg:text-[18px] text-[#3a4374] font-bold mb-[4px] ">
+                Planned ({planed?.length})
+              </h1>
+              <p className="text-[14px] lg:text-[16px] text-[#647196] mb-[24px]">
+                Ideas prioritized for research
+              </p>
+              <div className="flex flex-col gap-[16px] " >
+                {planed?.map((item) => {
+                  return (
+                  <>
+                  <RodaFeedback
+                item={item}
+                filterInfo={filterInfo}
+                setFilterInfo={setFilterInfo}
+                dataInfo={dataInfo}
+                setDataInfo={setDataInfo}
+              />
+                  </>
+                  )
+                })}
+              </div>
+            </div>
+            <div className="w-[223px] lg:w-[350px] " >
+              <h1 className="text-[14px] lg:text-[18px] text-[#3a4374] font-bold mb-[4px] ">
+                In-Progress ({inProgress?.length})
+              </h1>
+              <p className="text-[14px] lg:text-[16px] text-[#647196] mb-[24px]">
+                Currently being developed
+              </p>
+              <div className="flex flex-col gap-[16px] ">
+                {inProgress?.map((item) => {
+                  
+                  return (
+                  <>
+                  <RodaFeedback
+                item={item}
+                filterInfo={filterInfo}
+                setFilterInfo={setFilterInfo}
+                dataInfo={dataInfo}
+                setDataInfo={setDataInfo}              
+              />
+                  </>
+                  )
+                })}
+              </div>
+            </div>
+            <div className="w-[223px] lg:w-[350px]" >
+              <h1 className="text-[14px] lg:text-[18px] text-[#3a4374] font-bold mb-[4px] ">
+                Live ({live?.length})
+              </h1>
+              <p className="text-[14px] lg:text-[16px] text-[#647196] mb-[24px]">
+                Released features
+              </p>
+              <div className="flex flex-col gap-[16px] ">
+                {live?.map((item) => {
+                  return (
+                    <>
+                    <RodaFeedback
+                  item={item}
+                  filterInfo={filterInfo}
+                  setFilterInfo={setFilterInfo}
+                  dataInfo={dataInfo}
+                  setDataInfo={setDataInfo}
+                />
+                    </>
+                    )
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+        {/* filterInfo.map((item: any) => {
               if (item.status !== "suggestion") {
                 let dotColor = "";
                 if (item.status === "Planned") {
@@ -195,8 +291,6 @@ function RoadMap() {
                   </div>
                 );
               } */}
-              
-            
       </section>
     </article>
   );
