@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
+import { dataStyle } from "./style";
 
 function Header() {
   const context = Context();
   const [categorySearch, setCategorySearch] = useState<string>("ALL");
+  const [dataInfo, setDataInfo] = useState<dataStyle>()
   const findCategory = ["ALL", "UX", "UI", "Enhancement", "Bug", "Feature"];
 
   const isMobile = useMediaQuery({ minWidth: 767 });
 
-  const counts = context.dataInfo.productRequests.reduce(
+  const counts = dataInfo?.productRequests.reduce(
     (
       acc: { planned: number; inProgress: number; live: number },
       item: { status: string }
@@ -28,6 +30,12 @@ function Header() {
     },
     { planned: 0, inProgress: 0, live: 0 }
   );
+
+  useEffect(() => {
+    let LocalStorageData: any = localStorage.getItem("data");
+    setDataInfo(JSON.parse(LocalStorageData));
+  },[])
+
   useEffect(() => {
     if (context.close) {
       document.documentElement.classList.add("no-scroll");
@@ -118,7 +126,7 @@ function Header() {
                     Planned
                   </p>
                 </div>
-                <p>{counts.planned}</p>
+                <p>{counts?.planned}</p>
               </div>
               <div className="flex flex-row items-center justify-between w-full">
                 <div className="flex flex-row items-center justify-between gap-4">
@@ -127,14 +135,14 @@ function Header() {
                     In-Progress
                   </p>
                 </div>
-                <p>{counts.inProgress}</p>
+                <p>{counts?.inProgress}</p>
               </div>
               <div className="flex flex-row items-center justify-between w-full">
                 <div className="flex flex-row items-center justify-between gap-4">
                   <p className=" bg-[#62bcfa] w-2 h-2 rounded-full"></p>
                   <p className="text-[#647196] text-[16px] font-normal">Live</p>
                 </div>
-                <p>{counts.live}</p>
+                <p>{counts?.live}</p>
               </div>
             </div>
           </section>
