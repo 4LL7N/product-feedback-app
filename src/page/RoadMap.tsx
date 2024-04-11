@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { MdArrowBackIos } from "react-icons/md";
-import { Context } from "./Context";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ProductRequest, dataStyle } from "./style";
 import RodaFeedback from "../Components/RodaFeedback";
 
