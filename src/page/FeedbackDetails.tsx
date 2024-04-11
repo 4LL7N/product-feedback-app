@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SetStateAction, useEffect, useState } from "react";
 import { Comment, ProductRequest, User, dataStyle } from "./style";
 import Commentreply from "../Components/Commentreply";
-import { jsxs } from "react/jsx-runtime";
+
 
 function FeedbackDetails() {
   const params = useParams<{ feedbackdetails: string }>();

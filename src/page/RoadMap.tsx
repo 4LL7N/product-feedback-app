@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { MdArrowBackIos } from "react-icons/md";
 import { Context } from "./Context";
 import { Link, useNavigate } from "react-router-dom";
-import { dataStyle } from "./style";
+import { ProductRequest, dataStyle } from "./style";
 
 function RoadMap() {
-  const context = Context();
   const navigate =  useNavigate()
-  const [selectedItem, setSelectedItem] = useState<string>("");
+  const [selectedItem, setSelectedItem] = useState<string>("Planned");
   const [filterInfo, setFilterInfo] = useState<any[]>([]);
   
   const [dataInfo, setDataInfo] = useState<dataStyle>()
@@ -15,12 +14,30 @@ function RoadMap() {
   useEffect(() => {
     let LocalStorageData: any = localStorage.getItem("data");
     setDataInfo(JSON.parse(LocalStorageData));
+    LocalStorageData = JSON.parse(LocalStorageData)
+
+    let filterData = LocalStorageData?.productRequests?.filter((items:ProductRequest) => {
+      return items.status.toLowerCase() === selectedItem.toLowerCase()
+    })
+    setFilterInfo(filterData)
   },[])
 
+  useEffect(()=>{
+
+    let filterData = dataInfo?.productRequests?.filter((items:ProductRequest) => {
+      return items.status.toLowerCase() === selectedItem.toLowerCase()
+    })
+    filterData? setFilterInfo(filterData):null
+    // console.log(selectedItem);
+    
+    // console.log(filterData);
+    
+
+  },[selectedItem])
   
 
   return (
-    <article className="flex flex-col items-center justify-start bg-[#f7f8fd] min-h-screen   ">
+    <article className="flex flex-col items-center justify-start bg-[#f7f8fd] min-h-screen mb-[98px]  ">
       <header className="bg-[#373f68] w-full h-[100px] px-6 py-5 flex flex-row items-center justify-between md:w-[768px] md:px-10 md:rounded-[10px] lg:w-[1110px]">
         <div className="flex flex-col items-start justify-between">
           <div className="flex flex-row items-center justify-center gap-2">
@@ -38,65 +55,68 @@ function RoadMap() {
         </div>
         <button className="custom-button" onClick={() => navigate("/newfeedback") } >+ Add Feedback</button>
       </header>
-      <section className="flex flex-col items-center justify-between w-full py-4 md:w-[768px] md:px-10 lg:w-[1110px]">
-        <div className="flex flex-row items-center justify-between w-full">
+      <section className="flex flex-col items-center justify-between w-full pt-4 md:w-[768px] md:px-10  lg:w-[1110px] border-b border-b-solid border-b-[#8c92b340] ">
+        <div className="flex flex-row items-center justify-between w-full  ">
+          <div>
           <button
             className={`${
-              selectedItem === "Planned" ? "text-[#3a4374]" : "text-[#3a437480]"
-            } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
+              selectedItem === "Planned" ? " text-[#3a4374]" : "mb-[20px] text-[#3a437480]"
+            } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px] gradient-border `}
             onClick={() => setSelectedItem("Planned")}
           >
             Planned 
           </button>
+          <div
+            className={
+              selectedItem === "Planned" 
+                ? "custom-line"
+                : ""
+            }
+          ></div>
+          </div>
+          <div>
           <button
             className={`${
               selectedItem === "In-Progress"
                 ? "text-[#3a4374]"
-                : "text-[#3a437480]"
+                : "mb-[20px]  text-[#3a437480]"
             } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
             onClick={() => setSelectedItem("In-Progress")}
           >
             In-Progress 
           </button>
+          <div
+            className={
+              selectedItem === "In-Progress" 
+                ? "custom-line"
+                : ""
+            }
+          ></div>
+          </div>
+          <div>
           <button
             className={`${
-              selectedItem === "Live" ? "text-[#3a4374]" : "text-[#3a437480]"
+              selectedItem === "Live" ? " text-[#3a4374]" : "mb-[20px] text-[#3a437480]"
             } w-[125px] flex items-center justify-center text-[13px] font-bold tracking-[-0.18px]`}
             onClick={() => setSelectedItem("Live")}
           >
             Live 
           </button>
+          <div
+            className={
+              selectedItem === "Live" 
+                ? "custom-line"
+                : ""
+            }
+          ></div>
+          </div>
         </div>
-        <div className="flex flex-row items-center justify-between w-full px-6 ">
-          <div
-            className={
-              selectedItem === "Planned" || selectedItem === ""
-                ? "custom-line"
-                : ""
-            }
-          ></div>
-          <div
-            className={
-              selectedItem === "In-Progress" || selectedItem === ""
-                ? "custom-line"
-                : ""
-            }
-          ></div>
-          <div
-            className={
-              selectedItem === "Live" || selectedItem === ""
-                ? "custom-line"
-                : ""
-            }
-          ></div>
-        </div>
-
-        <div className="h-[1px] bg-[#8c92b3] w-full"></div>
+        
       </section>
-      <section className="flex flex-col items-start w-full px-6 md:w-[768px] md:px-10 lg:w-[1110px]">
+      <section className="flex flex-col items-start w-full px-6 md:w-[768px] md:px-10 lg:w-[1110px] mt-[24px] ">
         <div>
           <p className="text-[18px] font-bold tracking-[-0.25px] text-[#3a4374]">
-            {selectedItem ? selectedItem : "All Items"}
+            {selectedItem}
           </p>
           <p className="text-[13px] text-[#647196] font-normal">
             Features currently being{" "}
@@ -110,32 +130,33 @@ function RoadMap() {
       >
         {selectedItem
           ? filterInfo.map((item: any) => {
-              if (
-                item.status.toLowerCase() === selectedItem.toLowerCase() &&
-                item.status !== "suggestion"
-              ) {
-                let dotColor = "";
-                if (item.status === "Planned") {
-                  dotColor = "bg-orange-300"; // Use Tailwind CSS color class
-                } else if (item.status === "In-Progress") {
-                  dotColor = "bg-purple-400"; // Use Tailwind CSS color class
-                } else if (item.status === "Live") {
-                  dotColor = "bg-blue-400"; // Use Tailwind CSS color class
+             
+                let dotColor = "#f49f85" ;
+                if (item.status.toLowerCase() == "planned") {
+                  dotColor = "#f49f85"; // Use Tailwind CSS color class
+                } else if (item.status.toLowerCase() == "in-progress") {
+                  dotColor = "#ad1fea"; // Use Tailwind CSS color class
+                } else if (item.status.toLowerCase() == "live") {
+                  dotColor = "#62bcfa"; // Use Tailwind CSS color class
                 }
-
+                console.log(dotColor);
+                
                 return (
                   <div
+                  
                     key={item.id}
-                    className="flex flex-col items-center justify-between  gap-4  w-[327px] bg-white rounded-[10px] mt-[24px] pb-6  "
+                    className={`flex flex-col items-center justify-between  gap-[20px]  w-[327px] bg-white rounded-b-[10px] mt-[24px] pb-6   `}
                   >
+                    <div className={`h-[6px] w-[100%] rounded-t-[10px] bg-[${dotColor}]  `} />
                     <div className="flex flex-col items-start justify-start px-6  gap-4">
+                      <div className="flex items-center " >
                       <p
-                        className={`${dotColor} w-4 h-4 rounded-full inline-block mr-2`}
+                        className={` bg-[${dotColor}] w-[8px] h-[8px] rounded-full inline-block mr-2 `}
                       ></p>
-                      <p className="text-[13px] text-[#647196]  font-normal">
+                      <p className=" text-[13px] text-[#647196] font-normal ">
                         {item.status}
                       </p>
-
+                      </div>
                       <div className="flex flex-col items-start justify-start  gap-2">
                         <Link to={`/${item.id}`}>
                           <h1 className="text-[13px] font-bold tracking-[-0.18px] text-[#3a4374]  hover:text-[#3a437480]">
@@ -169,10 +190,11 @@ function RoadMap() {
                     </div>
                   </div>
                 );
-              }
-              return null;
+              
+              
             })
-          : filterInfo.map((item: any) => {
+          :null} 
+          {/* filterInfo.map((item: any) => {
               if (item.status !== "suggestion") {
                 let dotColor = "";
                 if (item.status === "Planned") {
@@ -227,9 +249,9 @@ function RoadMap() {
                     </div>
                   </div>
                 );
-              }
-              return null;
-            })}
+              } */}
+              
+            
       </section>
     </article>
   );

@@ -83,7 +83,7 @@ function NewFeedback(): any {
   }, [watch("category")?.value]);
 
   return (
-    <InputField className=" h-screen p-10 m-0 flex flex-col items-center justify-center">
+    <InputField className=" min-h-screen p-10 m-0 flex flex-col items-center justify-center">
       <div className="  ">
         <div
           className="flex flex-row gap-4 "
