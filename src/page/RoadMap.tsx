@@ -3,6 +3,7 @@ import { MdArrowBackIos } from "react-icons/md";
 import { Context } from "./Context";
 import { Link, useNavigate } from "react-router-dom";
 import { ProductRequest, dataStyle } from "./style";
+import RodaFeedback from "../Components/RodaFeedback";
 
 function RoadMap() {
   const navigate =  useNavigate()
@@ -130,65 +131,9 @@ function RoadMap() {
       >
         {selectedItem
           ? filterInfo.map((item: any) => {
-             
-                let dotColor = "#f49f85" ;
-                if (item.status.toLowerCase() == "planned") {
-                  dotColor = "#f49f85"; // Use Tailwind CSS color class
-                } else if (item.status.toLowerCase() == "in-progress") {
-                  dotColor = "#ad1fea"; // Use Tailwind CSS color class
-                } else if (item.status.toLowerCase() == "live") {
-                  dotColor = "#62bcfa"; // Use Tailwind CSS color class
-                }
-                console.log(dotColor);
                 
                 return (
-                  <div
-                  
-                    key={item.id}
-                    className={`flex flex-col items-center justify-between  gap-[20px]  w-[327px] bg-white rounded-b-[10px] mt-[24px] pb-6   `}
-                  >
-                    <div className={`h-[6px] w-[100%] rounded-t-[10px] bg-[${dotColor}]  `} />
-                    <div className="flex flex-col items-start justify-start px-6  gap-4">
-                      <div className="flex items-center " >
-                      <p
-                        className={` bg-[${dotColor}] w-[8px] h-[8px] rounded-full inline-block mr-2 `}
-                      ></p>
-                      <p className=" text-[13px] text-[#647196] font-normal ">
-                        {item.status}
-                      </p>
-                      </div>
-                      <div className="flex flex-col items-start justify-start  gap-2">
-                        <Link to={`/${item.id}`}>
-                          <h1 className="text-[13px] font-bold tracking-[-0.18px] text-[#3a4374]  hover:text-[#3a437480]">
-                            {item.title}
-                          </h1>
-                        </Link>
-                        <p className="text-[#647196] text-[13px] font-normal">
-                          {" "}
-                          {item.description}
-                        </p>
-                        <div className="px-4 py-[5px] bg-[#f2f4ff] rounded-[10px] text-[13px] font-semibold text-[#4661e6] ">
-                          {item.category}
-                        </div>
-                      </div>
-                      <div className="flex flex-row items-center justify-between  w-full md:w-8">
-                        <div className="flex flex-row items-center  gap-2.5 py-1.5 pl-4 pr-[13px] bg-[#f2f4fe] rounded-[10px] md:hidden">
-                          <img src="./assets/shared/icon-arrow-up.svg" alt="" />
-                          <p className="text-[13px] tracking-[-0.18px] font-bold ">
-                            {item.upvotes}
-                          </p>
-                        </div>
-                        <div className="flex flex-row items-center justify-between gap-1">
-                          <img src="./assets/shared/icon-comments.svg" alt="" />
-                          <p className="text-[#3a4374] text-[13px] tracking-[0.18px] font-bold">
-                            {Array.isArray(item.comments)
-                              ? item.comments.length
-                              : 0}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <RodaFeedback item={item} filterInfo={filterInfo} setFilterInfo={setFilterInfo} dataInfo={dataInfo} setDataInfo={setDataInfo} />
                 );
               
               
