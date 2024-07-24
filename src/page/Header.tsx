@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { dataStyle } from "./style";
 
 function Header() {
   const context = Context();
   const [categorySearch, setCategorySearch] = useState<string>("ALL");
   const [dataInfo, setDataInfo] = useState<dataStyle>()
+  const location = useLocation()
+  const navigate = useNavigate()
   const findCategory = ["ALL", "UX", "UI", "Enhancement", "Bug", "Feature"];
 
   const isMobile = useMediaQuery({ minWidth: 767 });
@@ -88,9 +90,43 @@ function Header() {
                 <button
                   onClick={() => {
                     if (item === "ALL") {
-                      context.setFilterCategory("");
+                      console.log(location);
+                      let search:string[]|string = location.search.slice(1).split('&')
+                      let index:number|null = null
+                      search.forEach((el,i) => {
+                        if(el.startsWith('category')){
+                          index = i
+                        }
+                      })
+                      if(index != null)search.splice(index,1)
+                      navigate(`?${search}`)
+                      context.setFilterCategory("")
                     } else {
-                      context.setFilterCategory(item);
+                      let search:string[] = location.search.slice(1).split('&')                      
+                      let categoryValue:string|string[] = []
+                      let noCategory= true
+                      search.forEach((el,i) => {
+                        if(el.startsWith('category')){
+                          categoryValue = el.split('=')
+                          categoryValue[1] = item.toLocaleLowerCase()
+                          categoryValue = categoryValue.join('=')
+                          noCategory = false
+                          search[i]=categoryValue
+                        }
+                      })                 
+                      if(noCategory){
+                        if(search.length == 1 && search[0] == ""){
+                          navigate(`${location.search}?category=${item.toLocaleLowerCase()}`)
+                        }else{                        
+                          navigate(`${location.search}&category=${item.toLocaleLowerCase()}`)
+                        }
+                      }else{                        
+                        const path=search.join('&')
+                        navigate(`?${path}`)
+                      }
+                      
+                      // const search = Object.values({},location.search)
+                      // context.setFilterCategory(item);
                     }
                     setCategorySearch(item);
                   }}

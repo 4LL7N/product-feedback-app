@@ -1,7 +1,8 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import { ProductRequest, dataStyle } from '../page/style';
+import axios from 'axios';
 
 function Feedback({item,setFilterInfo,filterInfo,dataInfo,setDataInfo}:any) {
     const [upVote, setUpVote] = useState<boolean>(false);
@@ -75,9 +76,7 @@ function Feedback({item,setFilterInfo,filterInfo,dataInfo,setDataInfo}:any) {
                     <div className="flex flex-row items-center justify-between gap-1">
                       <img src="./assets/shared/icon-comments.svg" alt="" />
                       <p className="text-[#3a4374] text-[13px] tracking-[0.18px] font-bold">
-                        {Array.isArray(item.comments)
-                          ? item.comments.length
-                          : 0}
+                        {item.commentNo}
                       </p>
                     </div>
                   </div>
