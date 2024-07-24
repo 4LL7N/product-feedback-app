@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { Context } from "./Context";
 import Header from "./Header";
 import Select, { components } from "react-select";
-import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { ProductRequest, dataStyle } from "./style";
 import Feedback from "../Components/Feedback";
 import axios from "axios";
@@ -11,38 +17,38 @@ function Suggestion() {
   const context = Context();
   const [filterInfo, setFilterInfo] = useState<ProductRequest[]>();
   const [selectedOption, setSelectedOption] = useState<string>("Most Upvotes");
-  const [dataInfo, setDataInfo] = useState<any>()
-  const location = useLocation()
-  const navigate = useNavigate()
+  const [dataInfo, setDataInfo] = useState<any>();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-
-  let search = location.search || "?sort=-upvotes"
+  let search = location.search || "?sort=-upvotes";
 
   // useEffect(() => {
   //   const LocalStorageData: any = localStorage.getItem("data");
   //   setDataInfo(JSON.parse(LocalStorageData));
   //   // console.log(window.location.href.split('?')[1]);
-    
+
   // },[])
-  async function getFeedback(){
+  async function getFeedback() {
     try {
-      const response = await axios.get(`https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks${search}`);
+      const response = await axios.get(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks${search}`
+      );
       // console.log(response.data.data.doc);
-      setDataInfo(await response.data.data.doc)
+      setDataInfo(await response.data.data.doc);
     } catch (error) {
       console.error(error);
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     // console.log('render');
-    
-    getFeedback()
-  },[search])
+
+    getFeedback();
+  }, [search]);
 
   // console.log(dataInfo?.length);
   // console.log(dataInfo);
-  
-  
+
   // useEffect(() => {
   //   console.log(typeof dataInfo);
   //   if( dataInfo){
@@ -75,7 +81,7 @@ function Suggestion() {
   //     default:
   //       break;
   //   }
-  
+
   //   setFilterInfo(updatedData);
   // }
   // }, [
@@ -119,30 +125,53 @@ function Suggestion() {
     );
   };
 
-  const handleSelectChange = async (selectedOption: any) => {    
-    switch (selectedOption.value) {
-          case "Most Upvotes":
-            navigate('/?sort=-upvotes')
-            break;
-          case "Least Upvotes":
-            navigate('/?sort=upvotes')
-            break;
-          case "Most Comments":
-            navigate('/?sort=-commentNo')
-            break;
-          case "Least Comments":
-            // newData = newData.sort(
-            //   (a:ProductRequest, b:ProductRequest) => (a.comments?.length || 0) - (b.comments?.length || 0)
-            // );
-            navigate('/?sort=commentNo')
-            break;
-          default:
-            break;
-        }
-  };
+  const handleSelectChange = async (selectedOption: any) => {
+    let search: string[] = location.search.slice(1).split("&");
+    let sortValue: string|String[]
+    const sortHandle = (sort:string) => {
+      console.log(search);
+      
+      search.forEach((el, i) => {
+      if (el.startsWith("sort")) {
+        sortValue = el.split('=')
+        sortValue[1] = sort
+        sortValue = sortValue.join('=')
+        search[i]=sortValue      }
+    });
+    console.log(search);
+    const path = search.join('&')
+    return path
+  }
 
-  
-  
+    switch (selectedOption.value) {
+      case "Most Upvotes":
+        console.log(location);
+        console.log(sortHandle('-upvotes'));
+        
+        navigate(`/?${sortHandle('-upvotes')}`);
+        break;
+      case "Least Upvotes":
+        console.log(location);
+        console.log(sortHandle('upvotes'));
+        navigate(`/?${sortHandle('upvotes')}`);
+        break;
+      case "Most Comments":
+        console.log(location);
+        console.log(sortHandle('-commentNo'));
+        navigate(`/?${sortHandle('-commentNo')}`);
+        break;
+      case "Least Comments":
+        // newData = newData.sort(
+        //   (a:ProductRequest, b:ProductRequest) => (a.comments?.length || 0) - (b.comments?.length || 0)
+        // );
+        console.log(location);
+        console.log(sortHandle('commentNo'));
+        navigate(`/?${sortHandle('commentNo')}`);
+        break;
+      default:
+        break;
+    }
+  };
 
   const getOptionLabel = (option: any) => option.label;
   const customStyles = {
@@ -183,8 +212,6 @@ function Suggestion() {
     }),
   };
 
-  
-
   return (
     <article className=" md:flex md:flex-col md:justify-center md:items-center  lg:flex-row  lg:items-start lg:mt-14 lg:gap-[30px] ">
       <Header />
@@ -194,7 +221,8 @@ function Suggestion() {
             <div className="hidden md:flex flex-row items-center justify-between gap-4 mr-8">
               <img src="./assets/suggestions/icon-suggestions.svg" alt="" />
               <div className=" flex flex-row items-center justify-between gap-1 text-[18px] font-normal tracking-[-0.25px] text-white">
-                <p className="w-4">{dataInfo?.length}</p> <p className="ml-[5px]" >Suggestions</p>
+                <p className="w-4">{dataInfo?.length}</p>{" "}
+                <p className="ml-[5px]">Suggestions</p>
               </div>
             </div>
             <p className=" text-[13px] font-light text-[#f2f4fe]">Sort by : </p>
@@ -216,8 +244,15 @@ function Suggestion() {
 
         {(dataInfo ?? []).length > 0 ? (
           <section className="flex flex-col items-center justify-between gap-4  p-6 md:w-[700px] md:px-0  ">
-            {dataInfo?.map((item: any,i:number) => (
-              <Feedback key={i} item={item} filterInfo={filterInfo} setFilterInfo={setFilterInfo} dataInfo={dataInfo} setDataInfo={setDataInfo} />
+            {dataInfo?.map((item: any, i: number) => (
+              <Feedback
+                key={i}
+                item={item}
+                filterInfo={filterInfo}
+                setFilterInfo={setFilterInfo}
+                dataInfo={dataInfo}
+                setDataInfo={setDataInfo}
+              />
             ))}
           </section>
         ) : (
