@@ -127,46 +127,32 @@ function Suggestion() {
 
   const handleSelectChange = async (selectedOption: any) => {
     let search: string[] = location.search.slice(1).split("&");
-    let sortValue: string|String[]
-    const sortHandle = (sort:string) => {
-      console.log(search);
-      
+    let sortValue: string | String[];
+    const sortHandle = (sort: string) => {
       search.forEach((el, i) => {
-      if (el.startsWith("sort")) {
-        sortValue = el.split('=')
-        sortValue[1] = sort
-        sortValue = sortValue.join('=')
-        search[i]=sortValue      }
-    });
-    console.log(search);
-    const path = search.join('&')
-    return path
-  }
+        if (el.startsWith("sort")) {
+          sortValue = el.split("=");
+          sortValue[1] = sort;
+          sortValue = sortValue.join("=");
+          search[i] = sortValue;
+        }
+      });
+      const path = search.join("&");
+      return path;
+    };
 
     switch (selectedOption.value) {
       case "Most Upvotes":
-        console.log(location);
-        console.log(sortHandle('-upvotes'));
-        
-        navigate(`/?${sortHandle('-upvotes')}`);
+        navigate(`/?${sortHandle("-upvotes")}`);
         break;
       case "Least Upvotes":
-        console.log(location);
-        console.log(sortHandle('upvotes'));
-        navigate(`/?${sortHandle('upvotes')}`);
+        navigate(`/?${sortHandle("upvotes")}`);
         break;
       case "Most Comments":
-        console.log(location);
-        console.log(sortHandle('-commentNo'));
-        navigate(`/?${sortHandle('-commentNo')}`);
+        navigate(`/?${sortHandle("-commentNo")}`);
         break;
       case "Least Comments":
-        // newData = newData.sort(
-        //   (a:ProductRequest, b:ProductRequest) => (a.comments?.length || 0) - (b.comments?.length || 0)
-        // );
-        console.log(location);
-        console.log(sortHandle('commentNo'));
-        navigate(`/?${sortHandle('commentNo')}`);
+        navigate(`/?${sortHandle("commentNo")}`);
         break;
       default:
         break;
@@ -206,9 +192,6 @@ function Suggestion() {
       // Adjust the width of the dropdown list
       ...provided,
       width: "200px",
-      // "@media (min-width: 768px)": {
-      //   width: "255px", // Tablet version width
-      // },
     }),
   };
 
