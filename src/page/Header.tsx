@@ -90,7 +90,6 @@ function Header() {
                 <button
                   onClick={() => {
                     if (item === "ALL") {
-                      console.log(location);
                       let search:string[]|string = location.search.slice(1).split('&')
                       let index:number|null = null
                       search.forEach((el,i) => {

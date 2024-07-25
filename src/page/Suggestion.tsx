@@ -1,94 +1,42 @@
 import { useEffect, useState } from "react";
-import { Context } from "./Context";
 import Header from "./Header";
 import Select, { components } from "react-select";
 import {
   Link,
-  Navigate,
   useLocation,
   useNavigate,
-  useParams,
 } from "react-router-dom";
-import { ProductRequest, dataStyle } from "./style";
+import { ProductRequest} from "./style";
 import Feedback from "../Components/Feedback";
 import axios from "axios";
 
 function Suggestion() {
-  const context = Context();
   const [filterInfo, setFilterInfo] = useState<ProductRequest[]>();
-  const [selectedOption, setSelectedOption] = useState<string>("Most Upvotes");
   const [dataInfo, setDataInfo] = useState<any>();
   const location = useLocation();
   const navigate = useNavigate();
 
   let search = location.search || "?sort=-upvotes";
 
-  // useEffect(() => {
-  //   const LocalStorageData: any = localStorage.getItem("data");
-  //   setDataInfo(JSON.parse(LocalStorageData));
-  //   // console.log(window.location.href.split('?')[1]);
+  // window.addEventListener('load', () => {
+  //   navigate('')
+  // })
 
-  // },[])
   async function getFeedback() {
     try {
       const response = await axios.get(
         `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks${search}`
-      );
-      // console.log(response.data.data.doc);
+      );;
       setDataInfo(await response.data.data.doc);
     } catch (error) {
       console.error(error);
     }
   }
   useEffect(() => {
-    // console.log('render');
-
+    console.log('render');
+    
     getFeedback();
   }, [search]);
-
-  // console.log(dataInfo?.length);
-  // console.log(dataInfo);
-
-  // useEffect(() => {
-  //   console.log(typeof dataInfo);
-  //   if( dataInfo){
-  //   const filteredData = dataInfo?.filter((item: any) =>
-  //     item.category.includes(context.filterCategory.toLowerCase())
-  //   );
-
-  //   let updatedData = [...dataInfo];
-
-  //   switch (selectedOption) {
-  //     case "Most Upvotes":
-  //       updatedData = updatedData.sort((a, b) => b.upvotes - a.upvotes);
-  //       search = "?sort=-upvotes"
-  //       break;
-  //     case "Least Upvotes":
-  //       updatedData = updatedData.sort((a, b) => a.upvotes - b.upvotes);
-  //       search = "?sort=upvotes"
-  //       break;
-  //     case "Most Comments":
-  //       updatedData = updatedData.sort(
-  //         (a, b) => (b.comments?.length || 0) - (a.comments?.length || 0)
-  //       );
-  //       search = "?sort=upvotes"
-  //       break;
-  //     case "Least Comments":
-  //       updatedData = updatedData.sort(
-  //         (a, b) => (a.comments?.length || 0) - (b.comments?.length || 0)
-  //       );
-  //       break;
-  //     default:
-  //       break;
-  //   }
-
-  //   setFilterInfo(updatedData);
-  // }
-  // }, [
-  //   selectedOption,
-  //   context.filterCategory,
-  //   dataInfo
-  // ]);
 
   const options: any[] = [
     {
@@ -126,21 +74,32 @@ function Suggestion() {
   };
 
   const handleSelectChange = async (selectedOption: any) => {
+    console.log("asd");
+    
     let search: string[] = location.search.slice(1).split("&");
     let sortValue: string | String[];
+    let noSort = true
     const sortHandle = (sort: string) => {
-      search.forEach((el, i) => {
-        if (el.startsWith("sort")) {
-          sortValue = el.split("=");
-          sortValue[1] = sort;
-          sortValue = sortValue.join("=");
-          search[i] = sortValue;
+        search.forEach((el, i) => {
+          if (el.startsWith("sort")) {
+            sortValue = el.split("=");
+            sortValue[1] = sort;
+            sortValue = sortValue.join("=");
+            search[i] = sortValue;
+            noSort = false
+          }
+        });
+        if(noSort){
+          search.push(`sort=${sort}`)
         }
-      });
+      console.log(search);
+      
       const path = search.join("&");
+      console.log(path);
+      
       return path;
     };
-
+    
     switch (selectedOption.value) {
       case "Most Upvotes":
         navigate(`/?${sortHandle("-upvotes")}`);
