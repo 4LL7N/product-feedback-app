@@ -120,7 +120,6 @@ function FeedbackDetails() {
   // useEffect(() => {
     const vote = () => {
       let votes: number|any = feedback?.upvotes;
-      console.log(upVote, " 1");
 
       if (!upVote && votes) {
         votes += 1;
