@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SetStateAction, useEffect, useState } from "react";
 import { Comment, ProductRequest, User, dataStyle } from "./style";
 import Commentreply from "../Components/Commentreply";
-
+import axios from "axios";
 
 function FeedbackDetails() {
   const params = useParams<{ feedbackdetails: string }>();
@@ -16,6 +16,30 @@ function FeedbackDetails() {
   const [comErr, setComErr] = useState<boolean>(false);
 
   const [text, setText] = useState("");
+
+  async function getFeedback() {
+    try {
+      const response = await axios.get(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`
+      );
+      setFeedback(await response.data.data.doc);
+      console.log(await response.data.data.doc);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function updateFeedback(body:object) {
+    try {
+      const response = await axios.patch(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`,
+        body
+      );
+      // console.log(await response.data.data.doc);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleChange = (event: {
     target: { value: SetStateAction<string> };
@@ -87,59 +111,71 @@ function FeedbackDetails() {
     }
   };
 
-  let store: any;
-  localStorage && localStorage.getItem("data")
-    ? (store = localStorage.getItem("data"))
-    : null;
-  console.log(JSON.parse(store));
+  // let store: any;
+  // localStorage && localStorage.getItem("data")
+  //   ? (store = localStorage.getItem("data"))
+  //   : null;
+  // console.log(JSON.parse(store));
 
-  useEffect(() => {
-    let votes = feedback?.upvotes;
+  // useEffect(() => {
+    const vote = () => {
+      let votes: number|any = feedback?.upvotes;
+      console.log(upVote, " 1");
 
-    if (upVote && votes) {
-      votes += 1;
-    } else if (votes) {
-      votes -= 1;
-    }
-    let newfeedback: any = {
-      id: feedback?.id,
-      title: feedback?.title,
-      category: feedback?.category,
-      upvotes: votes,
-      status: feedback?.status,
-      description: feedback?.description,
-      comments: [...(feedback?.comments ?? [])],
-    };
-    setFeedback(newfeedback);
-    if (productRequests) {
-      for (let i = 0; i < productRequests?.length; i++) {
-        if (productRequests[i].id === Number(params.feedbackdetails)) {
-          let posts = productRequests;
-          newfeedback ? (posts[i] = newfeedback) : null;
-          let newdata = {
-            currentUser: user,
-            productRequests: posts,
-          };
-          localStorage.setItem("data", JSON.stringify(newdata));
-        }
+      if (!upVote && votes) {
+        votes += 1;
+      } else if (votes) {
+        votes -= 1;
       }
+
+      let Feedback = feedback
+      Feedback ? Feedback['upvotes'] = votes:null
+      
+      updateFeedback({upvotes:votes})
+      setFeedback(Feedback)
     }
-  }, [upVote]);
+    // console.log(votes, " 2");
+
+    // let newfeedback: any = {
+    //   id: feedback?.id,
+    //   title: feedback?.title,
+    //   category: feedback?.category,
+    //   upvotes: votes,
+    //   status: feedback?.status,
+    //   description: feedback?.description,
+    //   comments: [...(feedback?.comments ?? [])],
+    // };
+    // setFeedback(newfeedback);
+    // if (productRequests) {
+    //   for (let i = 0; i < productRequests?.length; i++) {
+    //     if (productRequests[i].id === Number(params.feedbackdetails)) {
+    //       let posts = productRequests;
+    //       newfeedback ? (posts[i] = newfeedback) : null;
+    //       let newdata = {
+    //         currentUser: user,
+    //         productRequests: posts,
+    //       };
+    //       localStorage.setItem("data", JSON.stringify(newdata));
+    //     }
+    //   }
+    // }
+  // }, [upVote]);
 
   useEffect(() => {
-    let datastr = localStorage.getItem("data");
-    let data: dataStyle = datastr ? JSON.parse(datastr) : null;
-    setUser(data.currentUser);
-    setProductRequests(data.productRequests);
+    // let datastr = localStorage.getItem("data");
+    // let data: dataStyle = datastr ? JSON.parse(datastr) : null;
+    // setUser(data.currentUser);
+    // setProductRequests(data.productRequests);
     // console.log(data.productRequests);
 
-    let Post;
-    for (let i = 0; i < data?.productRequests?.length; i++) {
-      if (data?.productRequests[i].id === Number(params.feedbackdetails)) {
-        Post = data?.productRequests[i];
-      }
-    }
-    setFeedback(Post);
+    // let Post;
+    // for (let i = 0; i < data?.productRequests?.length; i++) {
+    // if (data?.productRequests[i].id === Number(params.feedbackdetails)) {
+    // Post = data?.productRequests[i];
+    // }
+    // }
+    // setFeedback(Post);
+    getFeedback();
   }, []);
 
   return (
@@ -189,7 +225,7 @@ function FeedbackDetails() {
               className={`hidden md:flex items-center gap-[10px] ${
                 upVote ? "bg-[#cfd7ff]" : "bg-[#f2f4fe] hover:bg-[#f2f4fe80] "
               } rounded-[10px] pl-[16px] pr-[13px] py-[7px] h-fit `}
-              onClick={() => setUpVote(!upVote)}
+              onClick={() => {setUpVote(!upVote),vote()}}
             >
               <img
                 className="w-[8px] h-[6px] "
@@ -254,7 +290,7 @@ function FeedbackDetails() {
               return (
                 <>
                   <Commentreply
-                    key={index}
+                    key={index * 14}
                     user={user}
                     item={item}
                     index={index}
