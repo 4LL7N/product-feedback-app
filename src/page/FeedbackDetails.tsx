@@ -16,7 +16,8 @@ function FeedbackDetails() {
   const [comErr, setComErr] = useState<boolean>(false);
 
   const [text, setText] = useState("");
-
+  console.log('render');
+  
   async function getFeedback() {
     try {
       const response = await axios.get(
@@ -40,6 +41,8 @@ function FeedbackDetails() {
       console.error(error);
     }
   }
+
+  
 
   const handleChange = (event: {
     target: { value: SetStateAction<string> };

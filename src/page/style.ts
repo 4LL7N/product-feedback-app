@@ -26,7 +26,7 @@ export interface ProductRequest {
   upvotes: number;
   status: string;
   description: string;
-  comments?: Comment[];
+  comments?: Comment[]|any;
 }
 
 export interface dataStyle {
@@ -41,15 +41,6 @@ export interface Reply {
   user: User;
 }
 
-export interface ProductRequest {
-  id: number;
-  title: string;
-  category: string;
-  upvotes: number;
-  status: string;
-  description: string;
-  comments?: Comment[];
-}
 
 export interface dataStyle {
   currentUser: User;

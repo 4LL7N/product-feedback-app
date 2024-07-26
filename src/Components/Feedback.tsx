@@ -1,8 +1,7 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import { ProductRequest, dataStyle } from '../page/style';
-import axios from 'axios';
 
 function Feedback({item,setFilterInfo,filterInfo,dataInfo,setDataInfo}:any) {
     const [upVote, setUpVote] = useState<boolean>(false);
