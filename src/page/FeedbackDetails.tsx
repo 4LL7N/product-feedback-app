@@ -163,6 +163,78 @@ function FeedbackDetails() {
     // }
   // }, [upVote]);
 
+  async function addReply(body:object) {
+    try {
+      const response = await axios.post(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/replies`,
+        body
+      );
+      console.log(await response.data.data.doc);
+      return await response.data.data.doc
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  
+  async function reply(replyText:React.RefObject<HTMLTextAreaElement>,comId:number,replyTo:string|undefined,comErr:boolean,setComErr:(comErr:boolean)=> void){
+
+    if(replyText.current?.value == ""){
+
+      setComErr(true)
+
+    }else{
+
+    // let newComments: Comment[] | undefined = [...(feedback.comments ?? [])];
+
+    // let Com: Comment | undefined = feedback?.comments?.find((item) => {
+    //   return item.id == comId;
+    // });
+
+    let newReply = {
+      content:replyText.current?.value,
+      replyingTo:replyTo,
+      commentOn:comId.toString()
+    }
+    // console.log(newReply);
+    
+    const replyDoc = await addReply(newReply)
+    // console.log(replyDoc);
+    
+    // console.log(comId);
+    // console.log(feedback);
+    
+    let newFeedback = feedback
+    console.log(newFeedback," newFeedback");
+    let newComments = feedback?.comments
+    console.log(newComments," newComments");
+    let oneComment:Comment|undefined 
+    newComments.forEach((item:Comment) => {if(item.id == comId) oneComment = item })
+    console.log(oneComment);
+      
+    // console.log(feedback?.comments[comId]?.replies," feedback?.comments?.replies");
+    let newReplies = oneComment?.replies || []
+    console.log(newReplies,"newReplies");
+    
+
+    // // // let newReplies: replies[] = [...(Com?.replies ?? [])];
+
+    newReplies?.push(replyDoc);
+    newComments.forEach((item:Comment) => {
+      if(item.id == comId){
+        item.replies = newReplies
+      }
+    })
+    newFeedback?newFeedback.comments = newComments : null
+    // console.log(newFeedback);
+    
+    setFeedback(newFeedback)
+    
+    
+    
+    }
+  };
+
   useEffect(() => {
     // let datastr = localStorage.getItem("data");
     // let data: dataStyle = datastr ? JSON.parse(datastr) : null;
@@ -289,6 +361,8 @@ function FeedbackDetails() {
                 : "Comment"}{" "}
             </h2>
             {feedback?.comments?.map((item: Comment, index: number) => {
+              
+              
               return (
                 <>
                   <Commentreply
@@ -299,6 +373,7 @@ function FeedbackDetails() {
                     feedback={feedback}
                     setFeedback={setFeedback}
                     productRequests={productRequests}
+                    reply={reply}
                   />
                 </>
               );

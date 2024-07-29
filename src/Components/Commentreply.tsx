@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Comment, CommentReplyStyle, replies } from "../page/style";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -9,7 +9,8 @@ function Commentreply({
   feedback,
   setFeedback,
   user,
-  productRequests
+  productRequests,
+  reply
 }: CommentReplyStyle) {
   const [commnetReply, setCommnetReply] = useState<boolean>(false);
   const [replyTo, setReplyTo] = useState<string>();
@@ -17,110 +18,112 @@ function Commentreply({
   const [comId, setComId] = useState<number>(0);
   const params = useParams<{ feedbackdetails: string }>();
   const [comErr, setComErr] = useState<boolean>(false);
+  const [render, setRender] = useState<boolean>(false);
   
-  console.log("render");
   
+  
+  // console.log(comId);
 
-  async function addReply(body:object) {
-    try {
-      const response = await axios.post(
-        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/replies`,
-        body
-      );
-      console.log(await response.data.data.doc);
-      return await response.data.data.doc
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // async function addReply(body:object) {
+  //   try {
+  //     const response = await axios.post(
+  //       `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/replies`,
+  //       body
+  //     );
+  //     console.log(await response.data.data.doc);
+  //     return await response.data.data.doc
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
+  
+  // const reply =async () => {
 
-  const reply =async () => {
+  //   if(replyText.current?.value == ""){
 
-    if(replyText.current?.value == ""){
+  //     setComErr(true)
 
-      setComErr(true)
+  //   }else{
 
-    }else{
+  //   // let newComments: Comment[] | undefined = [...(feedback.comments ?? [])];
 
-    // let newComments: Comment[] | undefined = [...(feedback.comments ?? [])];
+  //   // let Com: Comment | undefined = feedback?.comments?.find((item) => {
+  //   //   return item.id == comId;
+  //   // });
 
-    // let Com: Comment | undefined = feedback?.comments?.find((item) => {
-    //   return item.id == comId;
-    // });
-
-    let newReply = {
-      content:replyText.current?.value,
-      replyingTo:replyTo,
-      commentOn:comId.toString()
-    }
-    console.log(newReply);
+  //   let newReply = {
+  //     content:replyText.current?.value,
+  //     replyingTo:replyTo,
+  //     commentOn:comId.toString()
+  //   }
+  //   console.log(newReply);
     
-    const replyDoc = await addReply(newReply)
-    console.log(replyDoc);
+  //   const replyDoc = await addReply(newReply)
+  //   console.log(replyDoc);
     
-    // console.log(comId);
-    // console.log(feedback);
+  //   // console.log(comId);
+  //   // console.log(feedback);
     
-    let newFeedback = feedback
-    // console.log(newFeedback);
-    let newComments = feedback.comments
-    // console.log(newComments);
-    let newReplies = feedback.comments?.replies || []
-    // console.log(newReplies);
-    
-
-    // let newReplies: replies[] = [...(Com?.replies ?? [])];
-
-    newReplies?.push(newReply);
-    newComments.forEach((item:Comment) => {
-      if(item.id == comId){
-        item.replies = newReplies
-      }
-    })
-    newFeedback.comments = newComments
-    console.log(newFeedback);
-    
-    setFeedback(newFeedback)
-    // new
+  //   let newFeedback = feedback
+  //   // console.log(newFeedback);
+  //   let newComments = feedback.comments
+  //   // console.log(newComments);
+  //   let newReplies = feedback.comments?.replies || []
+  //   // console.log(newReplies);
     
 
-    // if (feedback?.comments) {
-    //   for (let i = 0; i < feedback?.comments?.length; i++) {
-    //     if (feedback.comments[i].id == comId) {
-    //       // newComments[i]["replies"] = newReplies;
-    //     }
-    //   }
-    // }
+  //   // let newReplies: replies[] = [...(Com?.replies ?? [])];
 
-    // let newFeedback = {
-    //   id: feedback.id,
-    //   title: feedback.title,
-    //   category: feedback.category,
-    //   upvotes: feedback.upvotes,
-    //   status: feedback.status,
-    //   description: feedback.description,
-    //   // comments: [...(newComments ?? [])],
-    // };
-
-    // setFeedback(newFeedback);
-    // if (productRequests) {
-    //   for (let i = 0; i < productRequests?.length; i++) {
-    //     if(productRequests[i].id === Number(params.feedbackdetails)){
-    //       let posts = productRequests
-    //          newFeedback? posts[i] = newFeedback:null
-    //         let newdata = {
-    //           currentUser:user,
-    //           productRequests:posts
-    //         }
-    //         localStorage.setItem("data",JSON.stringify(newdata))
-    //     }
-    //   }
-    // }
-    setComErr(false)
+  //   newReplies?.push(newReply);
+  //   newComments.forEach((item:Comment) => {
+  //     if(item.id == comId){
+  //       item.replies = newReplies
+  //     }
+  //   })
+  //   newFeedback.comments = newComments
+  //   console.log(newFeedback);
     
-    }
-  };
+  //   setFeedback(newFeedback)
+  //   // new
+    
+
+  //   // if (feedback?.comments) {
+  //   //   for (let i = 0; i < feedback?.comments?.length; i++) {
+  //   //     if (feedback.comments[i].id == comId) {
+  //   //       // newComments[i]["replies"] = newReplies;
+  //   //     }
+  //   //   }
+  //   // }
+
+  //   // let newFeedback = {
+  //   //   id: feedback.id,
+  //   //   title: feedback.title,
+  //   //   category: feedback.category,
+  //   //   upvotes: feedback.upvotes,
+  //   //   status: feedback.status,
+  //   //   description: feedback.description,
+  //   //   // comments: [...(newComments ?? [])],
+  //   // };
+
+  //   // setFeedback(newFeedback);
+  //   // if (productRequests) {
+  //   //   for (let i = 0; i < productRequests?.length; i++) {
+  //   //     if(productRequests[i].id === Number(params.feedbackdetails)){
+  //   //       let posts = productRequests
+  //   //          newFeedback? posts[i] = newFeedback:null
+  //   //         let newdata = {
+  //   //           currentUser:user,
+  //   //           productRequests:posts
+  //   //         }
+  //   //         localStorage.setItem("data",JSON.stringify(newdata))
+  //   //     }
+  //   //   }
+  //   // }
+  //   setComErr(false)
+    
+  //   }
+  // };
 
   return (
     <>
@@ -171,10 +174,12 @@ function Commentreply({
             }
           />
           <div className="ml-[23px] md:ml-[43px] md:mt-[8px] w-[100%] ">
-            {item.replies?.map((items: replies) => {
+            {item.replies?.map((items: replies,i:number) => {
+              
+              
               return (
                 <>
-                  <div className="flex items-center justify-between w-[100%]  mt-[24px]">
+                  <div key={i} className="flex items-center justify-between w-[100%]  mt-[24px]">
                     <div className="flex gap-[16px] md:gap-[32px] ">
                       <img
                         className="w-[40px] h-[40px] rounded-[50%] cursor-pointer "
@@ -196,7 +201,7 @@ function Commentreply({
                         setCommnetReply(!commnetReply);
                         commnetReply?setComErr(false):null
                         setReplyTo(items.user?.username);
-                        // item.id ? setComId(item?.id) : null;
+                        item.id ? setComId(item?.id) : null;
                       }}
                     >
                       Reply
@@ -233,7 +238,12 @@ function Commentreply({
           </div>
           <button
             className="px-[16px] py-[10.5px] bg-[#ad1fea] hover:bg-[#ad1fea80] rounded-[10px] h-fit "
-            onClick={reply}
+            onClick={()=>{
+              reply(replyText,comId,replyTo,comErr,setComErr)
+              // setComErr(false)
+              setTimeout(() => {setRender(!render),console.log("render");
+              },1500)
+            }}
           >
             <p className="text-[#f2f4fe] text-[13px] font-bold ">Reply</p>
           </button>

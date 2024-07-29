@@ -54,7 +54,8 @@ export interface CommentReplyStyle {
   feedback: ProductRequest;
   setFeedback: (feedback: ProductRequest) => void;
   user: User | undefined;
-  productRequests:ProductRequest[]|null
+  productRequests:ProductRequest[]|null,
+  reply:(replyText:React.RefObject<HTMLTextAreaElement>,comId:number,replyTo:string|undefined,comErr:boolean,setComErr:(comErr:boolean)=> void)=>void
 }
 
 
