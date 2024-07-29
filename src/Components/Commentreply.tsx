@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { Comment, CommentReplyStyle, replies } from "../page/style";
+import {  useRef, useState } from "react";
+import { CommentReplyStyle, replies } from "../page/style";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 function Commentreply({
   item,
@@ -19,111 +18,6 @@ function Commentreply({
   const params = useParams<{ feedbackdetails: string }>();
   const [comErr, setComErr] = useState<boolean>(false);
   const [render, setRender] = useState<boolean>(false);
-  
-  
-  
-  // console.log(comId);
-
-  // async function addReply(body:object) {
-  //   try {
-  //     const response = await axios.post(
-  //       `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/replies`,
-  //       body
-  //     );
-  //     console.log(await response.data.data.doc);
-  //     return await response.data.data.doc
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
-  
-  // const reply =async () => {
-
-  //   if(replyText.current?.value == ""){
-
-  //     setComErr(true)
-
-  //   }else{
-
-  //   // let newComments: Comment[] | undefined = [...(feedback.comments ?? [])];
-
-  //   // let Com: Comment | undefined = feedback?.comments?.find((item) => {
-  //   //   return item.id == comId;
-  //   // });
-
-  //   let newReply = {
-  //     content:replyText.current?.value,
-  //     replyingTo:replyTo,
-  //     commentOn:comId.toString()
-  //   }
-  //   console.log(newReply);
-    
-  //   const replyDoc = await addReply(newReply)
-  //   console.log(replyDoc);
-    
-  //   // console.log(comId);
-  //   // console.log(feedback);
-    
-  //   let newFeedback = feedback
-  //   // console.log(newFeedback);
-  //   let newComments = feedback.comments
-  //   // console.log(newComments);
-  //   let newReplies = feedback.comments?.replies || []
-  //   // console.log(newReplies);
-    
-
-  //   // let newReplies: replies[] = [...(Com?.replies ?? [])];
-
-  //   newReplies?.push(newReply);
-  //   newComments.forEach((item:Comment) => {
-  //     if(item.id == comId){
-  //       item.replies = newReplies
-  //     }
-  //   })
-  //   newFeedback.comments = newComments
-  //   console.log(newFeedback);
-    
-  //   setFeedback(newFeedback)
-  //   // new
-    
-
-  //   // if (feedback?.comments) {
-  //   //   for (let i = 0; i < feedback?.comments?.length; i++) {
-  //   //     if (feedback.comments[i].id == comId) {
-  //   //       // newComments[i]["replies"] = newReplies;
-  //   //     }
-  //   //   }
-  //   // }
-
-  //   // let newFeedback = {
-  //   //   id: feedback.id,
-  //   //   title: feedback.title,
-  //   //   category: feedback.category,
-  //   //   upvotes: feedback.upvotes,
-  //   //   status: feedback.status,
-  //   //   description: feedback.description,
-  //   //   // comments: [...(newComments ?? [])],
-  //   // };
-
-  //   // setFeedback(newFeedback);
-  //   // if (productRequests) {
-  //   //   for (let i = 0; i < productRequests?.length; i++) {
-  //   //     if(productRequests[i].id === Number(params.feedbackdetails)){
-  //   //       let posts = productRequests
-  //   //          newFeedback? posts[i] = newFeedback:null
-  //   //         let newdata = {
-  //   //           currentUser:user,
-  //   //           productRequests:posts
-  //   //         }
-  //   //         localStorage.setItem("data",JSON.stringify(newdata))
-  //   //     }
-  //   //   }
-  //   // }
-  //   setComErr(false)
-    
-  //   }
-  // };
 
   return (
     <>
@@ -240,7 +134,6 @@ function Commentreply({
             className="px-[16px] py-[10.5px] bg-[#ad1fea] hover:bg-[#ad1fea80] rounded-[10px] h-fit "
             onClick={()=>{
               reply(replyText,comId,replyTo,comErr,setComErr)
-              // setComErr(false)
               setTimeout(() => {setRender(!render),console.log("render");
               },1500)
             }}

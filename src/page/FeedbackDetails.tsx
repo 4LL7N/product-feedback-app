@@ -114,13 +114,6 @@ function FeedbackDetails() {
     }
   };
 
-  // let store: any;
-  // localStorage && localStorage.getItem("data")
-  //   ? (store = localStorage.getItem("data"))
-  //   : null;
-  // console.log(JSON.parse(store));
-
-  // useEffect(() => {
     const vote = () => {
       let votes: number|any = feedback?.upvotes;
 
@@ -136,32 +129,6 @@ function FeedbackDetails() {
       updateFeedback({upvotes:votes})
       setFeedback(Feedback)
     }
-    // console.log(votes, " 2");
-
-    // let newfeedback: any = {
-    //   id: feedback?.id,
-    //   title: feedback?.title,
-    //   category: feedback?.category,
-    //   upvotes: votes,
-    //   status: feedback?.status,
-    //   description: feedback?.description,
-    //   comments: [...(feedback?.comments ?? [])],
-    // };
-    // setFeedback(newfeedback);
-    // if (productRequests) {
-    //   for (let i = 0; i < productRequests?.length; i++) {
-    //     if (productRequests[i].id === Number(params.feedbackdetails)) {
-    //       let posts = productRequests;
-    //       newfeedback ? (posts[i] = newfeedback) : null;
-    //       let newdata = {
-    //         currentUser: user,
-    //         productRequests: posts,
-    //       };
-    //       localStorage.setItem("data", JSON.stringify(newdata));
-    //     }
-    //   }
-    // }
-  // }, [upVote]);
 
   async function addReply(body:object) {
     try {
@@ -185,39 +152,19 @@ function FeedbackDetails() {
 
     }else{
 
-    // let newComments: Comment[] | undefined = [...(feedback.comments ?? [])];
-
-    // let Com: Comment | undefined = feedback?.comments?.find((item) => {
-    //   return item.id == comId;
-    // });
-
     let newReply = {
       content:replyText.current?.value,
       replyingTo:replyTo,
       commentOn:comId.toString()
     }
-    // console.log(newReply);
     
-    const replyDoc = await addReply(newReply)
-    // console.log(replyDoc);
-    
-    // console.log(comId);
-    // console.log(feedback);
+    const replyDoc = await addReply(newReply)    
     
     let newFeedback = feedback
-    console.log(newFeedback," newFeedback");
     let newComments = feedback?.comments
-    console.log(newComments," newComments");
     let oneComment:Comment|undefined 
-    newComments.forEach((item:Comment) => {if(item.id == comId) oneComment = item })
-    console.log(oneComment);
-      
-    // console.log(feedback?.comments[comId]?.replies," feedback?.comments?.replies");
+    newComments.forEach((item:Comment) => {if(item.id == comId) oneComment = item })      
     let newReplies = oneComment?.replies || []
-    console.log(newReplies,"newReplies");
-    
-
-    // // // let newReplies: replies[] = [...(Com?.replies ?? [])];
 
     newReplies?.push(replyDoc);
     newComments.forEach((item:Comment) => {
@@ -226,12 +173,9 @@ function FeedbackDetails() {
       }
     })
     newFeedback?newFeedback.comments = newComments : null
-    // console.log(newFeedback);
     
     setFeedback(newFeedback)
-    
-    
-    
+    setComErr(false)
     }
   };
 
