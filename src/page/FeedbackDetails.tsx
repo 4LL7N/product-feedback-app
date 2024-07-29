@@ -11,12 +11,11 @@ function FeedbackDetails() {
   const [upVote, setUpVote] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
   const [productRequests, setProductRequests] = useState<
-    ProductRequest[] | null
+  ProductRequest[] | null
   >(null);
   const [comErr, setComErr] = useState<boolean>(false);
-
+  const [render, setRender] = useState<boolean>(false)
   const [text, setText] = useState("");
-  console.log('render');
   
   async function getFeedback() {
     try {
@@ -29,7 +28,7 @@ function FeedbackDetails() {
       console.error(error);
     }
   }
-
+  
   async function updateFeedback(body:object) {
     try {
       const response = await axios.patch(
@@ -41,8 +40,33 @@ function FeedbackDetails() {
       console.error(error);
     }
   }
-
   
+  async function addReply(body:object) {
+    try {
+      const response = await axios.post(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/replies`,
+        body
+      );
+      console.log(await response.data.data.doc);
+      return await response.data.data.doc
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  async function addComment(body:object) {
+    try {
+      const response = await axios.post(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/comments`,
+        body
+      );
+      console.log(await response.data.data.doc);
+      return await response.data.data.doc
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
   const handleChange = (event: {
     target: { value: SetStateAction<string> };
@@ -50,67 +74,28 @@ function FeedbackDetails() {
     setText(event.target.value);
   };
 
-  const post = () => {
+  async function post(feedbackId:number|undefined){
     if (text == "") {
       setComErr(true);
     } else {
-      let Comments = feedback?.comments;
-      let id = 0;
-      let rightnum = false;
-      if (Comments) {
-        while (!rightnum) {
-          id = Math.floor(Math.random() * 10) + 1;
-          for (let i = 0; i < Comments?.length; i++) {
-            if (id == Comments[i].id) {
-              break;
-            }
-            if (i == Comments?.length - 1) {
-              rightnum = true;
-            }
-          }
-        }
-      }
-
       let Com = {
         content: text,
-        id: id,
-        user: {
-          image: user?.image,
-          name: user?.name,
-          username: user?.username,
-        },
+        feedback:feedbackId
       };
-      Comments?.push(Com);
+      console.log(Com);
+      
+      const newComment = await addComment(Com)
+      console.log(newComment);
+      
+      let newFeedback = feedback
+      let newComments = feedback?.comments
 
-      let newfeedback: ProductRequest | undefined;
+      newComments.push(newComment)
+      newFeedback? newFeedback.comments = newComments : null
 
-      if (feedback) {
-        newfeedback = {
-          id: feedback?.id,
-          title: feedback?.title,
-          category: feedback?.category,
-          upvotes: feedback?.upvotes,
-          status: feedback?.status,
-          description: feedback?.description,
-          comments: [...(Comments ?? [])],
-        };
-      }
-
-      setFeedback(newfeedback);
-      if (productRequests) {
-        for (let i = 0; i < productRequests?.length; i++) {
-          if (productRequests[i].id === Number(params.feedbackdetails)) {
-            let posts = productRequests;
-            newfeedback ? (posts[i] = newfeedback) : null;
-            let newdata = {
-              currentUser: user,
-              productRequests: posts,
-            };
-            localStorage.setItem("data", JSON.stringify(newdata));
-          }
-        }
-      }
+      setFeedback(newFeedback)
       setText("");
+      setComErr(false)
     }
   };
 
@@ -130,18 +115,6 @@ function FeedbackDetails() {
       setFeedback(Feedback)
     }
 
-  async function addReply(body:object) {
-    try {
-      const response = await axios.post(
-        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/replies`,
-        body
-      );
-      console.log(await response.data.data.doc);
-      return await response.data.data.doc
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   
   async function reply(replyText:React.RefObject<HTMLTextAreaElement>,comId:number,replyTo:string|undefined,comErr:boolean,setComErr:(comErr:boolean)=> void){
@@ -173,7 +146,7 @@ function FeedbackDetails() {
       }
     })
     newFeedback?newFeedback.comments = newComments : null
-    
+    replyText.current? replyText.current.value = "" :null
     setFeedback(newFeedback)
     setComErr(false)
     }
@@ -349,7 +322,11 @@ function FeedbackDetails() {
               <p className="text-[#647196] text-[13px] ">250 Characters left</p>
               <button
                 className="px-[16px] py-[10.5px] bg-[#ad1fea] hover:bg-[#ad1fea80] rounded-[10px] "
-                onClick={post}
+                onClick={() => {
+                  post(feedback?.id)
+                  setTimeout(() => {setRender(!render)
+                  },2000)
+                }}
               >
                 <p className="text-[#f2f4fe] text-[13px] font-bold ">
                   Post Comment

@@ -134,8 +134,8 @@ function Commentreply({
             className="px-[16px] py-[10.5px] bg-[#ad1fea] hover:bg-[#ad1fea80] rounded-[10px] h-fit "
             onClick={()=>{
               reply(replyText,comId,replyTo,comErr,setComErr)
-              setTimeout(() => {setRender(!render),console.log("render");
-              },1500)
+              setTimeout(() => {setRender(!render)
+              },2000)
             }}
           >
             <p className="text-[#f2f4fe] text-[13px] font-bold ">Reply</p>
