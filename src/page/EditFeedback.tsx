@@ -49,7 +49,18 @@ const EditFeedback: React.FC = () => {
         `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`,
         body
       );
-      // console.log(await response.data.data.doc);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function deleteFeedback() {
+    try {
+      const response = await axios.delete(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`
+      );
+      console.log(response);
+      
     } catch (error) {
       console.error(error);
     }
@@ -78,31 +89,15 @@ const EditFeedback: React.FC = () => {
     });
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     // Implement logic to delete the current feedback
-    // For example, you can remove the feedback from localStorageData.productRequests
-
-    const updatedFeedbacks = localStorageData?.productRequests.filter(
-      (feedback) => feedback.id !== feedbackParams?.id
-    );
-
-    // Update the local storage with the updated feedbacks array
-    localStorage.setItem(
-      "data",
-      JSON.stringify({ productRequests: updatedFeedbacks })
-    );
-
+    await deleteFeedback()
     localStorage.setItem("title", "");
     localStorage.setItem("description", "");
     localStorage.setItem("category", "");
     localStorage.setItem("status", "");
-
-    // After deletion, navigate back to the suggestion page
-    // navigate("/");
+    setTimeout(() => {navigate("/")},2000);
   };
-
-  console.log(watch("title")); // watch input value by passing the name of it
-  // console.log(watch("category"));
 
   useEffect(() => {
     let title: any = localStorage.getItem("title");
