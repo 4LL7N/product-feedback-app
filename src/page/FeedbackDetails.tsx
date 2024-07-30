@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SetStateAction, useEffect, useState } from "react";
 import { Comment, ProductRequest } from "./style";
 import axios from "axios";
-import CommentReply from "../Components/CommentReply";
+import CommentReply from "../Components/Commentreply";
 
 function FeedbackDetails() {
   const params = useParams<{ feedbackdetails: string }>();
