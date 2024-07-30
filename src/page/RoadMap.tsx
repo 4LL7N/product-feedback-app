@@ -3,6 +3,7 @@ import { MdArrowBackIos } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { ProductRequest, dataStyle } from "./style";
 import RodaFeedback from "../Components/RodaFeedback";
+import axios from "axios";
 
 function RoadMap() {
   const navigate = useNavigate();
@@ -15,18 +16,30 @@ function RoadMap() {
   const [live, setLive] = useState<ProductRequest[] | undefined>();
 
   useEffect(() => {
-    let LocalStorageData: any = localStorage.getItem("data");
-    setDataInfo(JSON.parse(LocalStorageData));
-    LocalStorageData = JSON.parse(LocalStorageData);
-
-    let filterData = LocalStorageData?.productRequests?.filter(
+    let data:any
+    (async function getFeedback() {
+      try {
+        const response = await axios.get(
+          `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks`
+        );;
+        setDataInfo(response.data.data.doc);
+        data = response.data.data.doc        
+      } catch (error) {
+        console.error(error);
+      }
+    })()
+    // let LocalStorageData: any = localStorage.getItem("data");
+    // setDataInfo(JSON.parse(LocalStorageData));
+    // LocalStorageData = JSON.parse(LocalStorageData);
+    setTimeout(()=>{
+    let filterData = data?.filter(
       (items: ProductRequest) => {
         return items.status.toLowerCase() === selectedItem.toLowerCase();
       }
     );
     setFilterInfo(filterData);
 
-    let Planed = LocalStorageData?.productRequests?.filter(
+    let Planed = data?.filter(
       (items: ProductRequest) => {
         return items.status.toLowerCase() == "planned";
       }
@@ -34,20 +47,20 @@ function RoadMap() {
     setPlaned(Planed);
     
 
-    let in_progres = LocalStorageData?.productRequests?.filter(
+    let in_progres = data?.filter(
       (items: ProductRequest) => {
         return items.status.toLowerCase() == "in-progress";
       }
     );
     setInProgress(in_progres);
     
-    let Live = LocalStorageData?.productRequests?.filter(
+    let Live = data?.filter(
       (items: ProductRequest) => {
         return items.status.toLowerCase() == "live";
       }
     );
     setLive(Live);
-    
+  },1500)
   }, []);
 
   useEffect(() => {
@@ -57,9 +70,7 @@ function RoadMap() {
       }
     );
     filterData ? setFilterInfo(filterData) : null;
-    // console.log(selectedItem);
 
-    // console.log(filterData);
   }, [selectedItem]);
 
   return (
@@ -69,7 +80,7 @@ function RoadMap() {
           <div className="flex flex-row items-center justify-center gap-2">
             <MdArrowBackIos className="text-white" />
             <button
-              onClick={() => window.history.back()}
+              onClick={() => {navigate('/')}}
               className="text-[13px] lg:text-[14px] text-white font-normal"
             >
               Go Back
