@@ -28,9 +28,6 @@ function RoadMap() {
         console.error(error);
       }
     })()
-    // let LocalStorageData: any = localStorage.getItem("data");
-    // setDataInfo(JSON.parse(LocalStorageData));
-    // LocalStorageData = JSON.parse(LocalStorageData);
     setTimeout(()=>{
     let filterData = data?.filter(
       (items: ProductRequest) => {
