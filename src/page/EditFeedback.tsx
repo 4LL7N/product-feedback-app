@@ -82,11 +82,7 @@ const EditFeedback: React.FC = () => {
 
   const handleCancel = () => {
     // Reset the form to its initial values
-    reset({
-      title: "",
-      category: {value:"",label:""},
-      description: "",
-    });
+    navigate(`/${params.feedbackdetails}`)
   };
 
   const handleDelete = async () => {
