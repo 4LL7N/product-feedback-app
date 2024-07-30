@@ -1,18 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { SetStateAction, useEffect, useState } from "react";
-import { Comment, ProductRequest, User, dataStyle } from "./style";
-import Commentreply from "../Components/Commentreply";
+import { Comment, ProductRequest } from "./style";
 import axios from "axios";
+import CommentReply from "../Components/CommentReply";
 
 function FeedbackDetails() {
   const params = useParams<{ feedbackdetails: string }>();
   const navigate = useNavigate();
   const [feedback, setFeedback] = useState<ProductRequest>();
   const [upVote, setUpVote] = useState<boolean>(false);
-  const [user, setUser] = useState<User>();
-  const [productRequests, setProductRequests] = useState<
-  ProductRequest[] | null
-  >(null);
   const [comErr, setComErr] = useState<boolean>(false);
   const [render, setRender] = useState<boolean>(false)
   const [text, setText] = useState("");
@@ -23,7 +19,6 @@ function FeedbackDetails() {
         `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`
       );
       setFeedback(await response.data.data.doc);
-      console.log(await response.data.data.doc);
     } catch (error) {
       console.error(error);
     }
@@ -31,11 +26,10 @@ function FeedbackDetails() {
   
   async function updateFeedback(body:object) {
     try {
-      const response = await axios.patch(
+      await axios.patch(
         `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`,
         body
       );
-      // console.log(await response.data.data.doc);
     } catch (error) {
       console.error(error);
     }
@@ -60,7 +54,6 @@ function FeedbackDetails() {
         `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/comments`,
         body
       );
-      console.log(await response.data.data.doc);
       return await response.data.data.doc
     } catch (error) {
       console.error(error);
@@ -117,7 +110,7 @@ function FeedbackDetails() {
 
 
   
-  async function reply(replyText:React.RefObject<HTMLTextAreaElement>,comId:number,replyTo:string|undefined,comErr:boolean,setComErr:(comErr:boolean)=> void){
+  async function reply(replyText:React.RefObject<HTMLTextAreaElement>,comId:number,replyTo:string|undefined,setComErr:(comErr:boolean)=> void){
 
     if(replyText.current?.value == ""){
 
@@ -153,19 +146,6 @@ function FeedbackDetails() {
   };
 
   useEffect(() => {
-    // let datastr = localStorage.getItem("data");
-    // let data: dataStyle = datastr ? JSON.parse(datastr) : null;
-    // setUser(data.currentUser);
-    // setProductRequests(data.productRequests);
-    // console.log(data.productRequests);
-
-    // let Post;
-    // for (let i = 0; i < data?.productRequests?.length; i++) {
-    // if (data?.productRequests[i].id === Number(params.feedbackdetails)) {
-    // Post = data?.productRequests[i];
-    // }
-    // }
-    // setFeedback(Post);
     getFeedback();
   }, []);
 
@@ -175,7 +155,7 @@ function FeedbackDetails() {
         <header className="flex items-center justify-between w-[327px] md:w-[689px] lg:w-[730px] ">
           <div
             className="flex items-center gap-[16px] cursor-pointer "
-            onClick={() => window.history.back()}
+            onClick={() => navigate('/')}
           >
             <img
               className="h-[10px] cursor-pointer "
@@ -282,14 +262,11 @@ function FeedbackDetails() {
               
               return (
                 <>
-                  <Commentreply
+                  <CommentReply
                     key={index * 14}
-                    user={user}
                     item={item}
                     index={index}
                     feedback={feedback}
-                    setFeedback={setFeedback}
-                    productRequests={productRequests}
                     reply={reply}
                   />
                 </>

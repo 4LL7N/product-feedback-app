@@ -1,18 +1,13 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import ReactSelect from "react-select";
-import { dataStyle, Inputs } from "./style"; // import data types/styles
+import { Inputs } from "./style"; // import data types/styles
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function NewFeedback(): any {
-  const [localStorageData, setLocalStorageData] = useState<dataStyle>();
   const navigate = useNavigate()
-  useEffect(() => {
-    let LocalStorageData: any = localStorage.getItem("data");
-    setLocalStorageData(JSON.parse(LocalStorageData));
-  }, []);
-
   const {
     register,
     handleSubmit,
@@ -22,35 +17,31 @@ function NewFeedback(): any {
     formState: { errors },
   } = useForm<Inputs>();
 
+  async function createFeedback(body:object) {
+    try {
+      await axios.post(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/`,
+        body
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    let FeedbackData = localStorageData?.productRequests;
 
     let newFeedback = {
-      id:FeedbackData?.length? FeedbackData?.length + 1:0,
-      title: data.title,
-      category: data?.category?.value,
-      upvotes: 0,
-      status: "suggestion",
-      description: data.description,
-      comments: [],
+      title: data.title.replace(/^\\?"|\\?"$/g,""),
+      category: data?.category?.value.toLowerCase(),
+      description: data.description.replace(/^\\?"|\\?"$/g,""),
     };
-
-    FeedbackData?.push(newFeedback);
-
-    let newFeedbackdata: any = {
-      currentUser: localStorageData?.currentUser,
-      productRequests: FeedbackData,
-    };
-    if (localStorageData?.currentUser && newFeedback)
-      setLocalStorageData(newFeedbackdata);
-
-    localStorage.setItem("data", JSON.stringify(newFeedbackdata));
-
+    
+    createFeedback(newFeedback)
     localStorage.setItem("title", "")
     localStorage.setItem("description", "")
     localStorage.setItem("category", "")
 
-    navigate("/")
+    setTimeout(()=>{navigate(`/`)},3000)
   };
 
   function GoBack(){

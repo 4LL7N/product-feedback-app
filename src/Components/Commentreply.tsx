@@ -1,21 +1,16 @@
 import {  useRef, useState } from "react";
 import { CommentReplyStyle, replies } from "../page/style";
-import { useParams } from "react-router-dom";
 
-function Commentreply({
+function CommentReply({
   item,
   index,
   feedback,
-  setFeedback,
-  user,
-  productRequests,
   reply
 }: CommentReplyStyle) {
-  const [commnetReply, setCommnetReply] = useState<boolean>(false);
+  const [commentReply, setCommentReply] = useState<boolean>(false);
   const [replyTo, setReplyTo] = useState<string>();
   const replyText = useRef<HTMLTextAreaElement>(null);
   const [comId, setComId] = useState<number>(0);
-  const params = useParams<{ feedbackdetails: string }>();
   const [comErr, setComErr] = useState<boolean>(false);
   const [render, setRender] = useState<boolean>(false);
 
@@ -47,8 +42,8 @@ function Commentreply({
           <p
             className="text-[#4661e6] hover:text-[#4661e680] text-[13px] font-semibold cursor-pointer "
             onClick={() => {
-              setCommnetReply(!commnetReply);
-              commnetReply?setComErr(false):null
+              setCommentReply(!commentReply);
+              commentReply?setComErr(false):null
               setReplyTo(item?.user?.username);
               item.id ? setComId(item?.id) : null;
             }}
@@ -92,8 +87,8 @@ function Commentreply({
                     <p
                       className="text-[#4661e6] #4661e680 text-[13px] font-semibold cursor-pointer  "
                       onClick={() => {
-                        setCommnetReply(!commnetReply);
-                        commnetReply?setComErr(false):null
+                        setCommentReply(!commentReply);
+                        commentReply?setComErr(false):null
                         setReplyTo(items.user?.username);
                         item.id ? setComId(item?.id) : null;
                       }}
@@ -116,7 +111,7 @@ function Commentreply({
         </div>
         <div
           className={
-            commnetReply ? "flex mt-[24px] justify-start gap-[16px] md:ml-[112px] " : "hidden"
+            commentReply ? "flex mt-[24px] justify-start gap-[16px] md:ml-[112px] " : "hidden"
           }
         >
           <div className="w-[100%]" >
@@ -133,7 +128,7 @@ function Commentreply({
           <button
             className="px-[16px] py-[10.5px] bg-[#ad1fea] hover:bg-[#ad1fea80] rounded-[10px] h-fit "
             onClick={()=>{
-              reply(replyText,comId,replyTo,comErr,setComErr)
+              reply(replyText,comId,replyTo,setComErr)
               setTimeout(() => {setRender(!render)
               },2000)
             }}
@@ -146,4 +141,4 @@ function Commentreply({
   );
 }
 
-export default Commentreply;
+export default CommentReply;

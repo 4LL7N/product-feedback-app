@@ -2,37 +2,18 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import ReactSelect from "react-select";
-import type {
-  SubmitHandler
-} from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { ProductRequest, dataStyle, Inputs } from "./style";
+import { ProductRequest, Inputs } from "./style";
 import axios from "axios";
 
 const EditFeedback: React.FC = () => {
-  const [localStorageData, setLocalStorageData] = useState<dataStyle>();
-  const [feedbackParams, setfeedbackParams] = useState<ProductRequest>();
+  const [feedbackParams, setFeedbackParams] = useState<ProductRequest>();
   const navigate = useNavigate();
 
   const params = useParams();
-  console.log(params);
-
-  useEffect(() => {
-    let LocalStorageData: any = localStorage.getItem("data");
-    setLocalStorageData(JSON.parse(LocalStorageData));
-
-    let findFeedback: ProductRequest = JSON.parse(
-      LocalStorageData
-    ).productRequests?.find((item: ProductRequest) => {
-      return item.id == Number(params.feedbackdetails);
-    });
-    console.log(findFeedback);
-
-    setfeedbackParams(findFeedback);
-  }, []);
-  // console.log(localStorageData);
-
+  
   const {
     register,
     handleSubmit,
@@ -40,12 +21,22 @@ const EditFeedback: React.FC = () => {
     setValue,
     control,
     formState: { errors },
-    reset,
   } = useForm<Inputs>();
 
-  async function updateFeedback(body:object) {
+  async function getFeedback() {
     try {
-      const response = await axios.patch(
+      const response = await axios.get(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`
+      );
+      setFeedbackParams(await response.data.data.doc);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function updateFeedback(body: object) {
+    try {
+      await axios.patch(
         `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`,
         body
       );
@@ -56,43 +47,62 @@ const EditFeedback: React.FC = () => {
 
   async function deleteFeedback() {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`
       );
-      console.log(response);
-      
     } catch (error) {
       console.error(error);
     }
   }
 
+  useEffect(() => {
+    getFeedback();
+  }, []);
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    let category = data?.category?.value.replace(/^[\[\]"\\]+|[\[\]"\\]+$/g,"")
     
-    const body = {
-        title: data.title.replace(/^\\?"|\\?"$/g,""),
-        category:[category],
-        description: data.description.replace(/^\\?"|\\?"$/g,""),
-        status: data.status.value.replace(/^\\?"|\\?"$/g,"")
-      };
-      updateFeedback(body)
-    setTimeout(()=>{navigate(`/${params.feedbackdetails}`)},3000)
-    ;
-  };
-
-  const handleCancel = () => {
-    // Reset the form to its initial values
-    navigate(`/${params.feedbackdetails}`)
-  };
-
-  const handleDelete = async () => {
-    // Implement logic to delete the current feedback
-    await deleteFeedback()
     localStorage.setItem("title", "");
     localStorage.setItem("description", "");
     localStorage.setItem("category", "");
     localStorage.setItem("status", "");
-    setTimeout(() => {navigate("/")},2000);
+    let category = data?.category?.value.replace(
+      /^[\[\]"\\]+|[\[\]"\\]+$/g,
+      ""
+    );
+
+    const body = {
+      title: data.title.replace(/^\\?"|\\?"$/g, ""),
+      category: [category],
+      description: data.description.replace(/^\\?"|\\?"$/g, ""),
+      status: data.status.value.replace(/^\\?"|\\?"$/g, ""),
+    };
+    updateFeedback(body);
+    setTimeout(() => {
+      navigate(`/${params.feedbackdetails}`);
+    }, 3000);
+  };
+
+  const handleCancel = () => {
+    // Reset the form to its initial values
+    
+    localStorage.setItem("title", "");
+    localStorage.setItem("description", "");
+    localStorage.setItem("category", "");
+    localStorage.setItem("status", "");
+    navigate(`/${params.feedbackdetails}`);
+  };
+
+  const handleDelete = async () => {
+    // Implement logic to delete the current feedback
+
+    await deleteFeedback();    
+    localStorage.setItem("title", "");
+    localStorage.setItem("description", "");
+    localStorage.setItem("category", "");
+    localStorage.setItem("status", "");
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -131,7 +141,13 @@ const EditFeedback: React.FC = () => {
     <InputField className="min-h-screen p-10 m-0 flex flex-col items-center justify-center">
       <div className="">
         <div
-          onClick={() => window.history.back()}
+          onClick={() => {
+            localStorage.setItem("title", "");
+            localStorage.setItem("description", "");
+            localStorage.setItem("category", "");
+            localStorage.setItem("status", "");
+            window.history.back();
+          }}
           className="flex flex-row gap-4 cursor-pointer"
         >
           <img
@@ -148,7 +164,7 @@ const EditFeedback: React.FC = () => {
             src="/assets/shared/icon-edit-feedback.svg"
             alt="icon-new-feedback"
           />
-          <h1 className="">Editing '{feedbackParams?.title}'</h1>
+          <h1 className="">Editing '{localStorage.getItem("title")}'</h1>
 
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -192,7 +208,14 @@ const EditFeedback: React.FC = () => {
                 )}
                 name="category"
                 control={control}
-                defaultValue={{ value: feedbackParams?.category?feedbackParams?.category:"", label: feedbackParams?.category?feedbackParams?.category:"" }}
+                defaultValue={{
+                  value: feedbackParams?.category
+                    ? feedbackParams?.category
+                    : "",
+                  label: feedbackParams?.category
+                    ? feedbackParams?.category
+                    : "",
+                }}
               />
             </div>
 
@@ -214,7 +237,10 @@ const EditFeedback: React.FC = () => {
                 )}
                 name="status"
                 control={control}
-                defaultValue={{value:feedbackParams?.status?feedbackParams?.status:"",label:feedbackParams?.status?feedbackParams?.status:""}}
+                defaultValue={{
+                  value: feedbackParams?.status ? feedbackParams?.status : "",
+                  label: feedbackParams?.status ? feedbackParams?.status : "",
+                }}
               />
             </div>
 
@@ -254,12 +280,14 @@ const EditFeedback: React.FC = () => {
               </div>
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={handleCancel}
                   className="cancel hover:opacity-50"
                 >
                   Cancel
                 </button>
                 <button
+                  type="button"
                   onClick={handleDelete}
                   className="delete bg-red-700 hover:opacity-50"
                 >
