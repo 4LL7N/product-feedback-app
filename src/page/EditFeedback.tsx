@@ -8,6 +8,7 @@ import type {
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ProductRequest, dataStyle, Inputs } from "./style";
+import axios from "axios";
 
 const EditFeedback: React.FC = () => {
   const [localStorageData, setLocalStorageData] = useState<dataStyle>();
@@ -42,46 +43,30 @@ const EditFeedback: React.FC = () => {
     reset,
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // console.log(data);
-
-    if (!localStorageData?.productRequests) {
-      console.error("Product requests data is undefined or null.");
-      return;
-    }
-
-    const newFeedback = [...localStorageData.productRequests]; // Create a copy of the array
-
-    const indexToUpdate = newFeedback.findIndex(
-      (item) => item.id === Number(params.feedbackdetails)
-    ); // Find the index of the item to update
-
-    if (indexToUpdate !== -1) {
-      // Update the item if it exists in the array
-      newFeedback[indexToUpdate] = {
-        ...newFeedback[indexToUpdate],
-        title: data.title,
-        category: data?.category?.value,
-        description: data.description,
-        status: data.status.value,
-      };
-
-      // Update localStorage with the updated array
-      localStorage.setItem(
-        "data",
-        JSON.stringify({
-          productRequests: newFeedback,
-          currentUser: localStorageData?.currentUser,
-        })
+  async function updateFeedback(body:object) {
+    try {
+      const response = await axios.patch(
+        `https://product-feedback-app-backend-sy6o.onrender.com/api/v1/feedbacks/${params.feedbackdetails}`,
+        body
       );
-      setLocalStorageData({
-        ...localStorageData,
-        productRequests: newFeedback,
-      }); // Update state with current user
-    } else {
-      console.error("Item not found in product requests array.");
+      // console.log(await response.data.data.doc);
+    } catch (error) {
+      console.error(error);
     }
-    navigate("/");
+  }
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    let category = data?.category?.value.replace(/^[\[\]"\\]+|[\[\]"\\]+$/g,"")
+    
+    const body = {
+        title: data.title.replace(/^\\?"|\\?"$/g,""),
+        category:[category],
+        description: data.description.replace(/^\\?"|\\?"$/g,""),
+        status: data.status.value.replace(/^\\?"|\\?"$/g,"")
+      };
+      updateFeedback(body)
+    setTimeout(()=>{navigate(`/${params.feedbackdetails}`)},3000)
+    ;
   };
 
   const handleCancel = () => {
@@ -205,11 +190,11 @@ const EditFeedback: React.FC = () => {
                   <ReactSelect
                     {...field}
                     options={[
-                      { value: "Feature", label: "Feature" },
+                      { value: "feature", label: "Feature" },
                       { value: "UI", label: "UI" },
                       { value: "UX", label: "UX" },
-                      { value: "Enhancement", label: "Enhancement" },
-                      { value: "Bug", label: "Bug" },
+                      { value: "enhancement", label: "Enhancement" },
+                      { value: "bug", label: "Bug" },
                     ]}
                     isClearable
                   />
